@@ -1,0 +1,21 @@
+<?php header("Content-Type: text/html; charset=ISO-8859-1"); ?>
+<script>
+    $(document).ready(function(){
+
+
+     }); //fecha document.read
+
+</script>
+
+<table style="width: 100%; border: 0px #ccc solid;" cellpadding="0" cellspacing="1" >
+    <tr class="bg_title_grid">
+        <td width="20%">Nome</td>
+        <td width="10%">Tipo Inscrição</td>
+    </tr>
+    <?php $ct=1; foreach ($this->registros as $registro): $bg =($ct%2)? "bg_linha_grid3": "bg_linha_grid3"; ?>
+    <tr class="<?php echo $bg;?>">
+        <td width="40%"><b><?php echo strtoupper($registro->nome);?></b></td>
+        <td width="60%"><?php echo ($registro->tipocadastro == 1) ? 'Eleitor' : 'Candidato';?></td>
+    </tr>
+    <?php $ct++; endforeach;?>
+</table>

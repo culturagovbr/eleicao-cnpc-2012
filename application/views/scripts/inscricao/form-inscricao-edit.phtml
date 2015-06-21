@@ -1,0 +1,630 @@
+<script>
+    $(document).ready(function(){
+        
+        $("#btn_salvar").click(function(){
+            $("#vhr_rg").rules("remove");
+            $("#dte_nascimento").rules("remove");
+            $("#vhr_naturalidade").rules("remove");
+            $("#vhr_endereco").rules("remove");
+            $("#vhr_bairro").rules("remove");
+            $("#vhr_cep").rules("remove");
+            $("#vhr_cidade").rules("remove");
+            $("#vhr_estado").rules("remove");
+            $("#vhr_formacao").rules("remove");
+            $("#vhr_areadeatuacao").rules("remove");
+            $("#vhr_apresentacao").rules("remove");
+            $("#file_comprovante_atuacao_setor").rules("remove");
+            $("#file_identidade").rules("remove");
+            $("#file_cpf").rules("remove");
+            $("#file_comprovante_residencia").rules("remove");
+            $("#int_declaracao_verdadeira").rules("remove");
+            $("#int_aprovacao_cadastro").rules("remove");
+            $("#int_ciente_planonacional").rules("remove");
+            $("#vhr_cargo").rules("remove");
+            $("#file_comprovante_funcao_comissionado").rules("remove");
+            
+            $("#frmInscricao").submit();
+        });
+        
+        $("#btn_enviar").click(function(){
+            
+            $("#vhr_rg").rules("add", {
+                required: true,
+                minlength: 5,
+                messages: {
+                    required: "<br />O campo RG é obrigatório",
+                    minlength: "<br />O RG deve conter no mínimo 5 caracteres"
+                }
+            });
+            $("#dte_nascimento").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />O campo Data de Nascimento é obrigatório"
+                }
+            });
+            $("#vhr_naturalidade").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />O campo Naturalidade é obrigatório"
+                }
+            });
+            $("#vhr_endereco").rules("add", {
+                required: true,
+                minlength: 10,
+                messages: {
+                    required: "<br />O campo Endereço é obrigatório",
+                    minlength: "<br />O Endereço deve conter no mínimo 10 caracteres"
+                }
+            });
+            $("#vhr_bairro").rules("add", {
+                required: true,
+                minlength: 5,
+                messages: {
+                    required: "<br />O campo Bairro é obrigatório",
+                    minlength: "<br />O Endereço deve conter no mínimo 5 caracteres"
+                }
+            });
+            $("#vhr_cep").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />O campo CEP é obrigatório"
+                }
+            });
+            $("#vhr_cidade").rules("add", {
+                required: true,
+                minlength: 3,
+                messages: {
+                    required: "<br />O campo Cidade é obrigatório",
+                    minlength: "<br />O Cidade deve conter no mínimo 3 caracteres"
+                }
+            });
+            $("#vhr_estado").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />O campo UF é obrigatório"
+                }
+            });
+            $("#vhr_formacao").rules("add", {
+                required: true,
+                minlength: 5,
+                messages: {
+                    required: "<br />O campo Formação é obrigatório",
+                    minlength: "<br />O Formação deve conter no mínimo 5 caracteres"
+                }
+            });
+            $("#vhr_areadeatuacao").rules("add", {
+                required: true,
+                minlength: 5,
+                messages: {
+                    required: "<br />O campo Área de atuação é obrigatório",
+                    minlength: "<br />O Área de atuação deve conter no mínimo 5 caracteres"
+                }
+            });
+            $("#vhr_apresentacao").rules("add", {
+                required: true,
+                minlength: 20,
+                messages: {
+                    required: "<br />O campo Apresentação é obrigatório",
+                    minlength: "<br />O Apresentação deve conter no mínimo 20 caracteres"
+                }
+            });
+            $("#file_comprovante_atuacao_setor").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />É obrigatório anexar a comprovação de três anos de atuação no setor"
+                }
+            });
+            $("#file_identidade").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />É obrigatório anexar a cópia da sua Identidade"
+                }
+            });
+            $("#file_cpf").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />É obrigatório anexar a cópia do seu CPF"
+                }
+            });
+            $("#file_comprovante_residencia").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />É obrigatório anexar a cópia do seu comprovante de residência"
+                }
+            });
+            $("#int_declaracao_verdadeira").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />Marcação obrigatória"
+                }
+            });
+            $("#int_aprovacao_cadastro").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />Marcação obrigatória"
+                }
+            });
+            $("#int_ciente_planonacional").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />Marcação obrigatória"
+                }
+            });
+            /*$("#int_nao_cargo_comissionado").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />Marcação obrigatória"
+                }
+            });*/
+            //VERIFICA OBRIGATORIEDADE DO CAMPO CARGO E ANEXO DA FUNCAO
+            var cargoCheck = $("input:checkbox[name='int_nao_cargo_comissionado']:checked").length;
+            if(!cargoCheck >= 1){ //se nao marcado 
+                $("#vhr_cargo").rules("add", {
+                    required: true,
+                    minlength: 5,
+                    messages: {
+                        required: "<br />O campo Cargo é obrigatório",
+                        minlength: "<br />O Cargo deve conter no mínimo 5 caracteres"
+                    }
+                });
+                $("#file_comprovante_funcao_comissionado").rules("add", {
+                    required: true,
+                    messages: {
+                        required: "<br />É obrigatório anexar o comprovante de função na Entidade Civil"
+                    }
+                });
+            }else{
+                $("#vhr_cargo").rules("remove");
+                $("#file_comprovante_funcao_comissionado").rules("remove");
+            }
+            
+            //VERIFICA OBRIGATORIEDADE DOS CAMPOS DE CADASTRO DE CANDIDATO
+            var candidatoCheck = $("input:checkbox[name='int_cadastro_candidato']:checked").length;
+            if(candidatoCheck >= 1){ //se marcado 
+                $("#vhr_proposta").rules("add", {
+                    required: true,
+                    minlength: 20,
+                    messages: {
+                        required: "<br />O campo Proposta é obrigatório",
+                        minlength: "<br />O Proposta deve conter no mínimo 20 caracteres"
+                    }
+                });
+                $("#file_curriculo").rules("add", {
+                    required: true,
+                    messages: {
+                        required: "<br />É obrigatório anexar o seu currículo"
+                    }
+                });
+                $("#file_portifolio").rules("add", {
+                    required: true,
+                    messages: {
+                        required: "<br />É obrigatório anexar o seu portifólio"
+                    }
+                });
+            }else{
+                $("#vhr_proposta").rules("remove");
+                $("#file_curriculo").rules("remove");
+                $("#file_portifolio").rules("remove");
+            }
+            
+            $("#frmInscricao").submit();
+            
+        });
+        
+        $("#frmInscricao").validate({
+            // Define as regras
+            rules:{
+                    vhr_cpf:{
+                            // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                            required: true, 
+                            minlength: 14,
+                            verificaCPF: true
+                    },
+                    vhr_nome:{
+                            // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                            required: true, 
+                            minlength: 5
+                    },
+                    vhr_email:{
+                            // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
+                            required: true, 
+                            email: true, 
+                            minlength: 2
+                    },
+                    vhr_senha:{
+                            required: true,  
+                            minlength: 6
+                    },
+                    vhr_senha_rep:{
+                            required: true,  
+                            minlength: 6
+                    }
+
+            },
+            // Define as mensagens de erro para cada regra
+            messages:{
+                    vhr_cpf:{
+                            required: "<br />O campo CPF é obrigatório",
+                            minlength: "<br />O CPF deve conter no mínimo 11 caracteres",
+                            verificaCPF: "<br />CPF inv&aacute;lido"
+                    },
+                    vhr_nome:{
+                            required: "<br />O campo Nome é obrigatório",
+                            minlength: "<br />O nome deve conter no mínimo 5 caracteres"
+                    },
+                    vhr_email:{
+                            required: "<br />O campo E-mail é obrigatório",
+                            email: "<br />Digite um e-mail válido",
+                            minlength: "<br />O nome deve conter no mínimo 2 caracteres"
+                    },
+                    vhr_senha:{
+                            required: "<br />O campo Senha é obrigatório",
+                            minlength: "<br />A senha deve conter no mínimo 6 caracteres"
+                    },
+                    vhr_senha_rep:{
+                            required: "<br />O campo Repita a Senha é obrigatório",
+                            minlength: "<br />O campo Repita a Senha deve conter no mínimo 6 caracteres"
+                    }
+            },
+            submitHandler: function(form) {
+                //$("#error").addClass('sumir')
+                $(form).submit();
+            }
+	});
+        
+        $("#frmInscricaoFinal").validate({
+            // Define as regras
+            rules:{
+                    vhr_cpf:{
+                            // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                            required: true, 
+                            minlength: 14,
+                            verificaCPF: true
+                    },
+                    vhr_nome:{
+                            // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                            required: true, 
+                            minlength: 5
+                    },
+                    vhr_email:{
+                            // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
+                            required: true, 
+                            email: true, 
+                            minlength: 2
+                    },
+                    vhr_senha:{
+                            required: true,  
+                            minlength: 6
+                    },
+                    vhr_senha_rep:{
+                            required: true,  
+                            minlength: 6
+                    }
+
+            },
+            // Define as mensagens de erro para cada regra
+            messages:{
+                    vhr_cpf:{
+                            required: "<br />O campo CPF é obrigatório",
+                            minlength: "<br />O CPF deve conter no mínimo 11 caracteres",
+                            verificaCPF: "<br />CPF inv&aacute;lido"
+                    },
+                    vhr_nome:{
+                            required: "<br />O campo Nome é obrigatório",
+                            minlength: "<br />O nome deve conter no mínimo 5 caracteres"
+                    },
+                    vhr_email:{
+                            required: "<br />O campo E-mail é obrigatório",
+                            email: "<br />Digite um e-mail válido",
+                            minlength: "<br />O nome deve conter no mínimo 2 caracteres"
+                    },
+                    vhr_senha:{
+                            required: "<br />O campo Senha é obrigatório",
+                            minlength: "<br />A senha deve conter no mínimo 6 caracteres"
+                    },
+                    vhr_senha_rep:{
+                            required: "<br />O campo Repita a Senha é obrigatório",
+                            minlength: "<br />O campo Repita a Senha deve conter no mínimo 6 caracteres"
+                    }
+            },
+            submitHandler: function(form) {
+                //$("#error").addClass('sumir')
+                $(form).submit();
+            }
+	});
+
+        $("#int_nao_cargo_comissionado").click(function(){
+            if($(this).attr('checked')){
+                $("#divDadosComissionado").css("display", "none");
+            }else{
+                $("#divDadosComissionado").css("display", "");
+            }
+        });
+
+        $("#int_cadastro_candidato").click(function(){
+            if($(this).attr('checked')){
+                $("#divDadosCandidatura").css("display", "");
+            }else{
+                $("#divDadosCandidatura").css("display", "none");
+            }
+        });
+
+        $("#vhr_cep").mask('99.999-999');
+        $("#vhr_cpf").mask('999.999.999-99');
+        $("#dte_nascimento").mask('99/99/9999');
+        
+    }); //fecha $('document').ready
+</script>
+<form name="frmInscricao" id="frmInscricao" class="formulario" enctype="multipart/form-data" action="<?php echo $this->url(array('controller' => 'inscricao', 'action' => 'salvar-inscricao')); ?>"  method="POST">
+    <fieldset>
+        <legend>Dados Pessoais</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>Nome Completo: *</td>
+                <td colspan="4"><input type="text" name="vhr_nome" id="vhr_nome" class="input_simples" <?php echo $this->vhr_nome; ?>></td>
+            </tr>
+            <tr>
+                <td>Nome Artístico/Apelido:</td>
+                <td colspan="4"><input type="text" name="vhr_apelido" id="vhr_apelido" class="input_simples"></td>
+            </tr>
+            <tr>
+                <td width="20%">CPF: *</td>
+                <td width="30%"><input type="text" name="vhr_cpf" id="vhr_cpf" class="input_simples" maxlength="14"></td>
+                <td width="15%">RG: *</td>
+                <td width="35%"><input type="text" name="vhr_rg" id="vhr_rg" class="input_simples"></td>
+            </tr>
+            <tr>
+                <td>Dt. de Nascimento: *</td>
+                <td><input type="text" name="dte_nascimento" id="dte_nascimento" class="input_simples"></td>
+                <td>Naturalidade: *</td>
+                <td>
+                    <select name="vhr_naturalidade" id="vhr_naturalidade" class="input_simples">
+                        <option value="" selected="">- Selecione -</option>
+                        <option value="AC">AC</option>
+                        <option value="AL">AL</option>
+                        <option value="AM">AM</option>
+                        <option value="AP">AP</option>
+                        <option value="BA">BA</option>
+                        <option value="CE">CE</option>
+                        <option value="DF">DF</option>
+                        <option value="ES">ES</option>
+                        <option value="GO">GO</option>
+                        <option value="MA">MA</option>
+                        <option value="MG">MG</option>
+                        <option value="MS">MS</option>
+                        <option value="MT">MT</option>
+                        <option value="PA">PA</option>
+                        <option value="PB">PB</option>
+                        <option value="PE">PE</option>
+                        <option value="PI">PI</option>
+                        <option value="PR">PR</option>
+                        <option value="RJ">RJ</option>
+                        <option value="RN">RN</option>
+                        <option value="RO">RO</option>
+                        <option value="RR">RR</option>
+                        <option value="RS">RS</option>
+                        <option value="SC">SC</option>
+                        <option value="SE">SE</option>
+                        <option value="SP">SP</option>
+                        <option value="TO">TO</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>E-mail: *</td>
+                <td colspan="4"><input type="text" name="vhr_email" id="vhr_email" class="input_simples"></td>
+            </tr>
+            <tr>
+                <td>Senha: *</td>
+                <td><input type="password" name="vhr_senha" id="vhr_senha" class="input_simples"></td>
+                <td>Repita a senha: *</td>
+                <td><input type="password" name="vhr_senha_rep" id="vhr_senha_rep" class="input_simples"></td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>Localização</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>Endereço: *</td>
+                <td colspan="4"><input type="text" name="vhr_endereco" id="vhr_endereco" class="input_simples"></td>
+            </tr>
+            <tr>
+                <td>Complemento:</td>
+                <td colspan="4"><input type="text" name="vhr_complemento" id="vhr_complemento" class="input_simples"></td>
+            </tr>
+            <tr>
+                <td width="20%">Bairro: *</td>
+                <td width="30%"><input type="text" name="vhr_bairro" id="vhr_bairro" class="input_simples"></td>
+                <td width="15%">CEP: *</td>
+                <td width="35%"><input type="text" name="vhr_cep" id="vhr_cep" class="input_simples"></td>
+            </tr>
+            <tr>
+                <td>Cidade: *   </td>
+                <td><input type="text" name="vhr_cidade" id="vhr_cidade" class="input_simples"></td>
+                <td>UF: *</td>
+                <td>
+                    <select name="vhr_estado" id="vhr_estado" class="input_simples">
+                        <option value="" selected="">- Selecione -</option>
+                        <option value="AC">AC</option>
+                        <option value="AL">AL</option>
+                        <option value="AM">AM</option>
+                        <option value="AP">AP</option>
+                        <option value="BA">BA</option>
+                        <option value="CE">CE</option>
+                        <option value="DF">DF</option>
+                        <option value="ES">ES</option>
+                        <option value="GO">GO</option>
+                        <option value="MA">MA</option>
+                        <option value="MG">MG</option>
+                        <option value="MS">MS</option>
+                        <option value="MT">MT</option>
+                        <option value="PA">PA</option>
+                        <option value="PB">PB</option>
+                        <option value="PE">PE</option>
+                        <option value="PI">PI</option>
+                        <option value="PR">PR</option>
+                        <option value="RJ">RJ</option>
+                        <option value="RN">RN</option>
+                        <option value="RO">RO</option>
+                        <option value="RR">RR</option>
+                        <option value="RS">RS</option>
+                        <option value="SC">SC</option>
+                        <option value="SE">SE</option>
+                        <option value="SP">SP</option>
+                        <option value="TO">TO</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>Dados Profissionais</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td width="20%">Formação: *</td>
+                <td width="30%"><input type="text" name="vhr_formacao" id="vhr_formacao" class="input_simples"></td>
+                <td width="15%">Área de atuação: *</td>
+                <td width="35%"><input type="text" name="vhr_areadeatuacao" id="vhr_areadeatuacao" class="input_simples"></td>
+            </tr>
+            <tr>
+                <td>Apresentação: *</td>
+                <td colspan="4">
+                    <textarea name="vhr_apresentacao" id="vhr_apresentacao" class="input_simples" cols="70" rows="8"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    Segmento da área técnico-artística ou de patrimônio cultural que representa:<br />
+                    <select name="vhr_segmento" id="vhr_segmento" class="input_simples">
+                        <option value="" selected=""> - Selecione - </option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>Anexos</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>Comprovação de três anos de atuação no setor: * <br />
+                    <input type="file" name="file_comprovante_atuacao_setor" id="file_comprovante_atuacao_setor" class="input_simples">
+                </td>
+            </tr>
+            <tr>
+                <td>Identidade: * <br />
+                    <input type="file" name="file_identidade" id="file_identidade" class="input_simples">
+                </td>
+            </tr>
+            <tr>
+                <td>CPF: * <br />
+                    <input type="file" name="file_cpf" id="file_cpf" class="input_simples">
+                </td>
+            </tr>
+            <tr>
+                <td>Comprovante de residência: * <br />
+                    <input type="file" name="file_comprovante_residencia" id="file_comprovante_residencia" class="input_simples">
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>Declaração</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>
+                    <input type="checkbox" name="int_declaracao_verdadeira" id="int_declaracao_verdadeira" class="input_simples"> 
+                    São verdadeiras todas as  informações contidas neste formulário, bem como na documentação encaminhada nos respectivos anexos,
+                    e que estou ciente que constitui crime de falsidade ideológica a omissão de declaração em documento público ou a inserção de
+                    declaração falsa da que devia constar, com o fim de alterar a verdade sobre o fato, juridicamente relevante (artigo 299 do Código Penal Brasileiro); *
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="int_aprovacao_cadastro" id="int_aprovacao_cadastro" class="input_simples"> 
+                    Estou ciente de que deverei acompanhar os procedimentos para aprovação do cadastro de eleitor e registro de candidatura por 
+                    meio do sítio eletrônico do Ministério da Cultura, conforme artigo 18 da Portaria nº 51, de 02 de maio de 2012; *
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="int_ciente_planonacional" id="int_ciente_planonacional" class="input_simples"> 
+                    Tenho conhecimento do Plano Nacional de Cultura; *
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="int_nao_cargo_comissionado" id="int_nao_cargo_comissionado" class="input_simples"> 
+                    Não sou detentor de cargo comissionado na administração pública federal, estadual, distrital ou municipal; *
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <div id="divDadosComissionado">
+    <fieldset>
+        <legend>Dados do Comissionado</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>Cargo: * <br />
+                    <input type="text" name="vhr_cargo" id="vhr_cargo" class="input_simples">
+                </td>
+            </tr>
+            <tr>
+                <td>Comprovante de função na Entidade Civil: * <br />
+                    <input type="file" name="file_comprovante_funcao_comissionado" id="file_comprovante_funcao_comissionado" class="input_simples"><br />
+                    Na hipótese de eleitor que seja representante da sociedade civil e ocupante de cargo em comissão, a declaração 
+                    de que trata o inciso VII do art. 16 será substituída por informação que individualize o cargo comissionado que que ocupa,
+                    acompanhada de comprovação de função que exerce na entidade civil que representa no formato .pdf com no máximo 1MB.
+
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    </div>
+    <fieldset>
+        <legend>Cadastro de canditato</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td><input type="checkbox" name="int_cadastro_candidato" id="int_cadastro_candidato" class="input_simples"> Desejo me candidatar a essa setorial<br />
+                    Para inscrever a sua candidatura é necessário preencher o cadastro de Eleitor.
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <div id="divDadosCandidatura" style="display: none">
+    <fieldset>
+        <legend>Dados da Candidatura</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>Proposta: * <br />
+                    <textarea name="vhr_proposta" id="vhr_proposta" class="input_simples" cols="70" rows="8"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>Currículo: * <br />
+                    <input type="file" name="file_curriculo" id="file_curriculo" class="input_simples">
+                </td>
+            </tr>
+            <tr>
+                <td>Portifólio: * <br />
+                    <input type="file" name="file_portifolio" id="file_portifolio" class="input_simples">
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    </div>
+    <table class="w800" cellpading="0" cellspacing="0">
+        <tr>
+            <td class="centro">
+                <input type="button" name="btn_salvar" id="btn_salvar" value="Salvar" class="input_simples">&nbsp;&nbsp;
+                <input type="button" name="btn_enviar" id="btn_enviar" value="Enviar inscrição" class="input_simples">&nbsp;&nbsp;
+                <input type="hidden" name="bln_enviar" id="bln_enviar" value="0" class="input_simples">
+                <input type="reset" name="limpar" id="limpar" value="Limpar" class="input_simples">&nbsp;&nbsp;<br />
+                <span class="red">*Atenção:</span> Você poderá salvar os dados da sua inscrição a qualquer momento durante o preenchimento mas isso não implica
+                que a mesma foi concluída ou enviada. Após concluir o cadastro de toda a sua inscrição você deverá clicar em "Enviar inscrição".
+                Seu cadastro só será considerado após você realizar a operação de enviar a inscrição.
+            </td>
+        </tr>
+    </table>
+</form>
+<br /><br />

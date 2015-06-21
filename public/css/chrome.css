@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+/**
+ * Correções para o Chrome e Safari
+ */
+
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+
+	/* Formatação da tabela */
+	table {
+		margin:40px 0 20px 0;
+	}
+	
+	/* Estrutura global do menu */
+	#navglobal {
+		top:59px;
+	}
+	
+	table tfoot td img {
+		right:4px;
+	}
+	
+	input:focus,textarea:focus { 
+		outline: none;
+	}
+	
+	textarea {
+		resize: none; float:left;
+	}
+	
+	.data img {
+		float:left;
+	}
+
+}

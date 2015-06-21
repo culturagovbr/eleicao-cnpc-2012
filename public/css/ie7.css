@@ -1,0 +1,34 @@
+@charset "utf-8";
+
+/**
+ * Correções para o I.E. 7
+ */
+
+#titulo div {
+	height:18px;
+}
+
+#titulo span { 
+	top:-18px; 
+	position:relative; 
+}
+
+#navglobal {
+	top:57px;
+}
+
+#rodape {
+	top:16px;
+}
+
+.busca {
+	margin:20px 0 0 0;
+}
+
+.busca .campoBusca {
+	margin-left:-5px;
+}
+
+ul.simpleTabsNavigation li a {
+	padding:0px 40px 0 0;
+}

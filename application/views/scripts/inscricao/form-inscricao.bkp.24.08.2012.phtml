@@ -1,0 +1,756 @@
+<!--<div id="alertaDeCadastro" title="Aviso" style="display: none;">As inscrições se encerram <b>dia 26/08 às 23:59</b>. Você tem <b><?php //echo $this->diasRestantes; ?> dias</b> para finalizar o seu cadastro.</div>-->
+<div id="alertaDeEnvio" title="Alerta" style="display: none;">Tem certeza que deseja <b>finalizar</b> o seu cadastro? <br>Esta ação não poderá ser desfeita.</div>
+<script>
+    $(document).ready(function(){
+        
+        <?php if($this->bol_cadastroenviado): ?>
+                $('#tblBotoes').remove();
+                $('body').find('input, select, textarea').each(function(){
+                    $(this).attr("disabled", "true");
+                });
+                $('body').find('.apagarAnexo').each(function(){
+                    $(this).remove();
+                });
+        <?php else: ?>
+            /*$("#alertaDeCadastro").dialog({
+                width: 360,
+                height: 180,
+                modal: true,
+                draggable: false,
+                resizable: false,
+                closeOnEscape: false,
+                buttons:
+                    {
+                    'OK': function(){
+                        $("#alertaDeCadastro").dialog("close");
+                    }
+                }
+            });*/
+//            $('.ui-dialog-titlebar-close').remove();
+        <?php endif; ?>
+    
+        <?php if($this->idUsuario): ?>
+                $('#vhr_cpf').attr("disabled", "true");
+        <?php endif; ?>
+        //SALVA FORMULARIO
+        $("#btn_salvar").click(function(){
+            
+            $('#vhr_cpf').attr("disabled", false);
+            $("#bln_enviar").val('0');
+            
+            $("#vhr_rg").rules("remove");
+            <?php if($this->idSetorial == 13 || $this->idSetorial == 14) : ?>
+            $("#vhr_etnia").rules("remove");
+            <?php endif; ?>
+            $("#dte_nascimento").rules("remove");
+            $("#vhr_naturalidade").rules("remove");
+            $("#vhr_endereco").rules("remove");
+            $("#vhr_bairro").rules("remove");
+            $("#vhr_cep").rules("remove");
+            $("#vhr_cidade").rules("remove");
+            $("#vhr_estado").rules("remove");
+            $("#vhr_formacao").rules("remove");
+            $("#vhr_areadeatuacao").rules("remove");
+            $("#vhr_apresentacao").rules("remove");
+            $("#file_comprovante_atuacao_setor").rules("remove");
+            $("#file_identidade").rules("remove");
+            $("#file_cpf").rules("remove");
+            $("#file_comprovante_residencia").rules("remove");
+            $("#int_declaracao_verdadeira").rules("remove");
+            $("#int_aprovacao_cadastro").rules("remove");
+            $("#int_ciente_planonacional").rules("remove");
+            $("#vhr_cargo").rules("remove");
+            $("#file_comprovante_funcao_comissionado").rules("remove");
+            $("#file_curriculo").rules("remove");
+            $("#file_portfolio").rules("remove");
+            $("#file_carta_apoio").rules("remove");
+            
+            $("#frmInscricao").valid();
+            $("#frmInscricao").submit();
+        });
+        
+        //ENVIAR FORMULARIO
+        $("#btn_enviar").click(function(){
+            
+            $('#vhr_cpf').attr("disabled", false);
+            $("#bln_enviar").val('1');
+            
+            <?php if($this->idSetorial == 13 || $this->idSetorial == 14) : ?>
+            $("#vhr_etnia").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />O campo Etnia é obrigatório"
+                }
+            });
+            <?php endif; ?>
+            $("#vhr_rg").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />O campo RG é obrigatório"
+                }
+            });
+            $("#dte_nascimento").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />O campo Data de Nascimento é obrigatório"
+                }
+            });
+            $("#vhr_naturalidade").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />O campo Naturalidade é obrigatório"
+                }
+            });
+            $("#vhr_endereco").rules("add", {
+                required: true,
+                /*minlength: 10,*/
+                messages: {
+                    required: "<br />O campo Endereço é obrigatório"
+                    /*minlength: "<br />O Endereço deve conter no mínimo 10 caracteres"*/
+                }
+            });
+            $("#vhr_bairro").rules("add", {
+                required: true,
+                /*minlength: 5,*/
+                messages: {
+                    required: "<br />O campo Bairro é obrigatório"
+                    /*minlength: "<br />O Endereço deve conter no mínimo 5 caracteres"*/
+                }
+            });
+            $("#vhr_cep").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />O campo CEP é obrigatório"
+                }
+            });
+            $("#vhr_cidade").rules("add", {
+                required: true,
+                /*minlength: 3,*/
+                messages: {
+                    required: "<br />O campo Cidade é obrigatório"
+                    /*minlength: "<br />O Cidade deve conter no mínimo 3 caracteres"*/
+                }
+            });
+            $("#vhr_estado").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />O campo UF é obrigatório"
+                }
+            });
+            $("#vhr_formacao").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />O campo Formação é obrigatório"
+                }
+            });
+            $("#vhr_areadeatuacao").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />O campo Área de atuação é obrigatório"
+                }
+            });
+            $("#vhr_apresentacao").rules("add", {
+                required: true,
+                /*minlength: 20,*/
+                messages: {
+                    required: "<br />O campo Apresentação é obrigatório"
+                    /*minlength: "<br />O Apresentação deve conter no mínimo 20 caracteres"*/
+                }
+            });
+            <?php if(empty($this->file_comprovante_atuacao_setor)): ?>
+            /*$("#file_comprovante_atuacao_setor").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />É obrigatório anexar a comprovação de três anos de atuação no setor"
+                }
+            });*/
+            <?php endif; ?>
+            <?php if(empty($this->file_identidade)): ?>
+            /*$("#file_identidade").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />É obrigatório anexar a cópia da sua Identidade"
+                }
+            });*/
+            <?php endif; ?>
+            <?php if(empty($this->file_cpf)): ?>
+            /*$("#file_cpf").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />É obrigatório anexar a cópia do seu CPF"
+                }
+            });*/
+            <?php endif; ?>
+            <?php if(empty($this->file_comprovante_residencia)): ?>
+            /*$("#file_comprovante_residencia").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />É obrigatório anexar a cópia do seu comprovante de residência"
+                }
+            });*/
+            <?php endif; ?>
+            $("#int_declaracao_verdadeira").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />Marcação obrigatória"
+                }
+            });
+            $("#int_aprovacao_cadastro").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />Marcação obrigatória"
+                }
+            });
+            $("#int_ciente_planonacional").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />Marcação obrigatória"
+                }
+            });
+            /*$("#int_nao_cargo_comissionado").rules("add", {
+                required: true,
+                messages: {
+                    required: "<br />Marcação obrigatória"
+                }
+            });*/
+            //VERIFICA OBRIGATORIEDADE DO CAMPO CARGO E ANEXO DA FUNCAO
+            var cargoCheck = $("input:checkbox[name='int_nao_cargo_comissionado']:checked").length;
+            if(!cargoCheck >= 1){ //se nao marcado 
+                $("#vhr_cargo").rules("add", {
+                    required: true,
+                    /*minlength: 5,*/
+                    messages: {
+                        required: "<br />O campo Cargo é obrigatório"
+                        /*minlength: "<br />O Cargo deve conter no mínimo 5 caracteres"*/
+                    }
+                });
+                <?php if(empty($this->file_comprovante_funcao_comissionado)): ?>
+                /*$("#file_comprovante_funcao_comissionado").rules("add", {
+                    required: true,
+                    messages: {
+                        required: "<br />É obrigatório anexar o comprovante de função na Entidade Civil"
+                    }
+                });*/
+                <?php endif; ?>
+            }else{
+                $("#vhr_cargo").rules("remove");
+                $("#file_comprovante_funcao_comissionado").rules("remove");
+            }
+            
+            //VERIFICA OBRIGATORIEDADE DOS CAMPOS DE CADASTRO DE CANDIDATO
+            var candidatoCheck = $("input:checkbox[name='int_cadastro_candidato']:checked").length;
+            if(candidatoCheck >= 1){ //se marcado 
+                $("#vhr_proposta").rules("add", {
+                    required: true,
+                    /*minlength: 20,*/
+                    messages: {
+                        required: "<br />O campo Proposta é obrigatório"
+                        /*minlength: "<br />O Proposta deve conter no mínimo 20 caracteres"*/
+                    }
+                });
+                <?php if(empty($this->file_curriculo)): ?>
+                /*$("#file_curriculo").rules("add", {
+                    required: true,
+                    messages: {
+                        required: "<br />É obrigatório anexar o seu currículo"
+                    }
+                });*/
+                <?php endif; ?>
+                <?php if(empty($this->file_portfolio)): ?>
+                /*$("#file_portfolio").rules("add", {
+                    required: true,
+                    messages: {
+                        required: "<br />É obrigatório anexar o seu portifólio"
+                    }
+                });*/
+                <?php endif; ?>
+                <?php if(empty($this->file_carta_apoio)): ?>
+                /*$("#file_carta_apoio").rules("add", {
+                    required: true,
+                    messages: {
+                        required: "<br />É obrigatório anexar o seu portifólio"
+                    }
+                });*/
+                <?php endif; ?>
+            }else{
+                $("#vhr_proposta").rules("remove");
+                $("#file_curriculo").rules("remove");
+                $("#file_portfolio").rules("remove");
+                $("#file_carta_apoio").rules("remove");
+            }
+            
+			$("#alertaDeEnvio").dialog({
+                width: 390,
+                height: 180,
+                modal: true,
+                draggable: false,
+                resizable: false,
+                closeOnEscape: false,
+                buttons:
+                    {
+                    'Não': function(){
+                        $("#alertaDeEnvio").dialog("close");
+                    },'Sim': function(){
+						$("#frmInscricao").submit();
+                        $("#alertaDeEnvio").dialog("close");
+                    }
+                }
+            });
+            //$("#frmInscricao").submit();
+            
+        });
+        
+        $("#frmInscricao").validate({
+            // Define as regras
+            rules:{
+                    vhr_cpf:{
+                            // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                            required: true, 
+                            minlength: 14,
+                            verificaCPF: true
+                    },
+                    vhr_nome:{
+                            // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                            required: true, 
+                            minlength: 5
+                    },
+                    vhr_email:{
+                            // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
+                            required: true, 
+                            email: true
+                    },
+                    vhr_senha:{
+                            required: true 
+                            /*minlength: 6*/
+                    },
+                    vhr_senha_rep:{
+                            required: true  
+                            /*minlength: 6*/
+                    }
+
+            },
+            // Define as mensagens de erro para cada regra
+            messages:{
+                    vhr_cpf:{
+                            required: "<br />O campo CPF é obrigatório",
+                            minlength: "<br />O CPF deve conter no mínimo 11 caracteres",
+                            verificaCPF: "<br />CPF inv&aacute;lido"
+                    },
+                    vhr_nome:{
+                            required: "<br />O campo Nome é obrigatório",
+                            minlength: "<br />O nome deve conter no mínimo 5 caracteres"
+                    },
+                    vhr_email:{
+                            required: "<br />O campo E-mail é obrigatório",
+                            email: "<br />Digite um e-mail válido"
+                    },
+                    vhr_senha:{
+                            required: "<br />O campo Senha é obrigatório"
+                            /*minlength: "<br />A senha deve conter no mínimo 6 caracteres"*/
+                    },
+                    vhr_senha_rep:{
+                            required: "<br />O campo Repita a Senha é obrigatório"
+                            /*minlength: "<br />O campo Repita a Senha deve conter no mínimo 6 caracteres"*/
+                    }
+            }/*,
+            submitHandler: function(form) {
+                //$("#error").addClass('sumir')
+                //alert('123456');
+                $(form).submit();
+            }*/
+	});
+
+        $("#int_nao_cargo_comissionado").click(function(){
+            if($(this).attr('checked')){
+                $("#divDadosComissionado").css("display", "none");
+            }else{
+                $("#divDadosComissionado").css("display", "");
+            }
+        });
+
+        $("#int_cadastro_candidato").click(function(){
+            if($(this).attr('checked')){
+                $("#divDadosCandidatura").css("display", "");
+            }else{
+                $("#divDadosCandidatura").css("display", "none");
+            }
+        });
+
+        $("#vhr_cep").mask('99.999-999');
+        $("#vhr_cpf").mask('999.999.999-99');
+        $("#dte_nascimento").mask('99/99/9999');
+        
+    }); //fecha $('document').ready
+    
+    function JSApagarAnexo(idCadastroXItem,nomeArquivo,idDivLink){
+        
+        $.ajax({
+            url : '<?php echo $this->url(array('controller' => 'inscricao', 'action' => 'apagar-anexo')); ?>',
+            data :
+                {
+                idCadastroXItem : idCadastroXItem,
+                nomeArquivo : nomeArquivo
+            },
+            beforeSend: function ( data ) {
+                $('#'+idDivLink).append('&nbsp;Aguarde, apagando anexo...<img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" />')
+            },
+            success: function(data){
+                if (!data.error)
+                {
+                    $('#'+idDivLink).replaceWith("<br /><font color='green'>[arquivo apagado com sucesso]</font><br />");
+                }else{
+                    $('#'+idDivLink).append("&nbsp;<font color='red'>[erro ao apagar arquivo]</font>");
+                }
+            },
+            complete: function(){
+
+            },
+            type : 'post',
+            dataType : 'json'
+
+        });
+    }
+</script>
+
+<?php if($this->bol_cadastroenviado): ?>
+    <p><center><h2 style="height: 0px; font-size: 12pt; margin: 10px;">O seu cadastro já foi concluído e enviado com sucesso.</h2></center></p>
+<?php else: ?>
+<p><center><h1 style="height: 0px; font-size: 12pt; margin: 10px;">As inscrições se encerram <b>dia <u>26/08 às 23:59</u></b>. Você tem <span style="font-size: 14pt;"><u><?php echo $this->diasRestantes; ?></u></span> dias para finalizar o seu cadastro.</h1></center></p>
+<?php endif; ?>
+
+<form name="frmInscricao" id="frmInscricao" class="formulario" enctype="multipart/form-data" action="<?php echo $this->url(array('controller' => 'inscricao', 'action' => 'salvar-inscricao')); ?>"  method="POST">
+    <input type="hidden" name="idSetorial" id="idSetorial" class="input_simples" value="<?php echo $this->idSetorial; ?>">
+    <input type="hidden" name="idUsuario" id="idUsuario" class="input_simples" value="<?php echo $this->idUsuario; ?>">
+    <?php if(!empty($this->nomeSetorial)): ?>
+    <fieldset>
+        <legend>Setorial</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td><h1 style="font-size: 18pt; font-family: Verdana; height: 28px;" class="green"><?php echo $this->nomeSetorial; ?></h1></td>
+            </tr>
+        </table>
+    </fieldset>
+    <?php endif; ?>
+    <fieldset>
+        <legend>Dados Pessoais</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>Nome Completo: *</td>
+                <td colspan="4"><input type="text" name="vhr_nome" id="vhr_nome" class="input_simples" value="<?php echo $this->nome; ?>"></td>
+            </tr>
+            <tr>
+                <td>Nome Artístico/Apelido:</td>
+                <td colspan="4"><input type="text" name="vhr_apelido" id="vhr_apelido" class="input_simples" value="<?php echo $this->nome_artistico; ?>"></td>
+            </tr>
+            <tr>
+                <td width="20%">CPF: *</td>
+                <td width="30%"><input type="text" name="vhr_cpf" id="vhr_cpf" class="input_simples" maxlength="14" value="<?php echo $this->cpf; ?>"></td>
+                <td width="15%">RG: *</td>
+                <td width="35%"><input type="text" name="vhr_rg" id="vhr_rg" class="input_simples" value="<?php echo $this->rg; ?>"></td>
+            </tr>
+            <tr>
+                <td>Dt. de Nascimento: *</td>
+                <td><input type="text" name="dte_nascimento" id="dte_nascimento" class="input_simples" value="<?php echo $this->nascimento; ?>"></td>
+                <td>Naturalidade: *</td>
+                <td>
+                    <select name="vhr_naturalidade" id="vhr_naturalidade" class="input_simples">
+                        <option value="" selected="">- Selecione -</option>
+                        <option value="AC" <?php echo($this->naturalidade == 'AC') ?'selected' : null;?>>AC</option>
+                        <option value="AL" <?php echo($this->naturalidade == 'AL') ?'selected' : null;?>>AL</option>
+                        <option value="AM" <?php echo($this->naturalidade == 'AM') ?'selected' : null;?>>AM</option>
+                        <option value="AP" <?php echo($this->naturalidade == 'AP') ?'selected' : null;?>>AP</option>
+                        <option value="BA" <?php echo($this->naturalidade == 'BA') ?'selected' : null;?>>BA</option>
+                        <option value="CE" <?php echo($this->naturalidade == 'CE') ?'selected' : null;?>>CE</option>
+                        <option value="DF" <?php echo($this->naturalidade == 'DF') ?'selected' : null;?>>DF</option>
+                        <option value="ES" <?php echo($this->naturalidade == 'ES') ?'selected' : null;?>>ES</option>
+                        <option value="GO" <?php echo($this->naturalidade == 'GO') ?'selected' : null;?>>GO</option>
+                        <option value="MA" <?php echo($this->naturalidade == 'MA') ?'selected' : null;?>>MA</option>
+                        <option value="MG" <?php echo($this->naturalidade == 'MG') ?'selected' : null;?>>MG</option>
+                        <option value="MS" <?php echo($this->naturalidade == 'MS') ?'selected' : null;?>>MS</option>
+                        <option value="MT" <?php echo($this->naturalidade == 'MT') ?'selected' : null;?>>MT</option>
+                        <option value="PA" <?php echo($this->naturalidade == 'PA') ?'selected' : null;?>>PA</option>
+                        <option value="PB" <?php echo($this->naturalidade == 'PB') ?'selected' : null;?>>PB</option>
+                        <option value="PE" <?php echo($this->naturalidade == 'PE') ?'selected' : null;?>>PE</option>
+                        <option value="PI" <?php echo($this->naturalidade == 'PI') ?'selected' : null;?>>PI</option>
+                        <option value="PR" <?php echo($this->naturalidade == 'PR') ?'selected' : null;?>>PR</option>
+                        <option value="RJ" <?php echo($this->naturalidade == 'RJ') ?'selected' : null;?>>RJ</option>
+                        <option value="RN" <?php echo($this->naturalidade == 'RN') ?'selected' : null;?>>RN</option>
+                        <option value="RO" <?php echo($this->naturalidade == 'RO') ?'selected' : null;?>>RO</option>
+                        <option value="RR" <?php echo($this->naturalidade == 'RR') ?'selected' : null;?>>RR</option>
+                        <option value="RS" <?php echo($this->naturalidade == 'RS') ?'selected' : null;?>>RS</option>
+                        <option value="SC" <?php echo($this->naturalidade == 'SC') ?'selected' : null;?>>SC</option>
+                        <option value="SE" <?php echo($this->naturalidade == 'SE') ?'selected' : null;?>>SE</option>
+                        <option value="SP" <?php echo($this->naturalidade == 'SP') ?'selected' : null;?>>SP</option>
+                        <option value="TO" <?php echo($this->naturalidade == 'TO') ?'selected' : null;?>>TO</option>
+						<option value="Outro País" <?php echo($this->naturalidade == 'Outro País') ?'selected' : null;?>>Outro País</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>E-mail: *</td>
+                <td colspan="4"><input type="text" name="vhr_email" id="vhr_email" class="input_simples" value="<?php echo $this->email; ?>"></td>
+            </tr>
+            <?php if(empty($this->senha)) : ?>
+            <tr>
+                <td>Senha: *</td>
+                <td><input type="password" name="vhr_senha" id="vhr_senha" class="input_simples"></td>
+                <td>Repita a senha: *</td>
+                <td><input type="password" name="vhr_senha_rep" id="vhr_senha_rep" class="input_simples"></td>
+            </tr>
+            <?php endif; ?>
+            <?php if($this->idSetorial == 13 || $this->idSetorial == 14) : ?>
+            <tr>
+                <td>Etnia: *</td>
+                <td colspan="4"><input type="text" name="vhr_etnia" id="vhr_etnia" class="input_simples" value="<?php echo $this->etnia; ?>"></td>
+            </tr>
+            <?php endif; ?>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>Localização</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>Endereço: *</td>
+                <td colspan="4"><input type="text" name="vhr_endereco" id="vhr_endereco" class="input_simples" value="<?php echo $this->endereco; ?>"></td>
+            </tr>
+            <tr>
+                <td>Complemento:</td>
+                <td colspan="4"><input type="text" name="vhr_complemento" id="vhr_complemento" class="input_simples" value="<?php echo $this->complemento; ?>"></td>
+            </tr>
+            <tr>
+                <td width="20%">Bairro: *</td>
+                <td width="30%"><input type="text" name="vhr_bairro" id="vhr_bairro" class="input_simples" value="<?php echo $this->bairro; ?>"></td>
+                <td width="15%">CEP: *</td>
+                <td width="35%"><input type="text" name="vhr_cep" id="vhr_cep" class="input_simples" value="<?php echo $this->cep; ?>"></td>
+            </tr>
+            <tr>
+                <td>Cidade: *   </td>
+                <td><input type="text" name="vhr_cidade" id="vhr_cidade" class="input_simples" value="<?php echo $this->cidade; ?>"></td>
+                <td>UF: *</td>
+                <td>
+                    <select name="vhr_estado" id="vhr_estado" class="input_simples">
+                        <option value="" selected="">- Selecione -</option>
+                        <option value="AC" <?php echo($this->uf == 'AC') ?'selected' : null;?>>AC</option>
+                        <option value="AL" <?php echo($this->uf == 'AL') ?'selected' : null;?>>AL</option>
+                        <option value="AM" <?php echo($this->uf == 'AM') ?'selected' : null;?>>AM</option>
+                        <option value="AP" <?php echo($this->uf == 'AP') ?'selected' : null;?>>AP</option>
+                        <option value="BA" <?php echo($this->uf == 'BA') ?'selected' : null;?>>BA</option>
+                        <option value="CE" <?php echo($this->uf == 'CE') ?'selected' : null;?>>CE</option>
+                        <option value="DF" <?php echo($this->uf == 'DF') ?'selected' : null;?>>DF</option>
+                        <option value="ES" <?php echo($this->uf == 'ES') ?'selected' : null;?>>ES</option>
+                        <option value="GO" <?php echo($this->uf == 'GO') ?'selected' : null;?>>GO</option>
+                        <option value="MA" <?php echo($this->uf == 'MA') ?'selected' : null;?>>MA</option>
+                        <option value="MG" <?php echo($this->uf == 'MG') ?'selected' : null;?>>MG</option>
+                        <option value="MS" <?php echo($this->uf == 'MS') ?'selected' : null;?>>MS</option>
+                        <option value="MT" <?php echo($this->uf == 'MT') ?'selected' : null;?>>MT</option>
+                        <option value="PA" <?php echo($this->uf == 'PA') ?'selected' : null;?>>PA</option>
+                        <option value="PB" <?php echo($this->uf == 'PB') ?'selected' : null;?>>PB</option>
+                        <option value="PE" <?php echo($this->uf == 'PE') ?'selected' : null;?>>PE</option>
+                        <option value="PI" <?php echo($this->uf == 'PI') ?'selected' : null;?>>PI</option>
+                        <option value="PR" <?php echo($this->uf == 'PR') ?'selected' : null;?>>PR</option>
+                        <option value="RJ" <?php echo($this->uf == 'RJ') ?'selected' : null;?>>RJ</option>
+                        <option value="RN" <?php echo($this->uf == 'RN') ?'selected' : null;?>>RN</option>
+                        <option value="RO" <?php echo($this->uf == 'RO') ?'selected' : null;?>>RO</option>
+                        <option value="RR" <?php echo($this->uf == 'RR') ?'selected' : null;?>>RR</option>
+                        <option value="RS" <?php echo($this->uf == 'RS') ?'selected' : null;?>>RS</option>
+                        <option value="SC" <?php echo($this->uf == 'SC') ?'selected' : null;?>>SC</option>
+                        <option value="SE" <?php echo($this->uf == 'SE') ?'selected' : null;?>>SE</option>
+                        <option value="SP" <?php echo($this->uf == 'SP') ?'selected' : null;?>>SP</option>
+                        <option value="TO" <?php echo($this->uf == 'TO') ?'selected' : null;?>>TO</option>
+						<option value="Outros" <?php echo($this->uf == 'Outros') ?'selected' : null;?>>Outros</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>Dados Profissionais</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td width="20%">Formação: *</td>
+                <td width="30%"><input type="text" name="vhr_formacao" id="vhr_formacao" class="input_simples" value="<?php echo $this->formacao; ?>"></td>
+                <td width="15%">Área de atuação: *</td>
+                <td width="35%"><input type="text" name="vhr_areadeatuacao" id="vhr_areadeatuacao" class="input_simples" value="<?php echo $this->area_atuacao; ?>"></td>
+            </tr>
+            <tr>
+                <td>Apresentação: *</td>
+                <td colspan="4">
+                    <textarea name="vhr_apresentacao" id="vhr_apresentacao" class="input_simples" cols="70" rows="8"><?php echo $this->apresentacao; ?></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    Segmento da área técnico-artística ou de patrimônio cultural que representa:<br />
+                    <select name="vhr_segmento" id="vhr_segmento" class="input_simples">
+                        <option value="" selected=""> - Selecione - </option>
+                        <?php foreach($this->segmentos as $segmento) :?>
+                            <option value="<?php echo $segmento->id_segmento;?>" <?php echo($this->segmento == $segmento->id_segmento) ? 'selected' : null;?>><?php echo $segmento->nomeSegmento;?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>Anexos</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>Comprovação de três anos de atuação no setor: 
+                    <?php if(!empty($this->file_comprovante_atuacao_setor)): ?>
+                        <div id="link_file_comprovante_atuacao_setor" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_comprovante_atuacao_setor ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_comprovante_atuacao_setor; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_comprovante_atuacao_setor; ?>','<?php echo $this->arquivo_comprovante_atuacao_setor; ?>','link_file_comprovante_atuacao_setor');">[x]</span></div>
+                    <?php else: echo "<br />"; endif; ?>
+                    <input type="file" name="file_comprovante_atuacao_setor" id="file_comprovante_atuacao_setor" class="input_simples">
+                </td>
+            </tr>
+            <tr>
+                <td>Identidade: 
+                    <?php if(!empty($this->file_identidade)): ?>
+                        <div id="link_file_identidade" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_identidade ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_identidade; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_identidade; ?>','<?php echo $this->arquivo_identidade; ?>','link_file_identidade');">[x]</span></div>
+                    <?php else: echo "<br />"; endif; ?>
+                    <input type="file" name="file_identidade" id="file_identidade" class="input_simples">
+                </td>
+            </tr>
+            <tr>
+                <td>CPF:  
+                    <?php if(!empty($this->file_cpf)): ?>
+                        <div id="link_file_cpf" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_cpf ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_cpf; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_cpf; ?>','<?php echo $this->arquivo_cpf; ?>','link_file_cpf');">[x]</span></div>
+                    <?php else: echo "<br />"; endif; ?>
+                    <input type="file" name="file_cpf" id="file_cpf" class="input_simples">
+                </td>
+            </tr>
+            <tr>
+                <td>Comprovante de residência:  
+                    <?php if(!empty($this->file_comprovante_residencia)): ?>
+                        <div id="link_comprovante_residencia" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_comprovante_residencia ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_comprovante_residencia; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_comprovante_residencia; ?>','<?php echo $this->arquivo_comprovante_residencia; ?>','link_comprovante_residencia');">[x]</span></div>
+                    <?php else: echo "<br />"; endif; ?>
+                    <input type="file" name="file_comprovante_residencia" id="file_comprovante_residencia" class="input_simples">
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>Declaração</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>
+                    <input type="checkbox" name="int_declaracao_verdadeira" id="int_declaracao_verdadeira" class="input_simples" <?php echo($this->chk_veracidade == '1') ? 'checked' : null;?>> 
+                    São verdadeiras todas as  informações contidas neste formulário, bem como na documentação encaminhada nos respectivos anexos,
+                    e que estou ciente que constitui crime de falsidade ideológica a omissão de declaração em documento público ou a inserção de
+                    declaração falsa da que devia constar, com o fim de alterar a verdade sobre o fato, juridicamente relevante (artigo 299 do Código Penal Brasileiro); *
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="int_aprovacao_cadastro" id="int_aprovacao_cadastro" class="input_simples" <?php echo($this->chk_ciencia == '1') ? 'checked' : null;?>> 
+                    Estou ciente de que deverei acompanhar os procedimentos para aprovação do cadastro de eleitor e registro de candidatura por 
+                    meio do sítio eletrônico do Ministério da Cultura, conforme artigo 18 da Portaria nº 51, de 02 de maio de 2012; *
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="int_ciente_planonacional" id="int_ciente_planonacional" class="input_simples" <?php echo($this->chk_conhecimento_plano == '1') ? 'checked' : null;?>> 
+                    Tenho conhecimento do Plano Nacional de Cultura; *
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="int_nao_cargo_comissionado" id="int_nao_cargo_comissionado" class="input_simples" <?php echo($this->chk_cargo_comissionado == '1') ? 'checked' : null;?>> 
+                    Não sou detentor de cargo comissionado na administração pública federal, estadual, distrital ou municipal; *
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <div id="divDadosComissionado" style="display: <?php echo($this->chk_cargo_comissionado == '1') ? 'none' : '';?>">
+    <fieldset>
+        <legend>Dados do Comissionado</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>Cargo: * <br />
+                    <input type="text" name="vhr_cargo" id="vhr_cargo" class="input_simples" value="<?php echo $this->cargo_comissionado; ?>">
+                </td>
+            </tr>
+            <tr>
+                <td>Comprovante de função na Entidade Civil:  
+                    <?php if(!empty($this->file_comprovante_funcao_comissionado)): ?>
+                        <div id="link_comprovante_funcao_comissionado" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_comprovante_funcao_comissionado ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_comprovante_funcao_comissionado; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_comprovante_funcao_comissionado; ?>','<?php echo $this->arquivo_comprovante_funcao_comissionado; ?>','link_comprovante_funcao_comissionado');">[x]</span></div>
+                    <?php else: echo "<br />"; endif; ?>
+                    <input type="file" name="file_comprovante_funcao_comissionado" id="file_comprovante_funcao_comissionado" class="input_simples"><br />
+                    Se você possui cargo comissionado, sua participação está condicionada à apresentação de documento que comprove sua atuação em entidade da sociedade 
+					civil do seu setor. Anexe aqui comprovante de que você exerce função em entidade civil. O documento deve estar no formato .pdf com no máximo 1MB.
+                    
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    </div>
+    <fieldset>
+        <legend>Cadastro de canditato</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td><input type="checkbox" name="int_cadastro_candidato" id="int_cadastro_candidato" class="input_simples" <?php echo($this->chk_candidato == '1') ? 'checked' : null;?>> Desejo me candidatar a essa setorial<br />
+                    Para inscrever a sua candidatura é necessário preencher o cadastro de Eleitor.
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <div id="divDadosCandidatura" style="display: <?php echo($this->chk_candidato == '1') ? '' : 'none';?>">
+    <fieldset>
+        <legend>Dados da Candidatura</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>Carta programa: * <br />
+                    <textarea name="vhr_proposta" id="vhr_proposta" class="input_simples" cols="70" rows="8"><?php echo trim($this->propostas); ?></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>Comprovação de atuação cultural: 
+                    <?php if(!empty($this->file_curriculo)): ?>
+                        <div id="link_curriculo" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_curriculo ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_curriculo; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_curriculo; ?>','<?php echo $this->arquivo_curriculo; ?>','link_curriculo');">[x]</span></div>
+                    <?php else: echo "<br />"; endif; ?>
+                    <input type="file" name="file_curriculo" id="file_curriculo" class="input_simples">
+                </td>
+            </tr>
+            <tr>
+                <td>Portifólio: * 
+                    <?php if(!empty($this->file_portfolio)): ?>
+                        <div id="link_portfolio" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_portfolio ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_portfolio; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_portfolio; ?>','<?php echo $this->arquivo_portfolio; ?>','link_portfolio');">[x]</span></div>
+                    <?php else: echo "<br />"; endif; ?>
+                    <input type="file" name="file_portfolio" id="file_portfolio" class="input_simples">
+                </td>
+            </tr>
+            <tr>
+                <td>Carta de apoio: * 
+                    <?php if(!empty($this->file_carta_apoio)): ?>
+                        <div id="link_carta_apoio" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_carta_apoio ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_carta_apoio; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_carta_apoio; ?>','<?php echo $this->arquivo_carta_apoio; ?>','link_carta_apoio');">[x]</span></div>
+                    <?php else: echo "<br />"; endif; ?>
+                    <input type="file" name="file_carta_apoio" id="file_carta_apoio" class="input_simples">
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    </div>
+    <table class="w800" cellpading="0" cellspacing="0" id="tblBotoes">
+        <tr>
+            <td class="centro">
+                <!--<input type="<?php //echo($this->cpf != '') ? 'submit' : 'button';?>" name="btn_salvar" id="btn_salvar" value="Salvar" class="input_simples">&nbsp;&nbsp;-->
+                <input type="button" name="btn_salvar" id="btn_salvar" value="Salvar" class="btn" style="width: 80px;">&nbsp;&nbsp;
+                <input type="button" name="btn_enviar" id="btn_enviar" value="Finalizar cadastro" class="btn" style="width: 150px;">&nbsp;&nbsp;
+                <input type="hidden" name="bln_enviar" id="bln_enviar" value="0" class="input_simples">
+                <!--<input type="reset" name="limpar" id="limpar" value="Limpar" class="btn">-->&nbsp;&nbsp;<br />
+                <font size="2px">
+				<span class="red"><b>*ATENÇÃO</b></span>, ao clicar em finalizar você não poderá fazer alterações no seu cadastro. 
+				Confira todos os campos, lembrando que os documentos devem ser anexados ou encaminhados por via postal do tipo SEDEX ou similar, até o dia 26/08/2012.
+				</font>
+            </td>
+        </tr>
+    </table>
+</form>
+<br /><br />

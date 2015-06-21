@@ -1,0 +1,67 @@
+<?php
+/**
+ * Nomes dos tipos de Inconsistências Bancárias
+ * @author Equipe RUP - Politec
+ * @since 11/02/2010
+ * @version 1.0
+ * @package application
+ * @subpackage application.views.helpers
+ * @copyright © 2011 - Ministério da Cultura - Todos os direitos reservados.
+ * @link http://www.cultura.gov.br
+ */
+
+class Zend_View_Helper_InconsistenciaBancaria
+{
+	/**
+	 * Método com os tipos de inconsistências bancárias
+	 * @access public
+	 * @param integer $tipo
+	 * @return string $dsTipo
+	 */
+	function inconsistenciaBancaria($tipo)
+	{
+		if ($tipo == 1)
+		{
+			$dsTipo = "O Período de Execução não está vigente.";
+		}
+		else if ($tipo == 2)
+		{
+			$dsTipo = "O Período de Captação não está vigente.";
+		}
+		else if ($tipo == 3)
+		{
+			$dsTipo = "Incentivador não cadastrado.";
+		}
+		else if ($tipo == 4)
+		{
+			$dsTipo = "Tipo de Depósito não foi informado.";
+		}
+		else if ($tipo == 5)
+		{
+			$dsTipo = "Não foi possível encontrar o E-mail do Proponente.";
+		}
+		else if ($tipo == 6)
+		{
+			$dsTipo = "Proponente não cadastrado.";
+		}
+		else if ($tipo == 7)
+		{
+			$dsTipo = "Agência e Conta Bancária não cadastrada.";
+		}
+		else if ($tipo == 8)
+		{
+			$dsTipo = "O Projeto não possui Enquadramento.";
+		}
+		else if ($tipo == 9)
+		{
+			$dsTipo = "Não existe Projeto associado a Conta.";
+		}
+		else
+		{
+			$dsTipo = " ";
+		}
+
+		return $dsTipo;
+	} // fecha método inconsistenciaBancaria()
+
+} // fecha class

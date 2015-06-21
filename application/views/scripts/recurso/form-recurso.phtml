@@ -1,0 +1,890 @@
+<script>
+    $(document).ready(function(){
+        
+        $('body').find('.campos').each(function(){
+            $(this).attr("disabled", "true");
+        });
+        $('body').find('.apagarAnexo').each(function(){
+            $(this).remove();
+        });
+        $('#vhr_cpf').mask('999.999.999-99');
+        $('#dte_nascimento').mask('99/99/9999');
+        
+		
+        $("#int_solicitar_recurso").click(function(){
+            if($(this).attr('checked')){
+                $("#linhaSolicitarRecurso").css("display", "");
+            }else{
+                $("#linhaSolicitarRecurso").css("display", "none");
+            }
+        });
+        
+        $("#salva_recurso").click(function(){
+            if($("#frmCadRecurso").valid()){
+                $(this).replaceWith("<center><font color='blue'>Aguarde, enviando solicitação de Recurso...<br><img src='<?php echo $this->baseUrl(); ?>/public/img/ajax.gif' /></font></center>");
+                $("#frmCadRecurso").submit();
+            }
+        });
+
+        $("#frmCadRecurso").validate({
+            // Define as regras
+            rules:{
+                    txt_recurso:{
+                            // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                            required: true
+                    }
+
+            },
+            // Define as mensagens de erro para cada regra
+            messages:{
+                    txt_recurso:{
+                            required: "<br />Campo obrigatório."
+                    }
+            }/*,
+            submitHandler: function(form) {
+                $("#salva_recurso").replaceWith("<center><font color='blue'>Aguarde, enviando solicitação de recurso...<br><img src='<?php echo $this->baseUrl(); ?>/public/img/ajax.gif' /></font></center>");
+                $(form).submit();
+            }*/
+	});
+    }); //fecha $('document').ready
+    
+</script>
+<?php 
+    $arrColor = array("0" => "#FFE87C", "1" => "#B5EAAA", "2" => "#FFCDD8", "3" => "");
+?>
+<br>
+<div style="width:900px; margin-left:30px;">
+	<div style="float:left;"><div style="float:left; margin-right:5px; background-color:#B5EAAA; width:15px; heigth:10px; border:1px #4b4b4b solid;">&nbsp;</div>Sim &nbsp;  </div>
+	<div style="float:left;"><div style="float:left; margin-right:5px; background-color:#FFCDD8; width:15px; heigth:10px; border:1px #4b4b4b solid;">&nbsp;</div>Não &nbsp;  </div>
+	<div style="float:left; "><div style="float:left; margin-right:5px; background-color:#FFE87C; width:15px; heigth:10px; border:1px #4b4b4b solid;">&nbsp;</div>Não marcado &nbsp; </div>
+</div>
+<div style="clear:both"></div>
+
+<form name="frmAvaliacaoInicial" id="frmAvaliacaoInicial" class="formulario" action="<?php echo $this->url(array('controller' => 'avaliacao', 'action' => 'salvar-avaliacao')); ?>"  method="POST">    
+    <input type="hidden" name="idUsuarioAvaliador" id="idUsuarioAvaliador" class="input_simples" value="<?php echo $this->idUsuarioAvaliador; ?>">
+    <fieldset style="width: 1000px;">
+        <legend>Dados Pessoais</legend>
+        <table class="w900" cellpading="0" cellspacing="0">
+            <tr>
+                <td style="vertical-align: top;" width="33%">Nome Completo: *<br /><input type="text" name="vhr_nome" size="40" id="vhr_nome" class="input_simples campos" value="<?php echo $this->nome; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_nome];?>; color:#333"></td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_nome" id="rd_nome" value="1" class="campos" <?php echo ($this->rd_nome == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_nome" id="rd_nome" value="2" class="campos" <?php echo ($this->rd_nome == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_nome" id="rd_nome" value="3" class="campos" <?php echo ($this->rd_nome == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_nome" id="obs_nome" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_nome];?>; color:#333"><?php echo $this->obs_nome;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;">Nome Artístico/Apelido:<br /><input type="text" name="vhr_apelido" id="vhr_apelido" class="input_simples campos" value="<?php echo $this->nome_artistico; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_apelido];?>; color:#333"></td>
+                <td style="vertical-align: top" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_apelido" id="rd_apelido" class="campos" value="1" <?php echo ($this->rd_apelido == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_apelido" id="rd_apelido" class="campos" value="2" <?php echo ($this->rd_apelido == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_apelido" id="rd_apelido" class="campos" value="3" <?php echo ($this->rd_apelido == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"><b class="green">Observação:</b><br><textarea name="obs_apelido" id="obs_apelido" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_apelido];?>; color:#333"><?php echo $this->obs_apelido; ?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;">CPF: *<br /><input type="text" name="vhr_cpf" id="vhr_cpf" class="input_simples campos" maxlength="14" value="<?php echo $this->cpf; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_cpf];?>; color:#333"></td>
+                <td style="vertical-align: top" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_cpf" id="rd_cpf" class="campos" value="1" <?php echo ($this->rd_cpf == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_cpf" id="rd_cpf" class="campos" value="2" <?php echo ($this->rd_cpf == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_cpf" id="rd_cpf" class="campos" value="3" <?php echo ($this->rd_cpf == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"><b class="green">Observação:</b><br><textarea name="obs_cpf" id="obs_cpf" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_cpf];?>; color:#333"><?php echo $this->obs_cpf; ?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;">RG: *<br /><input type="text" name="vhr_rg" id="vhr_rg" class="input_simples campos" maxlength="14" value="<?php echo $this->rg; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_rg];?>; color:#333"></td>
+                <td style="vertical-align: top" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_rg" id="rd_rg" class="campos" value="1" <?php echo ($this->rd_rg == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_rg" id="rd_rg" class="campos" value="2" <?php echo ($this->rd_rg == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_rg" id="rd_rg" class="campos" value="3" <?php echo ($this->rd_rg == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"><b class="green">Observação:</b><br><textarea name="obs_rg" id="obs_rg" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_rg];?>; color:#333"><?php echo $this->obs_rg; ?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;">Dt. de Nascimento: *<br /><input type="text" name="dte_nascimento" id="dte_nascimento" class="input_simples campos" maxlength="14" value="<?php echo $this->nascimento; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_nascimento];?>; color:#333"></td>
+                <td style="vertical-align: top" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_dte_nascimento" class="campos" id="rd_dte_nascimento" value="1" <?php echo ($this->rd_nascimento == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_dte_nascimento" class="campos" id="rd_dte_nascimento" value="2" <?php echo ($this->rd_nascimento == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_dte_nascimento" class="campos" id="rd_dte_nascimento" value="3" <?php echo ($this->rd_nascimento == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"><b class="green">Observação:</b><br><textarea name="obs_dte_nascimento" id="obs_dte_nascimento" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_nascimento];?>; color:#333"><?php echo $this->obs_nascimento; ?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;">
+                    Naturalidade: *<br>
+                    <select name="vhr_naturalidade" id="vhr_naturalidade" class="input_simples campos" style="background-color:<?php echo $arrColor[(int)$this->rd_naturalidade];?>; color:#333">
+                        <option value="" selected="">- Selecione -</option>
+                        <option value="AC" <?php echo($this->naturalidade == 'AC') ?'selected' : null;?>>AC</option>
+                        <option value="AL" <?php echo($this->naturalidade == 'AL') ?'selected' : null;?>>AL</option>
+                        <option value="AM" <?php echo($this->naturalidade == 'AM') ?'selected' : null;?>>AM</option>
+                        <option value="AP" <?php echo($this->naturalidade == 'AP') ?'selected' : null;?>>AP</option>
+                        <option value="BA" <?php echo($this->naturalidade == 'BA') ?'selected' : null;?>>BA</option>
+                        <option value="CE" <?php echo($this->naturalidade == 'CE') ?'selected' : null;?>>CE</option>
+                        <option value="DF" <?php echo($this->naturalidade == 'DF') ?'selected' : null;?>>DF</option>
+                        <option value="ES" <?php echo($this->naturalidade == 'ES') ?'selected' : null;?>>ES</option>
+                        <option value="GO" <?php echo($this->naturalidade == 'GO') ?'selected' : null;?>>GO</option>
+                        <option value="MA" <?php echo($this->naturalidade == 'MA') ?'selected' : null;?>>MA</option>
+                        <option value="MG" <?php echo($this->naturalidade == 'MG') ?'selected' : null;?>>MG</option>
+                        <option value="MS" <?php echo($this->naturalidade == 'MS') ?'selected' : null;?>>MS</option>
+                        <option value="MT" <?php echo($this->naturalidade == 'MT') ?'selected' : null;?>>MT</option>
+                        <option value="PA" <?php echo($this->naturalidade == 'PA') ?'selected' : null;?>>PA</option>
+                        <option value="PB" <?php echo($this->naturalidade == 'PB') ?'selected' : null;?>>PB</option>
+                        <option value="PE" <?php echo($this->naturalidade == 'PE') ?'selected' : null;?>>PE</option>
+                        <option value="PI" <?php echo($this->naturalidade == 'PI') ?'selected' : null;?>>PI</option>
+                        <option value="PR" <?php echo($this->naturalidade == 'PR') ?'selected' : null;?>>PR</option>
+                        <option value="RJ" <?php echo($this->naturalidade == 'RJ') ?'selected' : null;?>>RJ</option>
+                        <option value="RN" <?php echo($this->naturalidade == 'RN') ?'selected' : null;?>>RN</option>
+                        <option value="RO" <?php echo($this->naturalidade == 'RO') ?'selected' : null;?>>RO</option>
+                        <option value="RR" <?php echo($this->naturalidade == 'RR') ?'selected' : null;?>>RR</option>
+                        <option value="RS" <?php echo($this->naturalidade == 'RS') ?'selected' : null;?>>RS</option>
+                        <option value="SC" <?php echo($this->naturalidade == 'SC') ?'selected' : null;?>>SC</option>
+                        <option value="SE" <?php echo($this->naturalidade == 'SE') ?'selected' : null;?>>SE</option>
+                        <option value="SP" <?php echo($this->naturalidade == 'SP') ?'selected' : null;?>>SP</option>
+                        <option value="TO" <?php echo($this->naturalidade == 'TO') ?'selected' : null;?>>TO</option>
+						<option value="Outro País" <?php echo($this->naturalidade == 'Outro País') ?'selected' : null;?>>Outro País</option>
+                    </select>
+                </td>
+                <td style="vertical-align: top" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_naturalidade" id="rd_naturalidade" class="campos" value="1" <?php echo ($this->rd_naturalidade == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_naturalidade" id="rd_naturalidade" class="campos" value="2" <?php echo ($this->rd_naturalidade == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_naturalidade" id="rd_naturalidade" class="campos" value="3" <?php echo ($this->rd_naturalidade == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"><b class="green">Observação:</b><br><textarea name="obs_naturalidade" id="obs_naturalidade" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_naturalidade];?>; color:#333"><?php echo $this->obs_naturalidade;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;">E-mail: *<br /><input type="text" name="vhr_email" id="vhr_email" class="input_simples campos" value="<?php echo $this->email; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_email];?>; color:#333"></td>
+                <td style="vertical-align: top" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_email" id="rd_email" class="campos" value="1" <?php echo ($this->rd_email == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_email" id="rd_email" class="campos" value="2" <?php echo ($this->rd_email == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_email" id="rd_email" class="campos" value="3" <?php echo ($this->rd_email == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"><b class="green">Observação:</b><br><textarea name="obs_email" id="obs_email" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_email];?>; color:#333"><?php echo $this->obs_email;?></textarea></td>
+            </tr>
+			<?php if($this->idSetorialUsuario == 13 || $this->idSetorialUsuario == 14):?>
+            <tr>
+                <td style="vertical-align: top;">Etnia: *<br /><input type="text" name="vhr_etnia" id="vhr_etnia" class="input_simples campos" value="<?php echo $this->etnia; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_etnia];?>; color:#333"></td>
+                <td style="vertical-align: top" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_etnia" id="rd_etnia" class="campos" value="1" <?php echo ($this->rd_etnia == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_etnia" id="rd_etnia" class="campos" value="2" <?php echo ($this->rd_etnia == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_etnia" id="rd_etnia" class="campos" value="3" <?php echo ($this->rd_etnia == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"><b class="green">Observação:</b><br><textarea name="obs_etnia" id="obs_etnia" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_etnia];?>; color:#333"><?php echo $this->obs_etnia;?></textarea></td>
+            </tr>
+			<?php endif; ?>
+        </table>
+    </fieldset>
+    <fieldset style="width: 1000px;">
+        <legend>Localização</legend>
+        <table class="w900" cellpading="0" cellspacing="0">
+            <tr>
+                <td style="vertical-align: top;" width="33%">Endereço: *<br /><input type="text" name="vhr_endereco" id="vhr_endereco" class="input_simples campos" size="50" value="<?php echo $this->endereco; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_endereco];?>; color:#333"></td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_endereco" id="rd_endereco" class="campos" value="1" <?php echo ($this->rd_endereco == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_endereco" id="rd_endereco" class="campos" value="2" <?php echo ($this->rd_endereco == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_endereco" id="rd_endereco" class="campos" value="3" <?php echo ($this->rd_endereco == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_endereco" id="obs_endereco" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_endereco];?>; color:#333"><?php echo $this->obs_endereco;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" width="33%">Complemento:<br /><input type="text" name="vhr_complemento" id="vhr_complemento" class="input_simples campos" size="50" value="<?php echo $this->complemento; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_complemento];?>; color:#333"></td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_complemento" id="rd_complemento" class="campos" value="1" <?php echo ($this->rd_complemento == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_complemento" id="rd_complemento" class="campos" value="2" <?php echo ($this->rd_complemento == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_complemento" id="rd_complemento" class="campos" value="3" <?php echo ($this->rd_complemento == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_complemento" id="obs_complemento" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_complemento];?>; color:#333"><?php echo $this->obs_complemento;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" width="33%">Bairro: *<br /><input type="text" name="vhr_bairro" id="vhr_bairro" class="input_simples campos" value="<?php echo $this->bairro; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_bairro];?>; color:#333"></td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_bairro" id="rd_bairro" class="campos" value="1" <?php echo ($this->rd_bairro == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_bairro" id="rd_bairro" class="campos" value="2" <?php echo ($this->rd_bairro == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_bairro" id="rd_bairro" class="campos" value="3" <?php echo ($this->rd_bairro == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_bairro" id="obs_bairro" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_bairro];?>; color:#333"><?php echo $this->obs_bairro;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" width="33%">CEP: *<br /><input type="text" name="vhr_cep" id="vhr_cep" class="input_simples campos" value="<?php echo $this->cep; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_cep];?>; color:#333"></td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_cep" id="rd_cep" class="campos" value="1" <?php echo ($this->rd_cep == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_cep" id="rd_cep" class="campos" value="2" <?php echo ($this->rd_cep == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_cep" id="rd_cep" class="campos" value="3" <?php echo ($this->rd_cep == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_cep" id="obs_cep" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_cep];?>; color:#333"><?php echo $this->obs_cep;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" width="33%">Cidade: *<br />
+                    <input type="text" name="vhr_cidade" id="vhr_cidade" class="input_simples campos" value="<?php echo $this->cidade; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_cidade];?>; color:#333">
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_cidade" id="rd_cidade" class="campos" value="1" <?php echo ($this->rd_cidade == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_cidade" id="rd_cidade" class="campos" value="2" <?php echo ($this->rd_cidade == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_cidade" id="rd_cidade" class="campos" value="3" <?php echo ($this->rd_cidade == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_cidade" id="obs_cidade" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_cidade];?>; color:#333"><?php echo $this->obs_cidade;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" width="33%">UF: *<br />
+                    <select name="vhr_estado" id="vhr_estado" class="input_simples campos" style="background-color:<?php echo $arrColor[(int)$this->rd_uf];?>; color:#333">
+                        <option value="" selected="">- Selecione -</option>
+                        <option value="AC" <?php echo($this->uf == 'AC') ?'selected' : null;?>>AC</option>
+                        <option value="AL" <?php echo($this->uf == 'AL') ?'selected' : null;?>>AL</option>
+                        <option value="AM" <?php echo($this->uf == 'AM') ?'selected' : null;?>>AM</option>
+                        <option value="AP" <?php echo($this->uf == 'AP') ?'selected' : null;?>>AP</option>
+                        <option value="BA" <?php echo($this->uf == 'BA') ?'selected' : null;?>>BA</option>
+                        <option value="CE" <?php echo($this->uf == 'CE') ?'selected' : null;?>>CE</option>
+                        <option value="DF" <?php echo($this->uf == 'DF') ?'selected' : null;?>>DF</option>
+                        <option value="ES" <?php echo($this->uf == 'ES') ?'selected' : null;?>>ES</option>
+                        <option value="GO" <?php echo($this->uf == 'GO') ?'selected' : null;?>>GO</option>
+                        <option value="MA" <?php echo($this->uf == 'MA') ?'selected' : null;?>>MA</option>
+                        <option value="MG" <?php echo($this->uf == 'MG') ?'selected' : null;?>>MG</option>
+                        <option value="MS" <?php echo($this->uf == 'MS') ?'selected' : null;?>>MS</option>
+                        <option value="MT" <?php echo($this->uf == 'MT') ?'selected' : null;?>>MT</option>
+                        <option value="PA" <?php echo($this->uf == 'PA') ?'selected' : null;?>>PA</option>
+                        <option value="PB" <?php echo($this->uf == 'PB') ?'selected' : null;?>>PB</option>
+                        <option value="PE" <?php echo($this->uf == 'PE') ?'selected' : null;?>>PE</option>
+                        <option value="PI" <?php echo($this->uf == 'PI') ?'selected' : null;?>>PI</option>
+                        <option value="PR" <?php echo($this->uf == 'PR') ?'selected' : null;?>>PR</option>
+                        <option value="RJ" <?php echo($this->uf == 'RJ') ?'selected' : null;?>>RJ</option>
+                        <option value="RN" <?php echo($this->uf == 'RN') ?'selected' : null;?>>RN</option>
+                        <option value="RO" <?php echo($this->uf == 'RO') ?'selected' : null;?>>RO</option>
+                        <option value="RR" <?php echo($this->uf == 'RR') ?'selected' : null;?>>RR</option>
+                        <option value="RS" <?php echo($this->uf == 'RS') ?'selected' : null;?>>RS</option>
+                        <option value="SC" <?php echo($this->uf == 'SC') ?'selected' : null;?>>SC</option>
+                        <option value="SE" <?php echo($this->uf == 'SE') ?'selected' : null;?>>SE</option>
+                        <option value="SP" <?php echo($this->uf == 'SP') ?'selected' : null;?>>SP</option>
+                        <option value="TO" <?php echo($this->uf == 'TO') ?'selected' : null;?>>TO</option>
+						<option value="Outros" <?php echo($this->uf == 'Outros') ?'selected' : null;?>>Outros</option>
+                    </select>
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_estado" id="rd_estado" class="campos" value="1" <?php echo ($this->rd_uf == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_estado" id="rd_estado" class="campos" value="2" <?php echo ($this->rd_uf == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_estado" id="rd_estado" class="campos" value="3" <?php echo ($this->rd_uf == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_estado" id="obs_estado" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_uf];?>; color:#333"><?php echo $this->obs_uf;?></textarea></td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset style="width: 1000px;">
+        <legend>Dados Profissionais</legend>
+        <table class="w900" cellpading="0" cellspacing="0">
+            <tr>
+                <td style="vertical-align: top;" width="33%">Formação: *<br /><input type="text" name="vhr_formacao" id="vhr_formacao" size="50" class="input_simples campos" value="<?php echo $this->formacao; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_formacao];?>; color:#333"></td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_formacao" id="rd_formacao" class="campos" value="1" <?php echo ($this->rd_formacao == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_formacao" id="rd_formacao" class="campos" value="2" <?php echo ($this->rd_formacao == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_formacao" id="rd_formacao" class="campos" value="3" <?php echo ($this->rd_formacao == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_formacao" id="obs_formacao" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_formacao];?>; color:#333"><?php echo $this->obs_formacao;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" width="33%">Área de atuação: *<br /><input type="text" name="vhr_area_atuacao" size="50" id="vhr_area_atuacao" class="input_simples campos" value="<?php echo $this->area_atuacao; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_area_atuacao];?>; color:#333"></td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_area_atuacao" id="rd_area_atuacao" class="campos" value="1" <?php echo ($this->rd_area_atuacao == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_area_atuacao" id="rd_area_atuacao" class="campos" value="2" <?php echo ($this->rd_area_atuacao == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_area_atuacao" id="rd_area_atuacao" class="campos" value="3" <?php echo ($this->rd_area_atuacao == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_area_atuacao" id="obs_area_atuacao" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_area_atuacao];?>; color:#333"><?php echo $this->obs_area_atuacao;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" width="33%">Apresentação: *<br /><textarea name="vhr_apresentacao" id="vhr_apresentacao" class="input_simples campos" rows="15" cols="40"  style="background-color:<?php echo $arrColor[(int)$this->rd_apresentacao];?>; color:#333"><?php echo $this->apresentacao; ?></textarea></td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_apresentacao" id="rd_apresentacao" class="campos" value="1" <?php echo ($this->rd_apresentacao == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_apresentacao" id="rd_apresentacao" class="campos" value="2" <?php echo ($this->rd_apresentacao == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_apresentacao" id="rd_apresentacao" class="campos" value="3" <?php echo ($this->rd_apresentacao == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_apresentacao" id="obs_apresentacao" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_apresentacao];?>; color:#333"><?php echo $this->obs_apresentacao;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" width="33%">Segmento da área técnico-artística ou de patrimônio cultural que representa:<br />
+                    <select name="vhr_segmento" id="vhr_segmento" class="input_simples campos" style="background-color:<?php echo $arrColor[(int)$this->rd_segmento];?>; color:#333">
+                        <option value="" selected=""> - Selecione - </option>
+                        <?php foreach($this->segmentos as $segmento) :?>
+                            <option value="<?php echo $segmento->id_segmento;?>" <?php echo($this->segmento == $segmento->id_segmento) ? 'selected' : null;?>><?php echo $segmento->nomeSegmento;?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_segmento" id="rd_segmento" class="campos" value="1" <?php echo ($this->rd_segmento == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_segmento" id="rd_segmento" class="campos" value="2" <?php echo ($this->rd_segmento == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_segmento" id="rd_segmento" class="campos" value="3" <?php echo ($this->rd_segmento == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_segmento" id="obs_segmento" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_segmento];?>; color:#333"><?php echo $this->obs_segmento;?></textarea></td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset style="width: 1000px;">
+        <legend>Anexos</legend>
+        <table class="w900" cellpading="0" cellspacing="0">
+            <tr>
+                <td style="vertical-align: top">Comprovação de três anos de atuação no setor: 
+                    <?php if(!empty($this->file_comprovante_atuacao_setor)): ?>
+                        <div id="link_file_comprovante_atuacao_setor" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_comprovante_atuacao_setor ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_comprovante_atuacao_setor; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_comprovante_atuacao_setor; ?>','<?php echo $this->arquivo_comprovante_atuacao_setor; ?>','link_file_comprovante_atuacao_setor');">[x]</span></div>
+                    <?php else: ?>
+                        <div style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo não enviado</strong>&nbsp;</div>
+                    <?php endif; ?>
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_comprovante_atuacao_setor" id="rd_comprovante_atuacao_setor" class="campos" value="1" <?php echo ($this->rd_comprovante_atuacao_setor == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_comprovante_atuacao_setor" id="rd_comprovante_atuacao_setor" class="campos" value="2" <?php echo ($this->rd_comprovante_atuacao_setor == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_comprovante_atuacao_setor" id="rd_comprovante_atuacao_setor" class="campos" value="3" <?php echo ($this->rd_comprovante_atuacao_setor == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_comprovante_atuacao_setor" id="obs_comprovante_atuacao_setor" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_comprovante_atuacao_setor];?>; color:#333"><?php echo $this->obs_comprovante_atuacao_setor;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 1px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top">Identidade: 
+                    <?php if(!empty($this->file_identidade)): ?>
+                        <div id="link_file_identidade" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_identidade ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_identidade; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_identidade; ?>','<?php echo $this->arquivo_identidade; ?>','link_file_identidade');">[x]</span></div>
+                    <?php else: ?>
+                        <div style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo não enviado</strong>&nbsp;</div>
+                    <?php endif; ?>
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_file_identidade" id="rd_file_identidade" class="campos" value="1" <?php echo ($this->rd_identidade == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_file_identidade" id="rd_file_identidade" class="campos" value="2" <?php echo ($this->rd_identidade == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_file_identidade" id="rd_file_identidade" class="campos" value="3" <?php echo ($this->rd_identidade == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_file_identidade" id="obs_file_identidade" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_identidade];?>; color:#333"><?php echo $this->obs_identidade;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 1px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top">CPF: 
+                    <?php if(!empty($this->file_cpf)): ?>
+                        <div id="link_file_cpf" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_cpf ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_cpf; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_cpf; ?>','<?php echo $this->arquivo_cpf; ?>','link_file_cpf');">[x]</span></div>
+                    <?php else: ?>
+                        <div style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo não enviado</strong>&nbsp;</div>
+                    <?php endif; ?>
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_file_cpf" id="rd_file_cpf" class="campos" value="1" <?php echo ($this->rd_file_cpf == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_file_cpf" id="rd_file_cpf" class="campos" value="2" <?php echo ($this->rd_file_cpf == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_file_cpf" id="rd_file_cpf" class="campos" value="3" <?php echo ($this->rd_file_cpf == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_file_cpf" id="obs_file_cpf" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_file_cpf];?>; color:#333"><?php echo $this->obs_file_cpf;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 1px;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top">Comprovante de residência:  
+                    <?php if(!empty($this->file_comprovante_residencia)): ?>
+                        <div id="link_comprovante_residencia" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_comprovante_residencia ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_comprovante_residencia; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_comprovante_residencia; ?>','<?php echo $this->arquivo_comprovante_residencia; ?>','link_comprovante_residencia');">[x]</span></div>
+                    <?php else: ?>
+                        <div style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo não enviado</strong>&nbsp;</div>
+                    <?php endif; ?>
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_comprovante_residencia" id="rd_comprovante_residencia" class="campos" value="1" <?php echo ($this->rd_comprovante_residencia == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_comprovante_residencia" id="rd_comprovante_residencia" class="campos" value="2" <?php echo ($this->rd_comprovante_residencia == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_comprovante_residencia" id="rd_comprovante_residencia" class="campos" value="3" <?php echo ($this->rd_comprovante_residencia == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_comprovante_residencia" id="obs_comprovante_residencia" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_comprovante_residencia];?>; color:#333"><?php echo $this->obs_comprovante_residencia;?></textarea></td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset style="width: 1000px;">
+        <legend>Declaração</legend>
+        <table class="w900" cellpading="0" cellspacing="0">
+            <tr>
+                <td>
+                    <input type="checkbox" name="int_declaracao_verdadeira" id="int_declaracao_verdadeira" class="input_simples campos" checked <?php echo($this->chk_veracidade == '1') ? 'checked' : null;?>>
+                    São verdadeiras todas as  informações contidas neste formulário, bem como na documentação encaminhada nos respectivos anexos,
+                    e que estou ciente que constitui crime de falsidade ideológica a omissão de declaração em documento público ou a inserção de
+                    declaração falsa da que devia constar, com o fim de alterar a verdade sobre o fato, juridicamente relevante (artigo 299 do Código Penal Brasileiro); *
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_declaracao_verdadeira" id="rd_declaracao_verdadeira" class="campos" value="1" <?php echo ($this->rd_veracidade == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_declaracao_verdadeira" id="rd_declaracao_verdadeira" class="campos" value="2" <?php echo ($this->rd_veracidade == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_declaracao_verdadeira" id="rd_declaracao_verdadeira" class="campos" value="3" <?php echo ($this->rd_veracidade == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_declaracao_verdadeira" id="obs_declaracao_verdadeira" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_veracidade];?>; color:#333"><?php echo $this->obs_veracidade;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="int_aprovacao_cadastro" id="int_aprovacao_cadastro" class="input_simples campos" checked <?php echo($this->chk_ciencia == '1') ? 'checked' : null;?>>
+                    Estou ciente de que deverei acompanhar os procedimentos para aprovação do cadastro de eleitor e registro de candidatura por 
+                    meio do sítio eletrônico do Ministério da Cultura, conforme artigo 18 da Portaria nº 51, de 02 de maio de 2012; *
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_aprovacao_cadastro" id="rd_aprovacao_cadastro" class="campos" value="1" <?php echo ($this->rd_ciencia == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_aprovacao_cadastro" id="rd_aprovacao_cadastro" class="campos" value="2" <?php echo ($this->rd_ciencia == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_aprovacao_cadastro" id="rd_aprovacao_cadastro" class="campos" value="3" <?php echo ($this->rd_ciencia == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_aprovacao_cadastro" id="obs_aprovacao_cadastro" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_ciencia];?>; color:#333"><?php echo $this->obs_ciencia;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="int_ciente_planonacional" id="int_ciente_planonacional" class="input_simples campos" checked <?php echo($this->chk_conhecimento_plano == '1') ? 'checked' : null;?>>
+                    Tenho conhecimento do Plano Nacional de Cultura; *
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_ciente_planonacional" id="rd_ciente_planonacional" class="campos" value="1" <?php echo ($this->rd_conhecimento_plano == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_ciente_planonacional" id="rd_ciente_planonacional" class="campos" value="2" <?php echo ($this->rd_conhecimento_plano == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_ciente_planonacional" id="rd_ciente_planonacional" class="campos" value="3" <?php echo ($this->rd_conhecimento_plano == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_ciente_planonacional" id="obs_ciente_planonacional" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_conhecimento_plano];?>; color:#333"><?php echo $this->obs_conhecimento_plano;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="int_nao_cargo_comissionado" id="int_nao_cargo_comissionado" class="input_simples campos" <?php echo( (trim($this->cargo_comissionado)=="" || trim($this->cargo_comissionado)== "cargo") || $this->chk_cargo_comissionado == '1') ? 'checked' : null;?>>
+                    Não sou detentor de cargo comissionado na administração pública federal, estadual, distrital ou municipal; *
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_nao_cargo_comissionado" id="rd_nao_cargo_comissionado" class="campos" value="1" <?php echo ($this->rd_cargo_comissionado == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_nao_cargo_comissionado" id="rd_nao_cargo_comissionado" class="campos" value="2" <?php echo ($this->rd_cargo_comissionado == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_nao_cargo_comissionado" id="rd_nao_cargo_comissionado" class="campos" value="3" <?php echo ($this->rd_cargo_comissionado == 3) ? 'checked' : null; ?>> Não se aplica 
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_nao_cargo_comissionado" id="obs_nao_cargo_comissionado" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_cargo_comissionado];?>; color:#333"><?php echo $this->obs_cargo_comissionado;?></textarea></td>
+            </tr>
+        </table>
+    </fieldset>
+    <?php if((!$this->chk_cargo_comissionado)): ?>
+	<?php  	if( ( trim($this->cargo_comissionado)!="" && trim($this->cargo_comissionado)!="cargo")): ?>
+    <fieldset style="width: 1000px;">
+        <legend>Dados do Comissionado</legend>
+        <table class="w900" cellpading="0" cellspacing="0">
+            <tr>
+                <td style="vertical-align: top;" width="33%">Cargo: *<br /><input type="text" name="vhr_cargo" id="vhr_cargo" class="input_simples campos" value="<?php echo $this->cargo_comissionado; ?>" style="background-color:<?php echo $arrColor[(int)$this->rd_comissionado];?>; color:#333"></td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_cargo" id="rd_cargo" class="campos" value="1" <?php echo ($this->rd_comissionado == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_cargo" id="rd_cargo" class="campos" value="2" <?php echo ($this->rd_comissionado == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_cargo" id="rd_cargo" class="campos" value="3" <?php echo ($this->rd_comissionado == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_cargo" id="obs_cargo" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_comissionado];?>; color:#333"><?php echo $this->obs_comissionado;?></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br><hr style="border-top: 1px #ccc solid; width: 98%; padding: 10px;"></td>
+            </tr>
+            <tr>
+                <td>Comprovante de função na Entidade Civil:  
+                    <?php if(!empty($this->file_comprovante_funcao_comissionado)): ?>
+                        <div id="link_comprovante_funcao_comissionado" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_comprovante_funcao_comissionado ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_comprovante_funcao_comissionado; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_comprovante_funcao_comissionado; ?>','<?php echo $this->arquivo_comprovante_funcao_comissionado; ?>','link_comprovante_funcao_comissionado');">[x]</span></div>
+                    <?php else: ?>
+                        <div style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo não enviado</strong>&nbsp;</div>
+                    <?php endif; ?>
+                    <h5 style="color: #4b4b4b">Na hipótese de eleitor que seja representante da sociedade civil e ocupante de cargo em comissão, a declaração 
+                    de que trata o inciso VII do art. 16 será substituída por informação que individualize o cargo comissionado que que ocupa,
+                    acompanhada de comprovação de função que exerce na entidade civil que representa no formato .pdf com no máximo 1MB.</h5>
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_comprovante_funcao_comissionado" id="rd_comprovante_funcao_comissionado" class="campos" value="1" <?php echo ($this->rd_comprovante_funcao_comissionado == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_comprovante_funcao_comissionado" id="rd_comprovante_funcao_comissionado" class="campos" value="2" <?php echo ($this->rd_comprovante_funcao_comissionado == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_comprovante_funcao_comissionado" id="rd_comprovante_funcao_comissionado" class="campos" value="3" <?php echo ($this->rd_comprovante_funcao_comissionado == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top" width="33%"><b class="green">Observação:</b><br><textarea name="obs_comprovante_funcao_comissionado" id="obs_comprovante_funcao_comissionado" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_comprovante_funcao_comissionado];?>; color:#333"><?php echo $this->obs_comprovante_funcao_comissionado;?></textarea></td>
+            </tr>
+        </table>
+    </fieldset>
+		<?php endif; ?>
+    <?php endif; ?>
+    <!-- SALVAR - AVALIAR DADOS DO ELEITOR -->
+    <fieldset style="width: 1000px;">
+        <legend style="padding: 7px">Avaliação do Eleitor</legend>
+        <table class="w900" cellpading="0" cellspacing="0" style="background-color: #e2e2e2; margin-top: -10px;">
+            <tr>
+                <td style="vertical-align: top; padding-top: 15px;" width="10%" nowrap><b>Situação</b>:</td>
+                <td style="vertical-align: top; padding-top: 15px;" width="40%" nowrap>
+                    <input type="radio" name="rd_valida_cadastro_eleitor" id="rd_valida_cadastro_eleitor" class="campos" value="1" <?php echo ($this->bol_validacaocadastroeleitor == 1) ? 'checked' : null; ?>>&nbsp;<span class="green">Válido</span>&nbsp;&nbsp;<br>
+                    <input type="radio" name="rd_valida_cadastro_eleitor" id="rd_valida_cadastro_eleitor" class="campos" value="0" <?php echo ($this->bol_validacaocadastroeleitor == 0) ? 'checked' : null; ?>>&nbsp;<span class="red">Inválido</span>&nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top" width="10%"><b>Observação:</b><br></td>
+                <td style="vertical-align: top" width="40%" nowrap>
+                    <textarea name="obs_valida_cadastro_eleitor" id="obs_valida_cadastro_eleitor" class="input_simples campos" rows="6" cols="70"><?php echo $this->vhr_validacaocadastroeleitor;?></textarea>
+                </td>
+            </tr>
+        </table>
+     </fieldset>   
+    <!-- SALVAR - AVALIAR DADOS DO ELEITOR -->
+</form>
+<br /><br />
+<?php if($this->int_tipocadastro == 2): ?>
+<!-- ============================================================ -->
+<!-- ====================== CANDIDATO =========================== -->
+<!-- ============================================================ -->
+<form name="frmCadCandidato" id="frmCadCandidato" class="formulario" action="<?php echo $this->url(array('controller' => 'avaliacao', 'action' => 'salvar-avaliacao')); ?>"  method="POST">    
+    <input type="hidden" name="idUsuarioAvaliador" id="idUsuarioAvaliador" class="input_simples" value="<?php echo $this->idUsuarioAvaliador; ?>">
+    <fieldset style="width: 1000px;">
+        <legend>Cadastro de canditato</legend>
+        <table class="w900" cellpading="0" cellspacing="0">
+            <tr>
+                <td><input type="checkbox" name="int_cadastro_candidato" id="int_cadastro_candidato" class="input_simples campos" <?php echo( (trim($this->propostas)!="") || $this->chk_candidato == '1') ? 'checked' : null;?> <?php //echo($this->chk_candidato == '1') ? 'checked' : null;?>> Desejo me candidatar a essa setorial<br />
+                    Para inscrever a sua candidatura é necessário preencher o cadastro de Eleitor.
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_cadastro_candidato" id="rd_cadastro_candidato" class="campos" value="1" <?php echo ($this->rd_chk_candidato == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_cadastro_candidato" id="rd_cadastro_candidato" class="campos" value="2" <?php echo ($this->rd_chk_candidato == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_cadastro_candidato" id="rd_cadastro_candidato" class="campos" value="3" <?php echo ($this->rd_chk_candidato == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_cadastro_candidato" id="obs_cadastro_candidato" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_chk_candidato];?>; color:#333"><?php echo $this->obs_chk_candidato; ?></textarea></td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset style="width: 1000px;">
+        <legend>Dados da Candidatura</legend>
+        <table class="w900" cellpading="0" cellspacing="0">
+            <tr>
+                <td>Carta programa: * <br />
+                    <textarea name="vhr_proposta" id="vhr_proposta" class="input_simples campos"  rows="15" cols="40" style="background-color:<?php echo $arrColor[(int)$this->rd_proposta];?>; color:#333"><?php echo $this->propostas; ?></textarea>
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_proposta" id="rd_proposta" class="campos" value="1" <?php echo ($this->rd_proposta == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_proposta" id="rd_proposta" class="campos" value="2" <?php echo ($this->rd_proposta == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_proposta" id="rd_proposta" class="campos" value="3" <?php echo ($this->rd_proposta == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_proposta" id="obs_proposta" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_proposta];?>; color:#333"><?php echo $this->obs_proposta; ?></textarea></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top">Comprovação de atuação cultural:  
+                    <?php if(!empty($this->file_curriculo)): ?>
+                        <div id="link_curriculo" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_curriculo ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_curriculo; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_curriculo; ?>','<?php echo $this->arquivo_curriculo; ?>','link_curriculo');">[x]</span></div>
+                    <?php else: ?>
+                        <div style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo não enviado</strong>&nbsp;</div>
+                    <?php endif; ?>
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_curriculo" id="rd_curriculo" class="campos" value="1" <?php echo ($this->rd_curriculo == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_curriculo" id="rd_curriculo" class="campos" value="2" <?php echo ($this->rd_curriculo == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_curriculo" id="rd_curriculo" class="campos" value="3" <?php echo ($this->rd_curriculo == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_curriculo" id="obs_curriculo" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_curriculo];?>; color:#333"><?php echo $this->obs_curriculo; ?></textarea></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top">Portfólio:  
+                    <?php if(!empty($this->file_portfolio)): ?>
+                        <div id="link_portfolio" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_portfolio ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_portfolio; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_portfolio; ?>','<?php echo $this->arquivo_portfolio; ?>','link_portfolio');">[x]</span></div>
+                    <?php else: ?>
+                        <div style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo não enviado</strong>&nbsp;</div>
+                    <?php endif; ?>
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_portfolio" id="rd_portfolio" class="campos" value="1" <?php echo ($this->rd_portfolio == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_portfolio" id="rd_portfolio" class="campos" value="2" <?php echo ($this->rd_portfolio == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_portfolio" id="rd_portfolio" class="campos" value="3" <?php echo ($this->rd_portfolio == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_portfolio" id="obs_portfolio" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_portfolio];?>; color:#333"><?php echo $this->obs_portfolio; ?></textarea></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top">Carta de apoio:  
+                    <?php if(!empty($this->file_carta_apoio)): ?>
+                        <div id="link_carta_apoio" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_carta_apoio ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_carta_apoio; ?></spam></a>&nbsp;
+                        <span class="red apagarAnexo" title="Apagar anexo" alt="Apagar anexo" style="cursor: pointer" onclick="JSApagarAnexo('<?php echo $this->idCadastroXItem_carta_apoio; ?>','<?php echo $this->arquivo_carta_apoio; ?>','link_carta_apoio');">[x]</span></div>
+                    <?php else: ?>
+                        <div style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo não enviado</strong>&nbsp;</div>
+                    <?php endif; ?>
+                </td>
+                <td style="vertical-align: top"  width="33%" nowrap>
+                    <b class="green">Avaliação:</b><br>
+                    <input type="radio" name="rd_carta_apoio" id="rd_carta_apoio" class="campos" value="1" <?php echo ($this->rd_carta_apoio == 1) ? 'checked' : null; ?>>&nbsp;Sim&nbsp;&nbsp;
+                    <input type="radio" name="rd_carta_apoio" id="rd_carta_apoio" class="campos" value="2" <?php echo ($this->rd_carta_apoio == 2) ? 'checked' : null; ?>>&nbsp;Não&nbsp;&nbsp;
+                    <input type="radio" name="rd_carta_apoio" id="rd_carta_apoio" class="campos" value="3" <?php echo ($this->rd_carta_apoio == 3) ? 'checked' : null; ?>> Não se aplica
+                </td>
+                <td style="vertical-align: top"  width="33%"><b class="green">Observação:</b><br><textarea name="obs_carta_apoio" id="obs_carta_apoio" class="input_simples campos" rows="4" cols="30" style="background-color:<?php echo $arrColor[(int)$this->rd_carta_apoio];?>; color:#333"><?php echo $this->obs_carta_apoio; ?></textarea></td>
+            </tr>
+        </table>
+    </fieldset>
+    <!-- SALVAR - AVALIAR DADOS DO CANDIDATO -->
+    <fieldset style="width: 1000px;">
+        <legend style="padding: 7px">Avaliação do Candidato</legend>
+        <table class="w900" cellpading="0" cellspacing="0" style="background-color: #e2e2e2; margin-top: -10px;">
+            <tr>
+                <td style="vertical-align: top; padding-top: 15px;" width="10%" nowrap><b>Situação</b>:</td>
+                <td style="vertical-align: top; padding-top: 15px;" width="40%" nowrap>
+                    <input type="radio" name="rd_valida_cadastro_candidato" id="rd_valida_cadastro_candidato" class="campos" value="1" <?php echo ($this->bol_validacaocadastrocandidato == 1) ? 'checked' : null; ?>>&nbsp;<span class="green">Válido</span>&nbsp;&nbsp;<br>
+                    <input type="radio" name="rd_valida_cadastro_candidato" id="rd_valida_cadastro_candidato" class="campos" value="0" <?php echo ($this->bol_validacaocadastrocandidato == 0) ? 'checked' : null; ?>>&nbsp;<span class="red">Inválido</span>&nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top" width="10%"><b>Observação:</b><br></td>
+                <td style="vertical-align: top" width="40%" nowrap>
+                    <textarea name="obs_valida_cadastro_candidato" id="obs_valida_cadastro_candidato" class="input_simples campos" rows="6" cols="70"><?php echo $this->vhr_validacaocadastrocandidato;?></textarea>
+                </td>
+            </tr>
+        </table>
+     </fieldset>   
+    <!-- SALVAR - AVALIAR DADOS DO CANDIDATO -->
+</form>
+<?php endif; // se candidato ?>
+
+
+<!-- SALVAR - AVALIACAO DO PRESIDENTE -->
+<form name="frmCadCandidato" id="frmCadCandidato" class="formulario" action="<?php echo $this->url(array('controller' => 'avaliacao', 'action' => 'salvar-avaliacao')); ?>"  method="POST">    
+    <fieldset style="width: 1000px;">
+        <legend style="padding: 7px">Avaliação do presidente</legend>
+        <table class="w900" cellpading="0" cellspacing="0" style="background-color: #e2e2e2; margin-top: -10px;">
+            <tr>
+                <td style="vertical-align: top; padding-top: 15px;" width="10%" nowrap><b>Situação</b>:</td>
+                <td style="vertical-align: top; padding-top: 15px;" width="40%" nowrap>
+                    <input type="radio" name="rd_validacao_final" id="rd_validacao_final" class="campos" value="1" <?php echo ($this->bol_validacaofinal == 1) ? 'checked' : null; ?>>&nbsp;<span class="green">Habilitar</span>&nbsp;&nbsp;<br>
+                    <input type="radio" name="rd_validacao_final" id="rd_validacao_final" class="campos" value="0" <?php echo ($this->bol_validacaofinal == 0) ? 'checked' : null; ?>>&nbsp;<span class="red">Inabilitar</span>&nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top" width="10%"><b>Observação:</b><br></td>
+                <td style="vertical-align: top" width="40%" nowrap>
+                    <textarea name="obs_validacao_final" id="obs_validacao_final" class="input_simples campos" rows="6" cols="70"><?php echo $this->vhr_validacaofinal;?></textarea>
+                </td>
+            </tr>
+        </table>
+     </fieldset>   
+    <!-- SALVAR - AVALIACAO DO PRESIDENTE -->
+</form>
+<?php //if(empty($this->dadosRecurso) || $this->usuario ='74104519200'): ?>
+<?php if(empty($this->dadosRecurso)): ?>
+<form name="frmCadRecurso" id="frmCadRecurso" class="formulario" enctype="multipart/form-data" action="<?php echo $this->url(array('controller' => 'recurso', 'action' => 'salvar-recurso')); ?>"  method="POST">    
+<input type="hidden" name="idCadastro" id="idCadastro" class="input_simples" value="<?php echo $this->idCadastro; ?>">
+<fieldset style="width: 1000px;">
+    <legend>Solicitação de Recurso</legend>
+    <table class="w900" cellpading="0" cellspacing="0">
+        <tr>
+            <td>
+                <input type="checkbox" name="int_solicitar_recurso" id="int_solicitar_recurso" class="input_simples" style="vertical-align: top"> <b>IMPUGNAÇÃO DE DECISÃO</b><br />
+            </td>
+        </tr>
+        <tr id="linhaSolicitarRecurso" style="display: none">
+            <td style="padding: 0px; margin: 0px;">
+                <table style="width: 100%" cellpading="0" cellspacing="0">
+                <tr>
+                    <td style="vertical-align: top;" nowrap>
+                        <!--<b>Utilize a área abaixo para o texto de argumentação relacionado ao Recurso: *</b><br>-->
+                        <span style="font-size: 13px;">
+                        <center><b>IMPUGNAÇÃO DE DECISÃO DA COMISSÃO ELEITORAL SETORIAL</b></center><br /><br />
+                        Eu,  <b><?php echo $this->nome; ?></b>, inscrito no Processo Eleitoral regulado pela Portaria nº 51, de 2 de maio de 2012, e tendo em vista a decisão <br />
+                        da Comissão Eleitoral Setorial, publicada pelo Presidente da Comissão Organizadora Nacional em 05 de setembro de 2012, que invalidou o meu <br />
+                        cadastro de eleitor e/ou o registro de candidatura, venho por meio desta apresentar impugnação, conforme as razões a seguir:
+                        </span>
+                        <br /><br />
+                        <textarea name="txt_recurso_padrao" id="txt_recurso_padrao" class="input_simples" style="display: none">Eu, <?php echo $this->nome; ?>, inscrito no Processo Eleitoral regulado pela Portaria nº 51, de 2 de maio de 2012, e tendo em vista a decisão da Comissão Eleitoral Setorial, publicada pelo Presidente da Comissão Organizadora Nacional em 05 de setembro de 2012, que invalidou o meu cadastro de eleitor e/ou o registro de candidatura, venho por meio desta apresentar impugnação, conforme as razões a seguir:</textarea>
+                        <span class="green"><b>Se você quer complementar e/ou corrigir algum dado ou alguma declaração, utilize o espaço abaixo:</b></span><br />
+                        <textarea name="txt_recurso" id="txt_recurso" class="input_simples" rows="13" cols="100"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;" nowrap>
+                        <span class="green"><b>Para anexar documentos ausentes ou substituí-los no cadastro, utilize  a área para upload abaixo. <br />Você pode enviar até 10 documentos, lembre-se que os arquivos devem estar em formato .pdf de até 1MB.</b></span><br /><br />
+                        <table style="width: 100%;" cellpading="0" cellspacing="0">
+                            <tr>
+                                <td style="width: 5%" nowrap>Nome documento:</td>
+                                <td style="width: 25%"><input type="text" size="30" name="nomeArquivo[]" id="nomeArquivo" class="input_simples" style="vertical-align: top"></td>
+                                <td style="width: 5%">Arquivo:</td>
+                                <td style="width: 55%"><input type="file" size="30" name="arquivo[]" id="arquivo" class="input_simples" style="vertical-align: top"></td>
+                            </tr>
+                            <tr>
+                                <td>Nome documento:</td>
+                                <td><input type="text" size="30" name="nomeArquivo[]" id="nomeArquivo" class="input_simples" style="vertical-align: top"></td>
+                                <td>Arquivo:</td>
+                                <td><input type="file" size="30" name="arquivo[]" id="arquivo" class="input_simples" style="vertical-align: top"></td>
+                            </tr>
+                            <tr>
+                                <td>Nome documento:</td>
+                                <td><input type="text" size="30" name="nomeArquivo[]" id="nomeArquivo" class="input_simples" style="vertical-align: top"></td>
+                                <td>Arquivo:</td>
+                                <td><input type="file" size="30" name="arquivo[]" id="arquivo" class="input_simples" style="vertical-align: top"></td>
+                            </tr>
+                            <tr>
+                                <td>Nome documento:</td>
+                                <td><input type="text" size="30" name="nomeArquivo[]" id="nomeArquivo" class="input_simples" style="vertical-align: top"></td>
+                                <td>Arquivo:</td>
+                                <td><input type="file" size="30" name="arquivo[]" id="arquivo" class="input_simples" style="vertical-align: top"></td>
+                            </tr>
+                            <tr>
+                                <td>Nome documento:</td>
+                                <td><input type="text" size="30" name="nomeArquivo[]" id="nomeArquivo" class="input_simples" style="vertical-align: top"></td>
+                                <td>Arquivo:</td>
+                                <td><input type="file" size="30" name="arquivo[]" id="arquivo" class="input_simples" style="vertical-align: top"></td>
+                            </tr>
+                            <tr>
+                                <td>Nome documento:</td>
+                                <td><input type="text" size="30" name="nomeArquivo[]" id="nomeArquivo" class="input_simples" style="vertical-align: top"></td>
+                                <td>Arquivo:</td>
+                                <td><input type="file" size="30" name="arquivo[]" id="arquivo" class="input_simples" style="vertical-align: top"></td>
+                            </tr>
+                            <tr>
+                                <td>Nome documento:</td>
+                                <td><input type="text" size="30" name="nomeArquivo[]" id="nomeArquivo" class="input_simples" style="vertical-align: top"></td>
+                                <td>Arquivo:</td>
+                                <td><input type="file" size="30" name="arquivo[]" id="arquivo" class="input_simples" style="vertical-align: top"></td>
+                            </tr>
+                            <tr>
+                                <td>Nome documento:</td>
+                                <td><input type="text" size="30" name="nomeArquivo[]" id="nomeArquivo" class="input_simples" style="vertical-align: top"></td>
+                                <td>Arquivo:</td>
+                                <td><input type="file" size="30" name="arquivo[]" id="arquivo" class="input_simples" style="vertical-align: top"></td>
+                            </tr>
+                            <tr>
+                                <td>Nome documento:</td>
+                                <td><input type="text" size="30" name="nomeArquivo[]" id="nomeArquivo" class="input_simples" style="vertical-align: top"></td>
+                                <td>Arquivo:</td>
+                                <td><input type="file" size="30" name="arquivo[]" id="arquivo" class="input_simples" style="vertical-align: top"></td>
+                            </tr>
+                            <tr>
+                                <td>Nome documento:</td>
+                                <td><input type="text" size="30" name="nomeArquivo[]" id="nomeArquivo" class="input_simples" style="vertical-align: top"></td>
+                                <td>Arquivo:</td>
+                                <td><input type="file" size="30" name="arquivo[]" id="arquivo" class="input_simples" style="vertical-align: top"></td>
+                            </tr>
+                        </table>
+                        <!--<div style="width: 900px; background-color: #efefef; height: 50px;" class="destacar">
+                            <div style="width: 380px; float: left"><span style="vertical-align: middle">Nome do documento:</span>&nbsp;<input type="text" size="30" name="nomeArquivo[]" id="nomeArquivo" class="input_simples" style="vertical-align: top"></div>
+                            <div style="width: 150px;"><span style="vertical-align: middle">Arquivo:</span>&nbsp;<input type="file" size="30" name="arquivo[]" id="arquivo" class="input_simples" style="vertical-align: top"></div>                            
+                        </div>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td class="centro"><input type="button" name="salva_recurso" id="salva_recurso" value="Enviar Recurso" class="btn" style="width: 120px;"></td>
+                </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</fieldset>
+</form>
+<?php else: ?>
+<fieldset style="width: 1000px;">
+    <legend>Recurso Solicitado</legend>
+    <table class="w900" cellpading="0" cellspacing="0">
+        <tr>
+            <td>
+                <p><center><h2 style="height: 0px; font-size: 12pt; margin: 10px; font-weight: bold;">O seu Recurso já foi cadastrado e enviado com sucesso conforme informações abaixo.</h2></center></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 0px; margin: 0px;">
+                <table style="width: 100%" cellpading="0" cellspacing="0">
+                <tr>
+                    <td style="vertical-align: top" nowrap>
+                        <b>Descrição de motivos:</b><br>
+                        <textarea name="txt_recurso_enviado" id="txt_recurso_enviado" class="input_simples" rows="13" cols="100" readonly=""><?php echo $this->dadosRecurso->vhr_recurso;?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;" nowrap>
+                        <b>Arquivos enviados:</b><br /><br />
+                        <table style="width: 100%;" cellpading="0" cellspacing="0">
+                            <?php if(count($this->dadosAnexoRecurso) > 0):  ?>
+                                <?php foreach($this->dadosAnexoRecurso as $anexo):  ?>
+                                <tr>
+                                    <td style="width: 5%" nowrap>Nome do documento:</td>
+                                    <td style="width: 25%" class="green"><b><?php echo $anexo['nomeArquivo'];?></b></td>
+                                    <td style="width: 60%">
+                                        <strong>Anexo</strong>: <a href="<?php echo $anexo['linkAcesso'];?>" target="_blank"><spam style="color:blue; font-size: 9pt;">baixar arquivo</spam></a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                             <?php else: ?>
+                                <tr>
+                                    <td colspan="4"><i>Não foram enviados anexos.</i></td>
+                                </tr>
+                             <?php endif; ?>
+                        </table>
+                        <!--<div style="width: 900px; background-color: #efefef; height: 50px;" class="destacar">
+                            <div style="width: 380px; float: left"><span style="vertical-align: middle">Nome do documento:</span>&nbsp;<input type="text" size="30" name="nomeArquivo[]" id="nomeArquivo" class="input_simples" style="vertical-align: top"></div>
+                            <div style="width: 150px;"><span style="vertical-align: middle">Arquivo:</span>&nbsp;<input type="file" size="30" name="arquivo[]" id="arquivo" class="input_simples" style="vertical-align: top"></div>                            
+                        </div>-->
+                    </td>
+                </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</fieldset>
+<?php endif; ?>
+<br /><br /><br /><br />

@@ -1,0 +1,72 @@
+<?php header("Content-Type: text/html; charset=ISO-8859-1"); ?>
+<script>
+    $(document).ready(function(){
+
+        $('.linhaUF').click(function(){
+            var idLinha = $(this).attr("id");
+            var idSetorial = $(this).attr("setorial");
+            
+            $("#linhaUF_"+idLinha).toggle();
+            
+            
+            if($("#resultadoNomesPorEstado_"+idLinha).html() == ""){
+                $.ajax({
+                    url : '<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'listar-inscritos-por-estado')); ?>',
+                    beforeSend: function() {
+                        $("#resultadoNomesPorEstado_"+idLinha).html('');
+                        $("#resultadoNomesPorEstado_"+idLinha).html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+                    },
+                    data :
+                        {
+                        uf : idLinha,
+                        idSetorial : idSetorial
+                    },
+                    success: function(data){
+                        $('#resultadoNomesPorEstado_'+idLinha).html(data);
+                    },
+                    type : 'post'
+                });
+            }
+        });
+
+     }); //fecha document.read
+
+</script>
+<table  style="width: 780px;" cellpadding="0" cellspacing="1" >
+    <tr class="bg_title_grid">
+        <td width="20%">Estado</td>
+        <td width="10%">Inscritos</td>
+        <td width="10%" nowrap>Eleitores</td>
+        <td width="40%">Candidatos</td>
+    </tr>
+    <?php $ct=1; foreach ($this->registros as $registro): $bg =($ct%2)? "bg_linha_grid1": "bg_linha_grid2"; ?>
+    <tr class="linhaUF <?php echo $bg;?>" id="<?php echo $registro->uf;?>" setorial="<?php echo $registro->id_setorial;?>" style="cursor: pointer;">
+        <td><b><?php echo $registro->uf;?></b></td>
+        <td><?php echo (int)$registro->eleitores + (int)$registro->candidatos;?></td>
+        <td><?php echo (int)$registro->eleitores + (int)$registro->candidatos;?></td>
+        <td><?php echo (int)$registro->candidatos;?></td>
+    </tr>
+    <tr style="display: none" id="linhaUF_<?php echo $registro->uf;?>">
+        <td colspan="4" style="padding-left: 40px; margin-right: 0px; padding-right: 0px;">
+            <div id="resultadoNomesPorEstado_<?php echo $registro->uf;?>"></div>
+        </td>
+    </tr>
+    <?php $ct++; endforeach; ?>
+    <tr><td colspan="4"></td></tr>
+    <?php foreach ($this->registrosSemUF as $registro): ?>
+		<?php if((int)$registro->eleitores > 0):?>
+			<tr class="linhaUF bg_linha_grid1" id="semUF" setorial="<?php echo $registro->id_setorial;?>" style="cursor: pointer;">
+				<td><b><?php echo 'Estado não informado';?></b></td>
+				<td><?php echo (int)$registro->eleitores + (int)$registro->candidatos;?></td>
+				<td><?php echo (int)$registro->eleitores + (int)$registro->candidatos;?></td>
+				<td><?php echo (int)$registro->candidatos;?></td>
+			</tr>
+			<tr style="display: none" id="linhaUF_semUF">
+				<td colspan="4" style="padding-left: 40px; margin-right: 0px; padding-right: 0px;">
+					<div id="resultadoNomesPorEstado_semUF"></div>
+				</td>
+			</tr>
+		<?php endif;?>
+	<?php endforeach; ?>
+</table>
+<br>

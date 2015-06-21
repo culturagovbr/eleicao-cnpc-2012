@@ -1,0 +1,255 @@
+<script>
+    $(document).ready(function(){
+        
+        $('body').find('.campos').each(function(){
+            $(this).attr("disabled", "true");
+        });
+        
+        $('#vhr_cpf').mask('999.999.999-99');
+        $('#dte_nascimento').mask('99/99/9999');
+        
+		
+        $("#salvar_avaliacao_apos_recurso").click(function(){
+            
+            $("#msgError").html('');
+                
+            var n = $("input:radio[name='rd_avaliacao_fase2_eleitor']:checked").length;
+            
+            if(n <= 0){
+                $("#msgError").html("<font class='red'><b>Campos obrigatório não informados.</b></font>");
+                return false;
+            } 
+            if($("#obs_validacao_fase2_eleitor").val() == ""){
+                $("#msgError").html("<font class='red'><b>Campos obrigatório não informados.</b></font>");
+                return false;
+            }
+            
+            <?php if($this->dadosCadastro->int_tipocadastro == 2): ?>
+                    
+                var n = $("input:radio[name='rd_avaliacao_fase2_candidato']:checked").length;
+                if(n <= 0){
+                    $("#msgError").html("<font class='red'><b>Campos obrigatório não informados.</b></font>");
+                    return false;
+                } 
+                if($("#obs_validacao_fase2_candidato").val() == ""){
+                    $("#msgError").html("<font class='red'><b>Campos obrigatório não informados.</b></font>");
+                    return false;
+                }
+            <?php endif; ?>
+                
+            $("#msgError").html('');
+            $(this).replaceWith("<center><font color='blue'>Aguarde, salvando informações...<br><img src='<?php echo $this->baseUrl(); ?>/public/img/ajax.gif' /></font></center>");
+            $("#frmAvaliarRecurso").submit();
+
+	});
+    }); //fecha $('document').ready
+
+    function abrirDinamico(elemento, obj) {
+        
+        if($(elemento).css('display') == 'none') {
+            
+            $(elemento).fadeIn('fast', function() {
+                
+                if($(elemento).html() == ''){
+                    
+                    var idCadastro = $(obj).attr('id_cadastro');
+                    
+                    $.ajax({
+                        async: true,
+                        type: "post",
+                        url:'<?php echo $this->url(array('controller' => 'recurso', 'action' => 'form-visualizacao-avaliacao')); ?>',
+                        data:{
+                            idCadastro:idCadastro
+                        },
+                        beforeSend: function(){
+                            $(elemento).html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+                        },
+                        success: function(data)
+                        {
+                            $(elemento).html(data);
+                        }
+                    });
+                }
+                $('img', $(obj)).attr('src','<?php echo $this->baseUrl(); ?>/public/img/navigation-baixo.PNG');
+            });
+        } else {
+            $(elemento).fadeOut('fast', function() {
+                $('img', $(obj)).attr('src','<?php echo $this->baseUrl(); ?>/public/img/navigation-right.png');
+            });
+        }
+    }
+</script>
+<br>
+<fieldset style="width: 1000px;">
+    <legend>Dados do Inscrito</legend>
+    <table style="width: 980px;" cellpading="0" cellspacing="0">
+        <tr>
+            <td style="vertical-align: top;" width="33%" nowrap>Nome: <br /><h1 class="green" style="margin-top: 5px; font-size: 12pt; "><?php echo $this->dadosCadastro->vhr_nome; ?></h2></td>
+            <td style="vertical-align: top;" width="33%" nowrap>CPF: *<br /><h1 class="green" style="margin-top: 5px; font-size: 12pt; "><?php echo aplicaMascara($this->dadosCadastro->vhr_login,'999.999.999-99'); ?></h1></td>
+            <td style="vertical-align: top;" width="33%">Setorial: *<br /><h1 class="green" style="margin-top: 5px; font-size: 12pt; "><?php echo $this->dadosCadastro->nomeSetorial; ?></h1></td>
+        </tr>
+        <tr>
+            <td colspan="3" ></td>
+        </tr>
+        <tr onclick="abrirDinamico('#dadosAvaliacao', $(this))" style="cursor:pointer" id_cadastro="<?php echo $this->dadosCadastro->id_cadastro; ?>">
+            <td colspan="3" class="bg_linha_grid3">
+                <img src="<?php echo $this->baseUrl();?>/public/img/navigation-right.png" id="imgDinamica" align="left" />&nbsp;<b class="green">Visualizar Avaliação do formulário de inscrição</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div id="dadosAvaliacao" style="display: none"></div>
+            </td>
+        </tr>    
+        <tr>
+            <td colspan="3" ></td>
+        </tr>
+    </table>
+</fieldset>
+<fieldset style="width: 1000px;">
+    <legend>Dados do Recurso</legend>
+    <table class="w900" cellpading="0" cellspacing="0">
+        <tr>
+            <td style="padding: 0px; margin: 0px;">
+                <table style="width: 100%" cellpading="0" cellspacing="0">
+                <tr>
+                    <td style="vertical-align: top" nowrap>
+                        <b>Descrição de motivos:</b><br>
+                        <textarea name="txt_recurso" id="txt_recurso" class="input_simples" rows="20" cols="100" readonly=""><?php echo ($this->dadosRecurso->vhr_recurso);?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;" nowrap>
+                        <b>Arquivos enviados:</b><br /><br />
+                        <table style="width: 100%;" cellpading="0" cellspacing="0">
+                            <?php if(count($this->dadosAnexoRecurso) > 0):  ?>
+                                <?php foreach($this->dadosAnexoRecurso as $anexo):  ?>
+                                <tr>
+                                    <td style="width: 5%" nowrap>Nome do documento:</td>
+                                    <td style="width: 25%" class="green"><b><?php echo $anexo['nomeArquivo'];?></b></td>
+                                    <td style="width: 60%">
+                                        <strong>Anexo</strong>: <a href="<?php echo $anexo['linkAcesso'];?>" target="_blank"><spam style="color:blue; font-size: 9pt;">baixar arquivo</spam></a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                             <?php else: ?>
+                                <tr>
+                                    <td colspan="4"><i>Não foram enviados anexos.</i></td>
+                                </tr>
+                             <?php endif; ?>
+                        </table>
+                    </td>
+                </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</fieldset>
+
+
+<!-- AVALIACAO DE ELEITOR DO PRESIDENTE (FASE 1) -->
+    <input type="hidden" name="int_tipocadastro" id="int_tipocadastro" value="<?php echo $this->dadosCadastro->int_tipocadastro;?>">
+    <input type="hidden" name="idUsuarioAvaliador" id="idUsuarioAvaliador" value="<?php echo $this->idUsuarioAvaliador;?>">
+    <input type="hidden" name="idRecurso" id="idRecurso" value="<?php echo $this->dadosRecurso->id_recurso;?>">
+    <fieldset style="width: 1000px;">
+        <legend style="padding: 7px">Avaliação do Eleitor</legend>
+        <table cellpading="0" cellspacing="0" style="width: 980px; background-color: #e2e2e2; margin-top: 3px; margin-bottom: 10px">
+            <tr>
+                <td style="vertical-align: top; padding-top: 15px;" width="10%" nowrap><b>Situação após Recurso</b>: *</td>
+                <td style="vertical-align: top; padding-top: 15px;" width="40%" nowrap>
+                    <input type="radio" name="rd_avaliacao_fase1_eleitor" id="rd_avaliacao_fase1_eleitor" value="1" class="campos" <?php echo ($this->dadosRecurso->chr_validacao_fase1_eleitor == 1) ? 'checked' : null; ?>>&nbsp;<span class="green">Validar</span>&nbsp;&nbsp;<br>
+                    <input type="radio" name="rd_avaliacao_fase1_eleitor" id="rd_avaliacao_fase1_eleitor" value="2" class="campos" <?php echo ($this->dadosRecurso->chr_validacao_fase1_eleitor == 2) ? 'checked' : null; ?>>&nbsp;<span class="red">Não Validar</span>&nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top" width="10%"><b>Observação: *</b><br></td>
+                <td style="vertical-align: top" width="40%" nowrap>
+                    <textarea name="obs_validacao_fase1_eleitor" id="obs_validacao_fase1_eleitor" class="input_simples campos" rows="8" cols="80"><?php echo $this->dadosRecurso->vhr_validacao_fase1_eleitor;?></textarea>
+                </td>
+            </tr>
+        </table>
+     </fieldset>   
+<!-- AVALIACAO DE ELEITOR DO PRESIDENTE (FASE 1) -->
+
+<!-- AVALIACAO DE CANDIDATO DO PRESIDENTE (FASE 1) -->
+<?php if($this->dadosCadastro->int_tipocadastro == 2): ?>
+    <fieldset style="width: 1000px;">
+        <legend style="padding: 7px">Avaliação do Candidato</legend>
+        <table cellpading="0" cellspacing="0" style="width: 980px; background-color: #e2e2e2; margin-top: 3px; margin-bottom: 10px">
+            <tr>
+                <td style="vertical-align: top; padding-top: 15px;" width="10%" nowrap><b>Situação após Recurso</b>: *</td>
+                <td style="vertical-align: top; padding-top: 15px;" width="40%" nowrap>
+                    <input type="radio" name="rd_avaliacao_fase1_candidato" id="rd_avaliacao_fase1_candidato" value="1" class="campos" <?php echo ($this->dadosRecurso->chr_validacao_fase1_candidato == 1) ? 'checked' : null; ?>>&nbsp;<span class="green">Validar</span>&nbsp;&nbsp;<br>
+                    <input type="radio" name="rd_avaliacao_fase1_candidato" id="rd_avaliacao_fase1_candidato" value="2" class="campos" <?php echo ($this->dadosRecurso->chr_validacao_fase1_candidato == 2) ? 'checked' : null; ?>>&nbsp;<span class="red">Não Validar</span>&nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top" width="10%"><b>Observação: *</b><br></td>
+                <td style="vertical-align: top" width="40%" nowrap>
+                    <textarea name="obs_validacao_fase1_candidato" id="obs_validacao_fase1_candidato" class="input_simples campos" rows="8" cols="80"><?php echo $this->dadosRecurso->vhr_validacao_fase1_candidato;?></textarea>
+                </td>
+            </tr>
+        </table>
+     </fieldset>   
+<?php endif; ?>
+<!-- AVALIACAO DE CANDIDATO DO PRESIDENTE (FASE 1) -->
+
+<!-- SALVAR - AVALIACAO DE ELEITOR DO PRESIDENTE -->
+<form name="frmAvaliarRecurso" id="frmAvaliarRecurso" class="formulario" action="<?php echo $this->url(array('controller' => 'recurso', 'action' => 'salvar-avaliacao-recurso-fase-dois')); ?>"  method="POST">    
+    <input type="hidden" name="int_tipocadastro" id="int_tipocadastro" value="<?php echo $this->dadosCadastro->int_tipocadastro;?>">
+    <input type="hidden" name="idUsuarioAvaliador" id="idUsuarioAvaliador" value="<?php echo $this->idUsuarioAvaliador;?>">
+    <input type="hidden" name="idRecurso" id="idRecurso" value="<?php echo $this->dadosRecurso->id_recurso;?>">
+    <fieldset style="width: 1000px;">
+        <legend style="padding: 7px">Avaliar Eleitor (Definitivo)</legend>
+        <table cellpading="0" cellspacing="0" style="width: 980px; background-color: #e2e2e2; margin-top: 3px; margin-bottom: 10px">
+            <tr>
+                <td style="vertical-align: top; padding-top: 15px;" width="10%" nowrap><b>Situação após Recurso</b>: *</td>
+                <td style="vertical-align: top; padding-top: 15px;" width="40%" nowrap>
+                    <input type="radio" name="rd_avaliacao_fase2_eleitor" id="rd_avaliacao_fase2_eleitor" value="1" <?php echo ($this->dadosRecurso->chr_validacao_fase2_eleitor == 1) ? 'checked' : null; ?>>&nbsp;<span class="green">Validar</span>&nbsp;&nbsp;<br>
+                    <input type="radio" name="rd_avaliacao_fase2_eleitor" id="rd_avaliacao_fase2_eleitor" value="2" <?php echo ($this->dadosRecurso->chr_validacao_fase2_eleitor == 2) ? 'checked' : null; ?>>&nbsp;<span class="red">Não Validar</span>&nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top" width="10%"><b>Observação: *</b><br></td>
+                <td style="vertical-align: top" width="40%" nowrap>
+                    <textarea name="obs_validacao_fase2_eleitor" id="obs_validacao_fase2_eleitor" class="input_simples" rows="8" cols="80"><?php echo $this->dadosRecurso->vhr_validacao_fase2_eleitor;?></textarea>
+                </td>
+            </tr>
+        </table>
+     </fieldset>   
+
+<!-- SALVAR - AVALIACAO DE ELEITOR DO PRESIDENTE -->
+
+<!-- SALVAR - AVALIACAO DE CANDIDATO DO PRESIDENTE -->
+<?php if($this->dadosCadastro->int_tipocadastro == 2): ?>
+    <fieldset style="width: 1000px;">
+        <legend style="padding: 7px">Avaliar Candidato (Definitivo)</legend>
+        <table cellpading="0" cellspacing="0" style="width: 980px; background-color: #e2e2e2; margin-top: 3px; margin-bottom: 10px">
+            <tr>
+                <td style="vertical-align: top; padding-top: 15px;" width="10%" nowrap><b>Situação após Recurso</b>: *</td>
+                <td style="vertical-align: top; padding-top: 15px;" width="40%" nowrap>
+                    <input type="radio" name="rd_avaliacao_fase2_candidato" id="rd_avaliacao_fase2_candidato" value="1" <?php echo ($this->dadosRecurso->chr_validacao_fase2_candidato == 1) ? 'checked' : null; ?>>&nbsp;<span class="green">Validar</span>&nbsp;&nbsp;<br>
+                    <input type="radio" name="rd_avaliacao_fase2_candidato" id="rd_avaliacao_fase2_candidato" value="2" <?php echo ($this->dadosRecurso->chr_validacao_fase2_candidato == 2) ? 'checked' : null; ?>>&nbsp;<span class="red">Não Validar</span>&nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top" width="10%"><b>Observação: *</b><br></td>
+                <td style="vertical-align: top" width="40%" nowrap>
+                    <textarea name="obs_validacao_fase2_candidato" id="obs_validacao_fase2_candidato" class="input_simples" rows="8" cols="80"><?php echo $this->dadosRecurso->vhr_validacao_fase2_candidato;?></textarea>
+                </td>
+            </tr>
+        </table>
+     </fieldset>   
+<?php endif; ?>
+    <center><div id="msgError" class="red" style="margin-left: 25px;width: 1000px; font-size: 13px;"></div></center>
+    <fieldset style="width: 1000px;">
+        <legend style="padding: 7px"></legend>
+        <table cellpading="0" cellspacing="0" style="width: 980px; background-color: #e2e2e2; margin-top: 3px; margin-bottom: 10px">
+            <tr>
+                <td class="centro" colspan="2"><input type="button" name="salvar_avaliacao_apos_recurso" id="salvar_avaliacao_apos_recurso" value="Salvar avaliação definitiva" class="btn" style="width: 220px;"></td>
+            </tr>
+        </table>
+     </fieldset>   
+</form>
+<!-- SALVAR - AVALIACAO DE CANDIDATO DO PRESIDENTE -->
+<br /><br /><br /><br />

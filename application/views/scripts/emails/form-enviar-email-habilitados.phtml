@@ -1,0 +1,85 @@
+<script>
+    $(document).ready(function(){
+        
+        $("#frmEnviarEmail").validate({
+            // Define as regras
+            rules:{
+                    remetente:{
+                            required: true
+                    },
+                    email_remetente:{
+                            required: true, 
+                            email: true
+                    },
+                    mensagem:{
+                            required: true
+                    },
+                    assunto:{
+                            required: true
+                    }
+
+            },
+            // Define as mensagens de erro para cada regra
+            messages:{
+                    remetente:{
+                            required: "<br />O campo Nome do rementente é obrigatório"
+                    },
+                    email_remetente:{
+                            required: "<br />O campo E-mail do rementente é obrigatório",
+                            email: "<br />Digite um e-mail válido"
+                    },
+                    mensagem:{
+                            required: "<br />O campo Mensagem é obrigatório"
+                    },
+                    assunto:{
+                            required: "<br />O campo Assunto é obrigatório"
+                    }
+            },
+            submitHandler: function(form) {
+                $("#btn_enviar").replaceWith("<center><font color='blue'>Enviando e-mails<br><img src='<?php echo $this->baseUrl(); ?>/public/img/ajax.gif' /><br><br>Aguarde enquato os e-mails são enviados. <br />Durante esse processo <b>NÃO</b> realize nenhuma ação no seu navegador, <br>como fechá-lo ou clicar em F5 no seu teclado.</font></center>");
+                $(form).submit();
+            }
+	});
+        
+        /*$("#btn_enviar").click(function(){
+            $(this).replaceWith("<center><font color='red'>Aguarde enquato os e-mails são enviados. <br />Durante esse processo <b>NÃO</b> realize nenhuma ação sobre o seu navegador <br>como fechá-lo ou clicar em F5 no seu teclado.</font></center>");
+        });*/
+    }); //fecha $('document').ready
+    
+</script>
+<br>
+<form name="frmEnviarEmail" id="frmEnviarEmail" class="formulario" action="<?php echo $this->url(array('controller' => 'emails', 'action' => 'enviar-email-habilitados')); ?>"  method="POST">
+<fieldset>
+        <legend>Enviar e-mail aos inscritos VALIDADOS</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>Nome do remetente: *</td>
+                <td><input type="text" name="remetente" id="remetente" class="input_simples" value="<?php echo $this->nome; ?>" size="30"></td>
+            </tr>
+            <tr>
+                <td nowrap>E-mail do remetente: *</td>
+                <td>
+                    <input type="text" name="email_remetente" id="email_remetente" class="input_simples" value="inscricoescnpc@cultura.gov.br" readonly size="30">
+                    <!--'inscricoescnpc@cultura.gov.br'-->
+                </td>
+            </tr>
+            <tr>
+                <td>Assunto: *</td>
+                <td><input type="text" name="assunto" id="assunto" class="input_simples" value="<?php echo $this->nome; ?>" size="30"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top">Mensagem: *</td>
+                <td>
+                    <b class="red">Atenção:</b> A mensagem enviada ao inscrito será iniciada com: "Preazado(a) Sr(a). Nome do Inscrito", portanto você deverá colocar nesta caixa apenas
+                    o conteúdo da mensagem sem a saudação inicial.
+                    <textarea name="mensagem" id="mensagem" class="input_simples" cols="70" rows="15"><?php echo $this->apresentacao; ?></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="centro">
+                    <input type="submit" name="btn_enviar" id="btn_enviar" value="Enviar" class="btn" style="width: 80px;">&nbsp;&nbsp;
+                </td>
+            </tr>
+        </table>
+</fieldset>
+</form>

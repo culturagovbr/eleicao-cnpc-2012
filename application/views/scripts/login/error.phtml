@@ -1,0 +1,46 @@
+<table cellpading="0" cellspacing="0" style="width: 1000px; background-color: #fff; height: 400px;">
+    <tr>
+        <td class="centro">
+            <br>
+            <img src="<?php echo $this->baseUrl(); ?>/public/img/logo-cnpc-forum.jpg">
+        </td>
+    </tr>
+    <?php if (isset($_GET['msg'])) : ?>
+    <?php
+        switch($_GET['msg']){
+            //Setorial UF Nao Validada
+            /*case('01'): $msg = "Informamos que, apesar de sua inscrição ter sido validada, o seu estado não atingiu o quórum mínimo
+                                de cinco eleitores validados e por isso não haverá eleição de delegados estaduais deste Setorial,
+                                conforme §1º do artigo 21 da Portaria MinC nº/51/2012. <br /><br/>Agradecemos sua participação e comunicamos
+                                que seu nome e dados serão inseridos no cadastro cultural permanente do Ministério da Cultura."; break;*/
+            case('01'): $msg = "Informamos que, apesar de sua inscrição ter sido validada infelizmente não será possível a sua participação
+                                no processo eleitoral do CNPC por um dos motivos a seguir:<br /><br />
+
+                                <div style='padding-left:20px;'>
+                                1) O seu estado não atingiu o quórum mínimo de cinco eleitores validados e por isso
+                                    não haverá eleição de <span style='padding-left:20px;'>delegados estaduais deste Setorial,
+                                    conforme §1º do artigo 21 da Portaria MinC nº/51/2012.</span><br /><br />
+                                </div>
+                                <center>OU<br /><br /></center>
+                                <div style='padding-left:20px;'>
+                                2) O seu estado não possui candidatos validados para este Setorial.
+                                </div>
+                                <br /><br/>Agradecemos sua participação e comunicamos
+                                que seu nome e dados serão inseridos no cadastro cultural permanente do Ministério da Cultura."; break;
+            //Inscrito Nao Validado
+            case('02'): $msg = "Infelizmente não será possível a sua participação no processo eleitoral do CNPC porque sua inscrição
+                                não foi validada por não atender aos critérios estabelecidos pela Portaria MinC nº/51/2012.<br/><br/>
+                                Informamos que após a conclusão do processo eleitoral, você poderá complementar seus dados para integrar
+                                o cadastro cultural permanente do Ministério da Cultura."; break;
+        }
+    ?>
+    <tr>
+        <td>
+            <div class="msgLong<?php echo $_GET['type'] ?>">
+                <div class="float_right"><input type="button" class="btn_close" title="Fechar mensagem" id="msgLong<?php echo $_GET['type']; ?>" onclick="$('.msgLong<?php echo $_GET['type']; ?>').hide();" onkeypress="$('.msgLong<?php echo $_GET['type']; ?>').hide();"/></div>
+                <div style="padding-top: 8px; padding-bottom: 8px;"><?php echo $msg; ?></div>
+            </div>
+        </td>
+    </tr>
+    <?php endif; ?>
+</table>

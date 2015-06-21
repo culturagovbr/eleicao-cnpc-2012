@@ -1,0 +1,112 @@
+<script type="text/javascript">
+        
+    function ordenar(campo, tipo){
+        $("#ordenacao").val(campo);
+        $("#tipoOrdenacao").val(tipo);
+        paginar(1);
+    }
+
+    function paginar(pag){
+        $("#pag").val(pag);
+        jqAjaxForm(document.getElementById("frmPaginar"), "resultado-pesquisa");
+        $("#resultado-pesquisa").html("");
+        $('#resultado-pesquisa').html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+    }
+    
+    $(document).ready(function(){
+        $("#cpf").mask('999.999.999-99');
+        
+        $('#btn_pesquisar').click(function(){
+            var nome = $('#nome').val(),
+                cpf = $('#cpf').val(),
+                setorial = $('#setorial').val();
+                
+                //$("body").append("<div id='divDinamicaCertidoes'></div>");
+                $.ajax({
+                    url : '<?php echo $this->url(array('controller' => 'avaliacao', 'action' => 'listar-cadastros')); ?>',
+                    data :
+                        {
+                        nome : nome,
+                        cpf: cpf,
+                        setorial : setorial,
+                        idSetoriais : '<?php echo $this->arrIdSetoriais; ?>'
+                    },
+                    success: function(data){
+                        $('#resultado-pesquisa').html(data);
+                    },
+                    type : 'post'
+
+                });
+           // jqAjaxLink('<?php echo $this->Url(array('controller' => 'avaliacao', 'action' => 'listar-cadastros')) ?>', 'pesquisar=1&nome='+nome+'&cpf='+cpf+'&setorial='+setorial, 'resultado-pesquisa');
+        });
+        
+        $('#btn_limpar').click(function(){
+            
+            <?php //if($this->usuario->id_perfil == 3): ?>
+                //jqAjaxLink('<?php echo $this->Url(array('controller' => 'avaliacao', 'action' => 'listar-cadastros')) ?>', '', 'resultado-pesquisa');
+            <?php ////else: ?>
+                $.ajax({
+                    url : '<?php echo $this->url(array('controller' => 'avaliacao', 'action' => 'listar-cadastros')); ?>',
+                    data :
+                        {
+                        idSetoriais : '<?php echo $this->arrIdSetoriais; ?>'
+                    },
+                    success: function(data){
+                        $('#resultado-pesquisa').html(data);
+                    },
+                    type : 'post'
+
+                });
+            <?php //endif; ?>
+            
+        });
+        
+         //CARREGA - CADASTROS
+             $.ajax({
+                url : '<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'listar-avaliacao-eleitores')); ?>',
+                data :
+                {
+                    //idSetoriais : '<//?php echo $this->arrIdSetoriais; ?>'
+                },
+                success: function(data){
+                    $('#resultado-pesquisa').html(data);
+                },
+                type : 'post'
+
+            });
+         
+        
+     }); //fecha document.read
+    
+</script>
+
+<form name="frmPesquisa" id="frmPesquisa" class="formulario" action="<?php echo $this->url(array('controller' => 'avaliacao', 'action' => 'index')); ?>"  method="POST">
+    <fieldset>
+        <legend>Filtro de Pesquisa</legend>
+        <table class="w900" cellpading="0" cellspacing="0">
+            <tr>
+                <td style="width: 30px">Nome:</td>
+                <td><input type="text" name="nome" id="nome" class="input_simples" value=""></td>
+                <td>CPF:</td>
+                <td><input type="text" name="cpf" id="cpf" class="input_simples" maxlength="14" value=""></td>
+                <td>Setorial:</td>
+                <td>
+                    <select name="setorial" id="setorial" class="input_simples">
+                        <option value="0">- Selecione -</option>
+                        <?php foreach ($this->setoriaisCombo as $setoriaisCombo) { ?>
+                        <option value="<?php echo $setoriaisCombo['id_setorial']; ?>"><?php echo $setoriaisCombo['vhr_nome']; ?></option>
+                    <?php } ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6" align="center">
+                    <input type="button" name="btn_pesquisar" id="btn_pesquisar" value="Pesquisar" class="btn">
+                    <input type="reset" name="btn_limpar" id="btn_limpar" value="Limpar" class="btn">
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</form>
+
+<div id="resultado-pesquisa"></div>

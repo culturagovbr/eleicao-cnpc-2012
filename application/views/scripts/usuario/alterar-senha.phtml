@@ -1,0 +1,67 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+       
+        $("#btn_salvar").click(function(){
+            novaSenha = $('#novaSenha').val();
+            confirmarSenha = $('#confirmarSenha').val();
+            if(novaSenha != confirmarSenha){
+                $("#erroSenha").dialog({
+                    title: 'Alerta',
+                    width: 360,
+                    height: 180,
+                    modal: true,
+                    draggable: false,
+                    resizable: false,
+                    closeOnEscape: false,
+                    buttons:
+                        {
+                        'OK': function(){
+                            $("#erroSenha").dialog("close");
+                        }
+                    }
+                });
+            } else {
+                $('#frmAlterarSenha').submit();
+            }
+        });
+        
+        $("#cancelar").click(function(){
+            redirecionar('<?php echo $this->url(array('controller' => 'inscricao', 'action' => 'form-inscricao', 'usu' => $this->usuario->id_usuario)); ?>');
+        });
+    });
+</script>
+
+<div id="erroSenha" style="display: none;">Senha de confirmação não confere.</div>
+<div>
+    <?php if ($this->bol_cadastroenviado): ?>
+        <p><center><h2>O seu cadastro já foi concluído e enviado com sucesso;</h2></center></p>
+    <?php endif; ?>
+</div>
+
+<form name="frmAlterarSenha" id="frmAlterarSenha" class="formulario" action="<?php echo $this->url(array('controller' => 'usuario', 'action' => 'salvar-nova-senha')); ?>"  method="POST">
+    <fieldset>
+        <legend>Alterar Senha</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td style="width: 150px">Senha Atual:</td>
+                <td><input type="password" name="senhaAtual" id="senhaAtual" class="input_simples" value=""></td>
+            </tr>
+            <tr>
+                <td>Nova Senha:</td>
+                <td><input type="password" name="novaSenha" id="novaSenha" class="input_simples" value=""></td>
+            </tr>
+            <tr>
+                <td>Confirmar Nova Senha:</td>
+                <td><input type="password" name="confirmarSenha" id="confirmarSenha" class="input_simples" value=""></td>
+            </tr>
+        </table>
+    </fieldset>
+    <table class="w800" cellpading="0" cellspacing="0" id="tblBotoes">
+        <tr>
+            <td class="centro">
+                <input type="button" name="btn_salvar" id="btn_salvar" value="Salvar" class="btn">&nbsp;&nbsp;
+                <input type="button" name="cancelar" id="cancelar" value="Cancelar" class="btn">&nbsp;&nbsp;<br />
+            </td>
+        </tr>
+    </table>
+</form>

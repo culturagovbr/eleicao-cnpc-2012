@@ -1,0 +1,164 @@
+<script>
+    $(document).ready(function(){
+        
+        /*$('body').find('.campos').each(function(){
+            $(this).attr("disabled", "true");
+        });
+        $('body').find('.apagarAnexo').each(function(){
+            $(this).remove();
+        });*/
+        $('#vhr_cpf').mask('999.999.999-99');
+        $('#dte_nascimento').mask('99/99/9999');
+        
+		
+        $("#salvar_atualizacao").click(function(){
+            
+            $("#msgError").html('');
+
+            /*
+            var n = $("input:radio[name='rd_avaliacao_fase1_eleitor']:checked").length;
+            
+            if(n <= 0){
+                $("#msgError").html("<font class='red'><b>Campos obrigatório não informados.</b></font>");
+                return false;
+            } 
+            if($("#obs_validacao_fase1_eleitor").val() == ""){
+                $("#msgError").html("<font class='red'><b>Campos obrigatório não informados.</b></font>");
+                return false;
+            }
+            */
+                
+            $("#msgError").html('');
+            $(this).replaceWith("<center><font color='blue'>Aguarde, salvando informações...<br><img src='<?php echo $this->baseUrl(); ?>/public/img/ajax.gif' /></font></center>");
+            $("#frmAtualizarInformacoes").submit();
+
+	});
+    }); //fecha $('document').ready
+
+    function abrirDinamico(elemento, obj) {
+        
+        if($(elemento).css('display') == 'none') {
+            
+            $(elemento).fadeIn('fast', function() {
+                
+                if($(elemento).html() == ''){
+                    
+                    var idCadastro = $(obj).attr('id_cadastro');
+                    
+                    $.ajax({
+                        async: true,
+                        type: "post",
+                        url:'<?php echo $this->url(array('controller' => 'recurso', 'action' => 'form-visualizacao-avaliacao')); ?>',
+                        data:{
+                            idCadastro:idCadastro
+                        },
+                        beforeSend: function(){
+                            $(elemento).html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+                        },
+                        success: function(data)
+                        {
+                            $(elemento).html(data);
+                        }
+                    });
+                }
+                $('img', $(obj)).attr('src','<?php echo $this->baseUrl(); ?>/public/img/navigation-baixo.PNG');
+            });
+        } else {
+            $(elemento).fadeOut('fast', function() {
+                $('img', $(obj)).attr('src','<?php echo $this->baseUrl(); ?>/public/img/navigation-right.png');
+            });
+        }
+    }
+</script>
+<br>
+<fieldset style="width: 1000px;">
+    <legend>Dados do Inscrito</legend>
+    <table style="width: 980px;" cellpading="0" cellspacing="0">
+        <tr>
+            <td style="vertical-align: top;" width="33%" nowrap>Nome: <br /><h1 class="green" style="margin-top: 5px; font-size: 12pt; "><?php echo $this->dadosCadastro->vhr_nome; ?></h2></td>
+            <td style="vertical-align: top;" width="33%" nowrap>CPF: *<br /><h1 class="green" style="margin-top: 5px; font-size: 12pt; "><?php echo aplicaMascara($this->dadosCadastro->vhr_login,'999.999.999-99'); ?></h1></td>
+            <td style="vertical-align: top;" width="33%">Setorial: *<br /><h1 class="green" style="margin-top: 5px; font-size: 12pt; "><?php echo $this->dadosCadastro->nomeSetorial; ?></h1></td>
+        </tr>
+        <tr>
+            <td colspan="3" ></td>
+        </tr>
+        <tr onclick="abrirDinamico('#dadosAvaliacao', $(this))" style="cursor:pointer" id_cadastro="<?php echo $this->dadosCadastro->id_cadastro; ?>">
+            <td colspan="3" class="bg_linha_grid3">
+                <img src="<?php echo $this->baseUrl();?>/public/img/navigation-right.png" id="imgDinamica" align="left" />&nbsp;<b class="green">Visualizar Avaliação do formulário de inscrição</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div id="dadosAvaliacao" style="display: none"></div>
+            </td>
+        </tr>    
+        <tr>
+            <td colspan="3" ></td>
+        </tr>
+    </table>
+</fieldset>
+<form name="frmAtualizarInformacoes" id="frmAtualizarInformacoes" class="formulario" action="<?php echo $this->url(array('controller' => 'recurso', 'action' => 'salvar-atualizacao-informacoes-recurso')); ?>"  method="POST">
+    <input type="hidden" name="int_tipocadastro" id="int_tipocadastro" value="<?php echo $this->dadosCadastro->int_tipocadastro;?>">
+    <input type="hidden" name="idUsuarioAvaliador" id="idUsuarioAvaliador" value="<?php echo $this->idUsuarioAvaliador;?>">
+    <input type="hidden" name="idRecurso" id="idRecurso" value="<?php echo $this->dadosRecurso->id_recurso;?>">
+    <fieldset style="width: 1000px;">
+        <legend>Dados do Recurso</legend>
+        <table class="w900" cellpading="0" cellspacing="0">
+            <tr>
+                <td style="padding: 0px; margin: 0px;">
+                    <table style="width: 100%" cellpading="0" cellspacing="0">
+                    <tr>
+                        <td style="vertical-align: top" nowrap>
+                            <b>Descrição de motivos:</b><br>
+                            <textarea name="txt_recurso" id="txt_recurso" class="input_simples" rows="20" cols="100" readonly=""><?php echo ($this->dadosRecurso->vhr_recurso);?></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top;" nowrap>
+                            <b>Arquivos enviados:</b><br /><br />
+                            <table style="width: 100%;" cellpading="0" cellspacing="0">
+                                <?php if(count($this->dadosAnexoRecurso) > 0):  ?>
+                                    <?php foreach($this->dadosAnexoRecurso as $anexo):  ?>
+                                    <tr>
+                                        <td style="width: 5%" nowrap>Nome do documento:</td>
+                                        <td style="width: 25%" class="green"><b><?php echo $anexo['nomeArquivo'];?></b></td>
+                                        <td style="width: 30%">
+                                            <strong>Anexo</strong>: <a href="<?php echo $anexo['linkAcesso'];?>" target="_blank"><spam style="color:blue; font-size: 9pt;">baixar arquivo</spam></a>
+                                        </td>
+                                        <td style="width: 30%">
+                                            <strong>Tipo do arquivo</strong>:
+                                            <select name="sltTipoArquivo_<?php echo $anexo['id_anexo_recurso'];?>" id="sltTipoArquivo_<?php echo $anexo['id_anexo_recurso'];?>" class="input_simples">
+                                                <option value="">- Selecione - </option>
+                                                <?php foreach($this->tipoArquivos as $id_item => $arquivo): ?>
+                                                    <option value="<?php echo $anexo['id_anexo_recurso']."_".$id_item;?>" <?php echo ($id_item == $anexo['id_item']) ? "selected" : null;?>><?php echo $arquivo;?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                 <?php else: ?>
+                                    <tr>
+                                        <td colspan="4"><i>Não foram enviados anexos.</i></td>
+                                    </tr>
+                                 <?php endif; ?>
+                            </table>
+                        </td>
+                    </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <center><div id="msgError" class="red" style="margin-left: 25px;width: 1000px; font-size: 13px;"></div></center>
+    <fieldset style="width: 1000px;">
+        <legend style="padding: 7px"></legend>
+        <table cellpading="0" cellspacing="0" style="width: 980px; background-color: #e2e2e2; margin-top: 3px; margin-bottom: 10px">
+            <tr>
+                <td class="centro" colspan="2"><input type="button" name="salvar_atualizacao" id="salvar_atualizacao" value="Salvar atualização" class="btn" style="width: 220px;"></td>
+            </tr>
+        </table>
+     </fieldset>
+</form>
+<!-- SALVAR - AVALIACAO DE CANDIDATO DO PRESIDENTE -->
+<br /><br /><br /><br />

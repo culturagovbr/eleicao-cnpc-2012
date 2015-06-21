@@ -1,0 +1,18 @@
+<?php header("Content-Type: text/html; charset=ISO-8859-1"); ?>
+<div id="resultadoPesquisa">
+    <fieldset>
+        <legend>Total de Votos Registrados</legend>
+        <br />
+        <table  style="width: 650px; border: 1px #ccc solid" cellpadding="0" cellspacing="1">
+            <tr class="bg_title_grid">
+                <td width="45%" class="centro">Total de Eleitores Validados</td>
+                <td width="55%" class="centro">Total de Votos Registrados (até o momento)</td>
+            </tr>
+            <tr>
+                <td class="centro"><?php echo $this->totalEleitores;?></td>
+                <td class="centro"><?php echo $this->totalVotos;?></td>
+            </tr>
+        </table>
+        <br />
+    </fieldset>
+</div>

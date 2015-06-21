@@ -1,0 +1,109 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+       
+        $("#btn_enviar").click(function(){
+            novaSenha = $('#novaSenha').val();
+            confirmarSenha = $('#confirmarSenha').val();
+            if(novaSenha != confirmarSenha){
+                $("#erroSenha").dialog({
+                    title: 'Alerta',
+                    width: 360,
+                    height: 180,
+                    modal: true,
+                    draggable: false,
+                    resizable: false,
+                    closeOnEscape: false,
+                    buttons:
+                        {
+                        'OK': function(){
+                            $("#erroSenha").dialog("close");
+                        }
+                    }
+                });
+            } else {
+                $('#frmAlterarSenha').submit();
+            }
+        });
+        
+        $('#cancelar').click(function(){
+            redirecionar('<?php echo $this->url(array('controller' => 'login', 'action' => 'index')); ?>');
+        });
+        
+        $("#cpf").mask('999.999.999-99');
+        $("#dtNascimento").mask('99/99/9999');
+        
+        $("#frmRecuperarSenha").validate({
+            // Define as regras
+            rules:{
+                cpf:{
+                    // campoCPF será obrigatório (required) e terá tamanho mínimo (minLength)
+                    required: true, 
+                    minlength: 14,
+                    verificaCPF: true
+                },
+                email:{
+                    // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
+                    required: true,
+                    email : true
+                }/*,
+                dtNascimento:{
+                    required: true 
+                    /*minlength: 6*
+                }*/
+
+            },
+            // Define as mensagens de erro para cada regra
+            messages:{
+                cpf:{
+                    required: "<br />O campo CPF é obrigatório",
+                    minlength: "<br />O CPF deve conter no mínimo 11 caracteres",
+                    verificaCPF: "<br />CPF inv&aacute;lido"
+                },
+                email:{
+                    required: "<br />O campo Email é obrigatório",
+                    email: "<br />Email inv&aacute;lido"
+                }/*,
+                dtNascimento:{
+                    required: "<br />O campo Data de Nascimento é obrigatório"
+                }*/
+            }
+                            
+        });
+        
+    });
+</script>
+
+<div id="erroSenha" style="display: none;">Senha de confirmação não confere.</div>
+<div>
+    <?php if ($this->bol_cadastroenviado): ?>
+        <p><center><h2>O seu cadastro já foi concluído e enviado com sucesso;</h2></center></p>
+    <?php endif; ?>
+</div>
+
+<form name="frmRecuperarSenha" id="frmRecuperarSenha" class="formulario" action="<?php echo $this->url(array('controller' => 'login', 'action' => 'recuperar-senha-validacao')); ?>"  method="POST">
+    <fieldset>
+        <legend>Recuperar Senha</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td>CPF: *</td>
+                <td><input type="text" name="cpf" id="cpf" class="input_simples" maxlength="14" value=""></td>
+            </tr>
+            <tr>
+                <td style="width: 150px">Email: *</td>
+                <td><input type="text" name="email" id="email" class="input_simples" value=""></td>
+            </tr>
+            <!--<tr>
+                <td>Data de Nascimento: *</td>
+                <td><input type="text" name="dtNascimento" id="dtNascimento" class="input_simples" value=""></td>
+            </tr>-->
+        </table>
+    </fieldset>
+    <table class="w800" cellpading="0" cellspacing="0" id="tblBotoes">
+        <tr>
+            <td class="centro">
+                <input type="submit" name="btn_enviar" id="btn_enviar" value="Enviar" class="btn">&nbsp;&nbsp;
+                <input type="button" name="cancelar" id="cancelar" value="Cancelar" class="btn">&nbsp;&nbsp;<br />
+            </td>
+        </tr>
+    </table>
+</form>

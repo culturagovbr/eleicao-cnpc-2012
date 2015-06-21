@@ -1,0 +1,100 @@
+<script>
+    $(document).ready(function(){
+        
+        
+    }); //fecha $('document').ready
+    
+</script>
+<br>
+    <table class="w900" cellpading="0" cellspacing="0" style="background-color: #fff; height: 400px; font-size: 11px">
+        <!--<tr>
+            <td colspan="3" class="centro">
+                <br>
+                <img src="<?php echo $this->baseUrl(); ?>/public/img/logo-cnpc.gif"><br><br>
+            </td>
+        </tr>-->
+        <?php //if($this->usuario->id_perfil > 1): ?>
+        <tr class="" style="background-color: #fff">
+            <?php if($this->usuario->id_perfil > 1): ?>
+            <td class="centro">
+                <a href="<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'inscritos-por-estado')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-relatorios.png" style="width: 60px;"><br>
+                    <span style="font-weight: bold;">Relação de Inscritos <br>por Estado</span>
+                </a>
+            </td>
+            <?php endif; ?>
+            <?php if($this->usuario->id_perfil > 1): ?>
+            <td class="centro">
+                <a href="<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'inscritos-validados-invalidados-por-estado')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-relatorios.png" style="width: 60px;"><br>
+                    <span style="font-weight: bold;">Relação de Inscritos <br>Validados e Não Validados por Estado</span>
+                </a>
+            </td>
+            <td class="centro">
+                <a href="<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'total-inscritos-validados-invalidados')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-relatorios.png" style="width: 60px;"><br>
+                    <span style="font-weight: bold;">Total de Inscritos <br>Validados e Não Validados</span>
+                </a>
+            </td>
+            <?php endif; ?>
+        </tr>
+        <?php if($this->usuario->id_perfil > 1): ?>
+        <tr>
+            <td class="centro">
+                <a href="<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'avaliacao-inscritos')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-relatorios.png" style="width: 60px;"><br>
+                    <span style="font-weight: bold;">Relatório de Avaliação <br />de Inscritos</span>
+                </a>
+            </td>
+            <td class="centro">
+                <a href="<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'recursos-solicitados')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-relatorios.png" style="width: 60px;"><br>
+                    <span style="font-weight: bold;">Relação de Recursos <br>Solicitados</span>
+                </a>
+            </td>
+            <td class="centro">
+                <a href="<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'total-recursos-solicitados')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-relatorios.png" style="width: 60px;"><br>
+                    <span style="font-weight: bold;">Total de Recursos <br>Solicitados</span>
+                </a>
+            </td>
+        </tr>
+        <?php endif; ?>
+        <tr>
+            <td class="centro">
+                <a href="<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'eleitores-validados-por-estado')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-relatorios.png" style="width: 60px;"><br>
+                    <span style="font-weight: bold;">Relação de Eleitores <br>Validados por Estado </span>
+                </a>
+            </td>
+            <td class="centro">
+                <a href="<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'candidatos-validados-por-estado')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-relatorios.png" style="width: 60px;"><br>
+                    <span style="font-weight: bold;">Relação de Candidatos <br>Validados por Estado</span>
+                </a>
+            </td>
+        <?php if($this->usuario->id_perfil > 1): ?>
+            <td class="centro">
+                <!--<a href="<//?php echo $this->url(array('controller' => 'relatorios', 'action' => 'total-inscritos-validados-por-estado')); ?>">-->
+                <a href="#">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-relatorios.png" style="width: 60px;"><br>
+                    <span style="font-weight: bold; color: #CCC;">Total de Inscritos <br> Validados por Estado</span>
+                </a>
+            </td>
+        <?php endif; ?>
+        </tr>
+        <tr>
+            <td class="centro">
+                <a href="<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'acompanhamento-votacao')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-relatorios.png" style="width: 60px;"><br>
+                    <span style="font-weight: bold;">Acompanhar Votação por <br />Setorial e Estado</span>
+                </a>
+            </td>
+            <td class="centro">
+                <a href="<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'total-de-votos-registrados')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-relatorios.png" style="width: 60px;"><br>
+                    <span style="font-weight: bold;">Total de Votos Registrados</span>
+                </a>
+            </td>
+        </tr>
+    </table>

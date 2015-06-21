@@ -1,0 +1,33 @@
+<?php header("Content-Type: text/html; charset=ISO-8859-1"); ?>
+<script>
+  
+</script>
+<?php if($this->comentarios->count() <= 0): ?>
+&nbsp;&nbsp;<div><em>Nenhum comentário postado.</em></div><br>
+<?php else : ?>
+    <?php foreach($this->comentarios as $comentario): ?>
+    <div style="padding-left: 30px;">
+        <div>
+            <em style="font-size: 11px;">Em: <?php echo date("d/m/Y H:i",strtotime($comentario->dte_comentario)); ?></em><br>
+            <div style="width: 99%;
+                 height: 20px;
+                 padding: 5px;
+                 background-color: <?php if($comentario->tipocadastro_final==1){ echo '#e8e8e8';}
+                                         if($comentario->tipocadastro_final==2){ echo '#DFE2D5';}
+                                         if($comentario->tipocadastro_final!=1 && $comentario->tipocadastro_final!=2){ echo '#e8e8e8';};?>">
+
+                <b style="font-size: 13px;"><?php echo $comentario->nome_usuario; ?></b> disse:
+
+                <div style="float: right;"><?php //if($this->id_perfil == '1'){
+                                                    if($comentario->tipocadastro_final==1){ echo '[inscrito]';}
+                                                    if($comentario->tipocadastro_final==2){ echo '[candidato]';}
+                                                 //}
+                                                 ?></div>
+            </div>
+        </div>
+        <div>
+            <span style="color:#888; font-size: 14px;"><?php echo nl2br($comentario->vhr_comentario); ?></span>
+        </div>
+    </div><br />
+    <?php endforeach;?>
+<?php endif; ?>

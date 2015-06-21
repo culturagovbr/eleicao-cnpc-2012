@@ -1,0 +1,108 @@
+<!--
+/**
+ * Folha de estilo do sistema para impressão
+ * @author Equipe RUP
+ * @since 08/06/2010
+ * @version 1.0
+ * @copyright © 2010 Politec - Todos os direitos reservados.
+ * @package css
+ * @link http://www.politec.com.br
+ */
+
+#barraSuperior, #atalhos, #logo, #navglobal, #menu, #container, #menuContexto, #breadcrumb, #rodapeConteudo, #rodape, 
+#dialog-valor, #titulo, .qmactive, #menuContainer, ul.fg-menu-footer, 
+.btn_editar, .btn_excluir, .btn_off, .btn_on, .btn_senha, .btn_visualizar, 
+.btn_adicionar, .btn_cadastrar, .btn_alterar, .btn_incluir, .btn_cancelar, .btn_imprimir, 
+.btn_pdf, .btn_excluir_tudo, .btn_enviar, .btn_buscar, .btn_localizar, .btn_limpar, 
+.btn_marcar, .btn_desmarcar, .btn_p_anterior, .btn_p_proximo, .btn_p_anterior-off, .btn_p_proximo-off, 
+.btn_p_pri_pag, .btn_p_ult_pag, .btn_ok, .btn_sim, .btn_nao, .btn_sair, 
+.btn_ord_up, .btn_ord_down, .btn_salvar, .btn_confirmar, .btn_gerar_grafico,
+.btn_inicio, .btn_montarconsulta, .btn_novo, .btn_ordenar, .btn_recarregar,
+.btn_resumo, .btn_ultimo, .btn_voltar, .btn_pesquisar,
+.btn_abrir, .btn_ver, .btn_avaliar, .btn_aprovar, .btn_perfil,
+.carregando, .msg, .msgALERT, .msgCONFIRM, .msgERROR,
+.btn_close, .btn_help, .btn, #btn_down, #btn_up,
+#barraBotoes {
+	display:none;
+}
+table, .tabela, .busca, #miolo {
+	padding:0;
+	margin:0 auto;
+	border:0;
+}
+#miolo fieldset {
+	border:1px solid #d4d4d4;
+	padding:5px;
+	margin-bottom:0;
+}
+body {
+	background:#fff;
+	font:11px Arial, Verdana, Helvetica, sans-serif;
+	color:#000;
+	line-height:auto;
+}
+p {
+	line-height:auto;
+	padding:0;
+}
+#Jquery {
+	margin:0;
+}
+#conteudo {		
+	border-left:0;
+	background:#fff;
+}
+#conteudo h1,h2,h3,h4,h5,h6 {
+	margin-bottom:10px;
+	font-weight:normal; 
+	color:#435f20;	
+}
+table {
+	margin:0 auto;
+	background:#ccc;
+}
+table td {
+	background:url(../img/bg-celulas.gif) repeat-x #fff;
+	padding:8px;
+	color:auto;
+}
+table tr.linha:hover td {
+	background:#EEF8DE;
+}
+table td a {
+	color:#333 !important;
+}
+table th { 
+	background:#ABDA5D;
+	padding:8px; 
+	color:#3A7300; 
+	text-transform:uppercase; 
+	font-size:11px;
+}
+table tfoot td { 
+	background:#f3f3f3; 
+	text-align:center;
+	word-spacing:.8em;
+	color:#999;
+	border-top:1px solid #fff;
+	border-bottom:1px solid #b0b0b0;
+}
+tfoot td a { 
+	text-decoration:none !important; 
+	color:#999 !important; 
+}
+table tfoot td img { 
+	position:relative; 
+	top:3px; 
+}
+table tfoot td strong {
+	color:#333;
+}
+.tabela { /* tamanho de tabelas com registros */
+	margin:10px auto;
+	width:80%;
+}
+.tabela_busca { /* tabela para consulta de dados centralizada na tela */
+	margin:10px auto;
+}
+-->

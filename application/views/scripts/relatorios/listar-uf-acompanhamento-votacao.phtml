@@ -1,0 +1,51 @@
+<?php header("Content-Type: text/html; charset=ISO-8859-1"); ?>
+<script>
+    $(document).ready(function(){
+
+        $('.linhaUF').click(function(){
+            var idLinha = $(this).attr("id");
+            var idSetorial = $(this).attr("setorial");
+            
+            $("#linhaUF_"+idLinha).toggle();
+            
+            
+            if($("#resultadoPorEstado_"+idLinha).html() == ""){
+                $.ajax({
+                    url : '<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'listar-acompanhamento-votacao')); ?>',
+                    beforeSend: function() {
+                        $("#resultadoPorEstado_"+idLinha).html('');
+                        $("#resultadoPorEstado_"+idLinha).html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+                    },
+                    data :
+                        {
+                        uf : idLinha,
+                        idSetorial : idSetorial
+                    },
+                    success: function(data){
+                        $('#resultadoPorEstado_'+idLinha).html(data);
+                    },
+                    type : 'post'
+                });
+            }
+        });
+
+     }); //fecha document.read
+
+</script>
+<table  style="width: 780px;" cellpadding="0" cellspacing="1" >
+    <tr class="bg_title_grid">
+        <td width="20%">Estado</td>
+    </tr>
+    <?php $ct=1; foreach ($this->arrUF as $uf): $bg =($ct%2)? "bg_linha_grid1": "bg_linha_grid2"; ?>
+    <tr class="linhaUF <?php echo $bg;?>" id="<?php echo $uf;?>" setorial="<?php echo $this->idSetorial;?>" style="cursor: pointer;">
+        <td><b><?php echo $uf;?></b></td>
+    </tr>
+    <tr style="display: none" id="linhaUF_<?php echo $uf;?>">
+        <td colspan="4" style="padding-left: 40px; margin-right: 0px; padding-right: 0px;">
+            <div id="resultadoPorEstado_<?php echo $uf;?>"></div>
+        </td>
+    </tr>
+    <?php $ct++; endforeach; ?>
+    <tr><td colspan="4"></td></tr>
+</table>
+<br>

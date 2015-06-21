@@ -1,0 +1,153 @@
+<?php header("Content-Type: text/html; charset=ISO-8859-1"); ?>
+<script type="text/javascript">
+    $(document).ready(function(){
+        
+        $("#cpf").mask('999.999.999-99');
+        
+        $('#btn_pesquisar').click(function(){
+            
+            var nome = $('#nome').val(),
+                cpf = $('#cpf').val(),
+                setorial = $('#setorial').val(),
+                tipoInscricao = $('#tipoInscricao').val(),
+                uf = $('#uf').val(),
+                avaliacaoPresidente = $('#avaliacaoPresidente').val();
+                
+                $("#resultado-pesquisa").html("");
+                $('#resultado-pesquisa').html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+                $.ajax({
+                    url : '<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'listar-avaliacao-inscritos')); ?>',
+                    data :
+                        {
+                        nome : nome,
+                        cpf: cpf,
+                        setorial : setorial,
+                        tipoInscricao : tipoInscricao,
+                        uf : uf,
+                        avaliacaoPresidente : avaliacaoPresidente
+                        //idSetoriais : '<//?php echo $this->arrIdSetoriais; ?>'
+                    },
+                    success: function(data){
+                        $('#resultado-pesquisa').html(data);
+                    },
+                    type : 'post'
+
+                });
+        });
+        
+        $('#btn_limpar').click(function(){
+            $("#resultado-pesquisa").html("");
+            $('#resultado-pesquisa').html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+            $.ajax({
+                url : '<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'listar-avaliacao-inscritos')); ?>',
+                data :
+                {
+                },
+                success: function(data){
+                    $('#resultado-pesquisa').html(data);
+                },
+                type : 'post'
+            });
+        });
+        
+        $("#resultado-pesquisa").html("");
+        $('#resultado-pesquisa').html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+        $.ajax({
+            url : '<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'listar-avaliacao-inscritos')); ?>',
+            data :
+            {
+            },
+            success: function(data){
+                $('#resultado-pesquisa').html(data);
+            },
+            type : 'post'
+        });
+     }); //fecha document.read
+    
+</script>
+
+<div id="setoriaisUsuario" style="display: none;"></div>
+
+<form name="frmPesquisa" id="frmPesquisa" class="formulario" action="<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'listar-avaliacao-inscritos')); ?>"  method="POST">
+    <fieldset style="width: 1000px;">
+        <legend>Filtro de Pesquisa</legend>
+        <table  style="width: 1000px;" cellpading="0" cellspacing="0">
+            <tr>
+                <td style="width: 30px">Nome:</td>
+                <td><input type="text" name="nome" id="nome" class="input_simples" value=""></td>
+                <td>CPF:</td>
+                <td><input type="text" name="cpf" id="cpf" class="input_simples" maxlength="14" value=""></td>
+                <td>Setorial:</td>
+                <td>
+                    <select name="setorial" id="setorial" class="input_simples">
+                        <option value="0">- Selecione -</option>
+                        <?php foreach ($this->setoriais as $setoriaisCombo) { ?>
+                        <option value="<?php echo $setoriaisCombo['id_setorial']; ?>"><?php echo $setoriaisCombo['vhr_nome']; ?></option>
+                    <?php } ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 30px">Tipo de Inscrição:</td>
+                <td>
+                    <select name="tipoInscricao" id="tipoInscricao" class="input_simples">
+                        <option value="0">- Selecione -</option>
+                        <option value="1">Eleitor</option>
+                        <option value="2">Candidato</option>
+                    </select>
+                </td>
+                <td>UF:</td>
+                <td>
+                    <select name="uf" id="uf" class="input_simples">
+                        <option value="" selected="">- Selecione -</option>
+                        <option value="AC">AC</option>
+                        <option value="AL">AL</option>
+                        <option value="AM">AM</option>
+                        <option value="AP">AP</option>
+                        <option value="BA">BA</option>
+                        <option value="CE">CE</option>
+                        <option value="DF">DF</option>
+                        <option value="ES">ES</option>
+                        <option value="GO">GO</option>
+                        <option value="MA">MA</option>
+                        <option value="MG">MG</option>
+                        <option value="MS">MS</option>
+                        <option value="MT">MT</option>
+                        <option value="PA">PA</option>
+                        <option value="PB">PB</option>
+                        <option value="PE">PE</option>
+                        <option value="PI">PI</option>
+                        <option value="PR">PR</option>
+                        <option value="RJ">RJ</option>
+                        <option value="RN">RN</option>
+                        <option value="RO">RO</option>
+                        <option value="RR">RR</option>
+                        <option value="RS">RS</option>
+                        <option value="SC">SC</option>
+                        <option value="SE">SE</option>
+                        <option value="SP">SP</option>
+                        <option value="TO">TO</option>
+                        <option value="-1">Outros</option>
+                    </select>
+                </td>
+                <td>Avaliação do Presidente:</td>
+                <td>
+                    <select name="avaliacaoPresidente" id="avaliacaoPresidente" class="input_simples">
+                        <option value="-1">- Selecione -</option>
+                        <option value="1">Validado</option>
+                        <option value="0">Não Validado</option>
+                        <option value="3">Não avaliado</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6" align="center">
+                    <input type="button" name="btn_pesquisar" id="btn_pesquisar" value="Pesquisar" class="btn">
+                    <input type="reset" name="btn_limpar" id="btn_limpar" value="Limpar" class="btn">
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</form>
+
+<div id="resultado-pesquisa"  style="width: 1000px;"></div>

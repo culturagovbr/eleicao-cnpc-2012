@@ -1,0 +1,53 @@
+<?php
+/**
+ * Tipos de solicitações dos recursos
+ * @author emanuel.sampaio - Politec
+ * @since 12/03/2011
+ * @version 1.0
+ * @package application
+ * @subpackage application.view.helpers
+ * @copyright © 2011 - Ministério da Cultura - Todos os direitos reservados.
+ * @link http://www.cultura.gov.br
+ */
+
+class Zend_View_Helper_TipoSolicitacaoRecurso
+{
+	/**
+	 * Método com os tipos de solicitações dos recursos
+	 * @access public
+	 * @param string $tp
+	 * @return string
+	 */
+	public function tipoSolicitacaoRecurso($tp)
+	{
+		$tp = trim($tp);
+
+		if ($tp == 'PI')
+		{
+			$ds = "Projeto Indeferido";
+		}
+		else if ($tp == 'EN')
+		{
+			$ds = "Projeto Aprovado - Enquadramento";
+		}
+		else if ($tp == 'OR')
+		{
+			$ds = "Projeto Aprovado - Orçamento";
+		}
+		else if ($tp == 'PP')
+		{
+			$ds = "Prorrogação de Prazo de Captação";
+		}
+		else if ($tp == 'PE')
+		{
+			$ds = "Prorrogação de Prazo de Execução";
+		}
+		else if ($tp == 'PC')
+		{
+			$ds = "Prestação de Contas";
+		}
+
+		return $ds;
+	} // fecha método tipoSolicitacaoRecurso()
+
+} // fecha class

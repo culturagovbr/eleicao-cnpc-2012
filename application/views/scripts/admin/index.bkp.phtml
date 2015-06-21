@@ -1,0 +1,57 @@
+<script>
+    $(document).ready(function(){
+        
+        
+    }); //fecha $('document').ready
+    
+</script>
+<br>
+    <table class="w900" cellpading="0" cellspacing="0" style="background-color: #fff; height: 400px;">
+        <tr>
+            <td colspan="3" class="centro">
+                <br>
+                <img src="<?php echo $this->baseUrl(); ?>/public/img/logo-cnpc.gif"><br><br>
+            </td>
+        </tr>
+        <?php if($this->usuario->id_perfil > 1): ?>
+        <tr class="destacar">
+            <td class="centro">
+            <?php if($this->usuario->id_perfil == 2 || $this->usuario->id_perfil == 3 || $this->usuario->id_perfil == 4):?>
+                <a href="<?php echo $this->url(array('controller' => 'avaliacao', 'action' => 'index')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-avaliar-cadastro.png"><br>
+                    <span style="font-size: 12pt; font-weight: bold;">Avaliar Cadastro</span>
+                </a>
+            <?php else: ?>
+                <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-avaliar-cadastro-off.png"><br>
+                <span style="font-size: 12pt; font-weight: bold;">Avaliar Cadastro</span>
+            <?php endif; ?>
+            </td>
+            <td class="centro">
+            <?php if($this->usuario->id_perfil == 4):?>
+                <a href="<?php echo $this->url(array('controller' => 'usuario', 'action' => 'index')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-cadastrar-usuario.png"><br>
+                    <span style="font-size: 12pt; font-weight: bold; ">Manter Usuários</span>
+                </a>
+            <?php else: ?>
+                <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-cadastrar-usuario-off.png"><br>
+                <span style="font-size: 12pt; font-weight: bold; ">Manter Usuários</span>
+            <?php endif; ?>
+            </td>
+            <td class="centro">
+                <a href="<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'index')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-relatorios.png"><br>
+                    <span style="font-size: 12pt; font-weight: bold; ">Relatórios</span>
+                </a>
+            </td>
+        </tr>
+        <?php else: ?>
+        <tr class="destacar">
+            <td class="centro">
+                <a href="<?php echo $this->url(array('controller' => 'recurso', 'action' => 'index')); ?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-relatorios.png"><br>
+                    <span style="font-size: 12pt; font-weight: bold; ">Solicitar recurso</span>
+                </a>
+            </td>
+        </tr>
+        <?php endif; ?>
+    </table>

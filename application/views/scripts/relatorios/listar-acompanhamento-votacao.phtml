@@ -1,0 +1,51 @@
+<?php header("Content-Type: text/html; charset=ISO-8859-1"); ?>
+<script>
+
+</script>
+<?php if(empty($this->habilitado)): ?>
+    <center><em>Não haverá eleição para delegados nesta Setorial/UF</em></center>
+<?php else: ?>
+    <?php if(count($this->dados)<=0): ?>
+        <center><em>Não haverá eleição para delegados nesta Setorial/UF</em></center>
+    <?php else: ?>
+        <?php foreach($this->dados as $registro): ?>
+            <table  style="width: 500px; border: 1px #ccc solid;" cellpadding="0" cellspacing="3">
+                <tr class="bg_title_grid">
+                    <td colspan="2">Candidatos</td>
+                </tr>
+                <tr>
+                    <td class="bg_linha_grid3" width="60%">Qtde. de Candidatos</td>
+                    <td class="centro" style="font-weight: bold;" width="40%"><?php echo (isset($registro->candidatos) && !empty($registro->candidatos)) ? $registro->candidatos : 0;?></td>
+                </tr>
+                <tr>
+                    <td class="bg_linha_grid3" nowrap>Qtde. de Candidatos que receberam votos </td>
+                    <td class="centro" style="font-weight: bold;"><?php echo (isset($registro->candidatos_votados) && !empty($registro->candidatos_votados)) ? $registro->candidatos_votados : 0;?></td>
+                </tr>
+                <tr>
+                    <td class="bg_linha_grid3">Qtde. de Candidatos que não receberam votos</td>
+                    <td class="centro" style="font-weight: bold;"><?php echo (isset($registro->candidatos) && !empty($registro->candidatos)) ? (int)$registro->candidatos - (int)$registro->candidatos_votados : 0;?></td>
+                </tr>
+                <tr class="bg_title_grid">
+                    <td width="20%" colspan="2">Eleitores</td>
+                </tr>
+                <tr>
+                    <td class="bg_linha_grid3">Qtde. de Eleitores</td>
+                    <td class="centro" style="font-weight: bold;"><?php echo (isset($registro->eleitores) && !empty($registro->eleitores)) ? $registro->eleitores : 0;?></td>
+                </tr>
+                <tr>
+                    <td class="bg_linha_grid3">Qtde. de Eleitores que votaram</td>
+                    <td class="centro" style="font-weight: bold;"><?php echo (isset($registro->eleitores_votantes) && !empty($registro->eleitores_votantes)) ? $registro->eleitores_votantes : 0;?></td>
+                </tr>
+                <tr>
+                    <td class="bg_linha_grid3">Qtde. de Eleitores que faltam votar</td>
+                    <td class="centro" style="font-weight: bold;"><?php echo (isset($registro->eleitores) && !empty($registro->eleitores)) ? (int)$registro->eleitores - (int)$registro->eleitores_votantes : 0;?></td>
+                </tr>
+                <tr>
+                    <td class="bg_linha_grid3">Qtde. de votos nulos</td>
+                    <td class="centro" style="font-weight: bold;"><?php echo (isset($registro->votos_nulos) && !empty($registro->votos_nulos)) ? $registro->votos_nulos : 0;?></td>
+                </tr>
+            </table>
+        <?php endforeach; ?>
+    <?php endif; ?>
+<?php endif; ?>
+<br>

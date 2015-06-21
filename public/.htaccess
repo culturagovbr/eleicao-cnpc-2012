@@ -1,0 +1,8 @@
+#RewriteEngine off
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} !^http://cnpc.cultura.gov.br/.*$ [NC]  #este site está liberado a usar
+RewriteRule .*\.(jpg|jpeg|gif|png|bmp|php|js|swf|pdf)$ – [F,NC]
+Options -Indexes
+<Files ~ "^\.(htaccess|htpasswd)$">
+  deny from all
+</Files>

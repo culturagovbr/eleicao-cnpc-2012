@@ -1,0 +1,90 @@
+<?php header("Content-Type: text/html; charset=ISO-8859-1"); ?>
+<script>
+    $(document).ready(function(){
+
+        $('.linhaUF').click(function(){
+            var idLinha = $(this).attr("id");
+            var idSetorial = $(this).attr("setorial");
+
+            $("#linhaUF_"+idLinha).toggle();
+
+
+            if($("#resultadoNomesPorEstado_"+idLinha).html() == ""){
+                $.ajax({
+                    url : '<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'listar-inscritos-por-estado')); ?>',
+                    beforeSend: function() {
+                        $("#resultadoNomesPorEstado_"+idLinha).html('');
+                        $("#resultadoNomesPorEstado_"+idLinha).html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+                    },
+                    data :
+                        {
+                        uf : idLinha,
+                        idSetorial : idSetorial
+                    },
+                    success: function(data){
+                        $('#resultadoNomesPorEstado_'+idLinha).html(data);
+                    },
+                    type : 'post'
+                });
+            }
+        });
+
+     }); //fecha document.read
+
+</script>
+<table  style="width: 780px;" cellpadding="0" cellspacing="1" >
+    <tr class="bg_title_grid">
+        <td width="40%">Estado</td>
+        <td width="60%" nowrap>Total de Candidatos validados</td>
+    </tr>
+    <?php $totalSetorial=0; if(count($this->arrUF) <= 0): ?>
+        <tr>
+            <td colspan="2" class="centro"><em>Não foram encontradas informações para esta Setorial.</em></td>
+        </tr>
+    <?php else: ?>
+        <?php $sigla = null; $ct=1; $ct2=1; foreach ($this->arrUF as $uf => $registros): $bg =($ct%2)? "bg_linha_grid1": "bg_linha_grid2"; ?>
+
+                <tr class="linhaUF <?php echo $bg;?>" id="<?php echo $uf;?>" style="cursor: pointer;">
+                    <!--<td><b><//?php echo ($uf == "XX") ? 'Estado não informado' : $uf;?></b></td>-->
+                    <td><b><?php echo $uf;?></b></td>
+                    <td><?php echo (int)count($registros); $totalSetorial = (int)$totalSetorial + (int)count($registros);?></td>
+                </tr>
+                <tr style="display: none" id="linhaUF_<?php echo $uf;?>" >
+                    <td colspan="2" style="padding-left: 40px; margin-right: 0px; padding-right: 0px;">
+                        <?php if(count($registros) > 0):?>
+                            <?php if($sigla != $uf): ?>
+                            <table style="width: 100%; border: 0px #CCC solid" cellpadding="0" cellspacing="1">
+                                <tr class="bg_title_grid">
+                                    <td>NOME</td>
+                                </tr>
+                             <?php endif;?>
+
+                                <?php foreach ($registros as $nomes):  ?>
+                                            <tr class="bg_linha_grid3">
+                                                <td style="padding-left: 40px; margin-right: 0px; padding-right: 0px;">
+                                                    <?php echo $nomes;?>
+                                                </td>
+                                            </tr>
+                                <?php endforeach; ?>
+
+                            <?php if($sigla != $uf): $sigla = $uf;?>
+                            </table>
+                            <?php endif;?>
+                        <?php else:?>
+                            <table style="width: 100%; border: 0px #CCC solid" cellpadding="0" cellspacing="1">
+                                <tr class="">
+                                    <td class="centro"><em>Nenhum Candidato Validado para este Estado.</em></td>
+                                </tr>
+                            </table>
+                        <?php endif;?>
+                     </td>
+                </tr>
+        <?php $ct++; endforeach; ?>
+    <tr><td colspan="4"></td></tr>
+    <?php endif; ?>
+    <tr class="bg_title_grid">
+        <td>TOTAL SETORIAL</td>
+        <td><?php echo $totalSetorial; ?></td>
+    </tr>
+</table>
+<br>

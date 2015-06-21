@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
+    <head>
+            <title>Sistema de Eleitorado CNPC</title>
+            <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+            <meta name="title" content="Eleitorado" />
+            <meta name="description" content="Sistema de Eleitorado CNPC" />
+            <link type="image/x-icon" rel="shortcut icon" href="<?php echo $this->baseUrl(); ?>/public/img/favicon.ico" />
+            <!-- CSS -->
+            <link type="text/css" rel="stylesheet" media="all" href="<?php echo $this->baseUrl(); ?>/public/css/style.css" />
+            <!-- Jquery -->
+            <script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/jquery-1.4.2.min.js"></script>
+            <script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/jquery-ui-1.8.2.custom.min.js"></script>
+            <script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/jquery.maskedinput-1.2.2.js"></script>
+            <script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/jquery.validate.min.js"></script>
+            <script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/jquery.metodosBR.js"></script>
+            <script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/jquery.numeric.js"></script>
+            <script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/jquery.maskMoney.0.2.js"></script>
+            <script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/jquery.price_format.1.3.js"></script>
+            <script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/ajax.js"></script>
+            <script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/scripts.js"></script>
+            <link type="text/css" href="<?php echo $this->baseUrl(); ?>/public/css/custom-theme/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div id="topo">
+        <div id="atalhos" style="text-align: right; padding-left: 0px; padding-top: 10px; width: 900px; height: 30px; top: 0; right: 50%; margin-right: -480px;">
+                <ul>
+                    <?php if (!empty($this->usuario->id_usuario)) : ?>
+                    <li class="black">Usu&aacute;rio conectado: <strong>[<?php echo Validacao::mascaraCPFCNPJ($this->usuario->vhr_login); ?>] - <?php echo $this->usuario->vhr_nome; ?></strong></li> 
+                    <?php endif; ?>
+                    
+                    <!-- <li class="config"><a href="#" title="Configurações">Configurações</a></li>-->
+                    <?php if(isset($this->usuario->id_usuario)){ ?>
+                        <li class="logar"><a href="<?php echo $this->url(array('controller' => 'admin', 'action' => 'index'), '', true); ?>" title="Logar no sistema">Início</a></li>
+                    <?php }else{ ?>
+                        <li class="logar"><a href="<?php echo $this->url(array('controller' => 'admin', 'action' => 'index'), '', true); ?>" title="Logar no sistema">Realizar login</a></li>
+                    <?php } ?>
+                        
+                    <?php if(isset($this->usuario->id_usuario)){ ?>
+                        <li class="config"><a href="<?php echo $this->url(array('controller' => 'usuario', 'action' => 'alterar-senha', 'usu' => $this->usuario->id_usuario), '', true); ?>" title="Alterar senha">Alterar senha</a></li> 
+                        <li class="sair"><a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'logout'), '', true); ?>" id="sairSistema" title="Sair do Sistema" onclick="logout(); return false;">Sair</a></li>
+                    <?php } ?>
+                </ul>
+        </div><br /><br />
+        <!-- ========== INICIO MENSAGENS (ERROS, CONFIRMAÇÕES E ADVERTÊNCIAS) ========== -->
+        <?php if (isset($this->message)) : ?>
+        <div class="msg<?php echo $this->message_type; ?>">
+                <div class="float_right"><input type="button" class="btn_close" title="Fechar mensagem" id="msg<?php echo $this->message_type; ?>" onclick="$('.msg<?php echo $this->message_type; ?>').hide();" onkeypress="$('.msg<?php echo $this->message_type; ?>').hide();"/></div>
+                <div><?php echo $this->message; ?></div>
+        </div>
+        <?php endif; ?>
+        <!-- ========== FIM MENSAGENS (ERROS, CONFIRMAÇÕES E ADVERTÊNCIAS) ========== -->

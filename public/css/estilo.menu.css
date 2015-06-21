@@ -1,0 +1,42 @@
+
+#menu_horizontal{
+    position: relative; top: 40px; height: 50px; padding-left: 0px; border :0px red solid;
+}
+#iconbar { 
+    position:absolute; /*left:45%;*/ text-shadow:0 1px 0 #eee;
+}
+#iconbar li {
+    float:left;
+    position:relative;
+    margin-right:10px;
+    /*background:#E8E8F9;*/
+    background:#fff;
+    /*border: 1px dashed #ffc0ff;*/
+    border: 1px solid #ccc;
+    overflow:hidden;
+    height: 40px;
+}
+#iconbar a {
+    text-decoration: none;
+    outline: none;
+    /*color:#d00000;*/
+    color:#4b4b4b;
+    display: block;
+    width: 32px;
+    height: 40px;
+    padding: 5px;
+    cursor:pointer;
+    vertical-align: middle;
+    font-weight: bold;
+}
+#iconbar span	{
+    width: 100px;
+    height: 40px;
+    position: absolute;
+    display: none;
+    line-height:110%;
+    /*color:#409BED;*/
+    color:#4b4b4b;
+    padding-left: 10px;
+    vertical-align: middle;
+}

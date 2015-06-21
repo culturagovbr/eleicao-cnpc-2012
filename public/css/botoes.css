@@ -1,0 +1,301 @@
+/*********************************************************************************
+ * Formatando Botoes
+ *********************************************************************************/
+ 
+ 
+.botao_texto {
+	width: 87px;
+	height: 21px;
+	overflow: hidden;
+	float: left;
+}
+
+.botao_texto a {
+	width: 87px;
+	height: 21px;
+	display: block;
+	text-indent: -9000px;
+}
+
+.botao_icone {
+	width: 20px;
+	height: 21px;
+	overflow: hidden;
+}
+
+.botao_icone a {
+	width: 20px;
+	height: 21px;
+	display: block;
+	text-indent: -9000px;
+}
+
+.botao_extensao {
+	width: 44px;
+	height: 21px;
+	overflow: hidden;
+}
+
+.botao_extensao a {
+	width: 44px;
+	height: 21px;
+	display: block;
+	text-indent: -9000px;
+}
+
+
+.botao_texto .anterior {
+	background: url("../img/buttons/anterior.gif") 0 0 no-repeat;
+}
+
+.botao_texto .anterior_off {
+	background: url("../img/buttons/anterior-off.gif") 0 0 no-repeat;
+}
+
+
+.botao_texto .cancelar {
+	background: url("../img/buttons/cancelar.gif") 0 0 no-repeat;
+}
+
+.botao_texto .cancelar_off {
+	background: url("../img/buttons/cancelar-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .editar {
+	background: url("../img/buttons/editar.gif") 0 0 no-repeat;
+}
+
+.botao_texto .editar_off {
+	background: url("../img/buttons/editar-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .confirmar {
+	background: url("../img/buttons/confirmar.gif") 0 0 no-repeat;
+}
+
+.botao_texto .confirmar_off {
+	background: url("../img/buttons/confirmar-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .excluir {
+	background: url("../img/buttons/excluir.gif") 0 0 no-repeat;
+}
+
+.botao_texto .excluir_off {
+	background: url("../img/buttons/excluir-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .gerar_grafico {
+	background: url("../img/buttons/gerargrafico.gif") 0 0 no-repeat;
+}
+
+.botao_texto .gerar_grafico_off {
+	background: url("../img/buttons/gerargrafico-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .imprimir {
+	background: url("../img/buttons/imprimir.gif") 0 0 no-repeat;
+}
+
+.botao_texto .imprimir_off {
+	background: url("../img/buttons/imprimir-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .incluir {
+	background: url("../img/buttons/incluir.gif") 0 0 no-repeat;
+}
+
+.incluir_dirigente {
+	width:150px;
+	height:21px;
+	display:block;
+	background: url("../img/buttons/incluir-dirigente.gif") 0 0 no-repeat;
+}
+
+.botao_texto .incluir_off {
+	background: url("../img/buttons/incluir-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .inicio {
+	background: url("../img/buttons/inicio.gif") 0 0 no-repeat;
+}
+
+.botao_texto .inicio_off {
+	background: url("../img/buttons/inicio-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .limpar {
+	background: url("../img/buttons/limpar.gif") 0 0 no-repeat;
+}
+
+.botao_texto .limpar_off {
+	background: url("../img/buttons/limpar-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .localizar {
+	background: url("../img/buttons/localizar.gif") 0 0 no-repeat;
+}
+
+.botao_texto .localizar_off {
+	background: url("../img/buttons/localizar-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .montar_consulta {
+	background: url("../img/buttons/montarconsulta.gif") 0 0 no-repeat;
+}
+
+.botao_texto .montar_consulta_off {
+	background: url("../img/buttons/montarconsulta-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .novo {
+	background: url("../img/buttons/novo.gif") 0 0 no-repeat;
+}
+
+.botao_texto .novo_off {
+	background: url("../img/buttons/novo-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .ordenar {
+	background: url("../img/buttons/ordenar.gif") 0 0 no-repeat;
+}
+
+.botao_texto .ordenar_off {
+	background: url("../img/buttons/ordenar-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .proximo {
+	background: url("../img/buttons/proximo.gif") 0 0 no-repeat;
+}
+
+.botao_texto .proximo_off {
+	background: url("../img/buttons/proximo-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .recarregar {
+	background: url("../img/buttons/recarregar.gif") 0 0 no-repeat;
+}
+
+.botao_texto .recarregar_off {
+	background: url("../img/buttons/recarregar-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .resumo {
+	background: url("../img/buttons/resumo.gif") 0 0 no-repeat;
+}
+
+.botao_texto .resumo_off {
+	background: url("../img/buttons/resumo-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .sair {
+	background: url("../img/buttons/sair.gif") 0 0 no-repeat;
+}
+
+.botao_texto .sair_off {
+	background: url("../img/buttons/sair-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .salvar {
+	background: url("../img/buttons/salvar.gif") 0 0 no-repeat;
+}
+
+.botao_texto .salvar_off {
+	background: url("../img/buttons/salvar-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .ultimo {
+	background: url("../img/buttons/ultimo.gif") 0 0 no-repeat;
+}
+
+.botao_texto .ultimo_off {
+	background: url("../img/buttons/ultimo-off.gif") 0 0 no-repeat;
+}
+
+.botao_texto .voltar {
+	background: url("../img/buttons/voltar.gif") 0 0 no-repeat;
+}
+
+.botao_texto .voltar_off {
+	background: url("../img/buttons/voltar-off.gif") 0 0 no-repeat;
+}
+
+.botao_icone .cancelar_ico {
+	background: url("../img/buttons/cancelar-p.gif") 0 0 no-repeat;
+}
+
+.botao_icone .cancelar_ico_off {
+	background: url("../img/buttons/cancelar-p-off.gif") 0 0 no-repeat;
+}
+
+.botao_icone .excluir_ico {
+	background: url("../img/buttons/excluir-p.gif") 0 0 no-repeat;
+}
+
+.botao_icone .excluir_ico_off {
+	background: url("../img/buttons/excluir-p-off.gif") 0 0 no-repeat;
+}
+
+.botao_icone .novo_ico {
+	background: url("../img/buttons/novo-p.gif") 0 0 no-repeat;
+}
+
+.botao_icone .novo_ico_off {
+	background: url("../img/buttons/novo-p-off.gif") 0 0 no-repeat;
+}
+
+.botao_icone .sair_ico {
+	background: url("../img/buttons/sair-p.gif") 0 0 no-repeat;
+}
+
+.botao_icone .sair_ico_off {
+	background: url("../img/buttons/sair-p-off.gif") 0 0 no-repeat;
+}
+
+.botao_icone .salvar_ico {
+	background: url("../img/buttons/salvar-p.gif") 0 0 no-repeat;
+}
+
+.botao_icone .salvar_ico_off {
+	background: url("../img/buttons/salvar-p-off.gif") 0 0 no-repeat;
+}
+
+.botao_extensao .csv_ext {
+	background: url("../img/buttons/csv.gif") 0 0 no-repeat;
+}
+
+.botao_extensao .csv_ext_off {
+	background: url("../img/buttons/csv-off.gif") 0 0 no-repeat;
+}
+
+.botao_extensao .pdf_ext {
+	background: url("../img/buttons/pdf.gif") 0 0 no-repeat;
+}
+
+.botao_extensao .pdf_ext_off {
+	background: url("../img/buttons/pdf-off.gif") 0 0 no-repeat;
+}
+
+.botao_extensao .rtf_ext {
+	background: url("../img/buttons/rtf.gif") 0 0 no-repeat;
+}
+
+.botao_extensao .rtf_ext_off {
+	background: url("../img/buttons/rtf-off.gif") 0 0 no-repeat;
+}
+
+.botao_extensao .xls_ext {
+	background: url("../img/buttons/xls.gif") 0 0 no-repeat;
+}
+
+.botao_extensao .xls_ext_off {
+	background: url("../img/buttons/xls-off.gif") 0 0 no-repeat;
+}
+
+.botao_extensao .xml_ext {
+	background: url("../img/buttons/xls.gif") 0 0 no-repeat;
+}
+
+.botao_extensao .xls_ext_off {
+	background: url("../img/buttons/xls-off.gif") 0 0 no-repeat;
+}

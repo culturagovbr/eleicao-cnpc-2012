@@ -1,0 +1,57 @@
+<?php header("Content-Type: text/html; charset=ISO-8859-1"); ?>
+<script>
+    $(document).ready(function(){
+        
+        
+    }); //fecha $('document').ready
+    
+</script>
+
+<table style="width: 1000px" cellpading="0" cellspacing="0">
+    <tr>
+        <td><strong>Nome artístico/apelido</strong>:  <br />
+            <?php echo ($this->nome_artistico); ?>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Apresentação</strong>:  <br />
+            <?php echo nl2br($this->apresentacao); ?>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Carta programa</strong>:  <br />
+            <?php if(!empty($this->file_carta_programa)): ?>
+                <div id="link_cartaprograma" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_carta_programa ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_carta_programa; ?></spam></a>&nbsp;</div>
+            <?php else: ?>
+                <?php echo nl2br($this->propostas); ?>
+            <?php endif; ?>
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: top"><strong>Comprovação de atuação cultural</strong>:
+            <?php if(!empty($this->file_curriculo) && $this->idUsuarioCadastrado != '1539'): ?>
+                <div id="link_curriculo" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_curriculo ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_curriculo; ?></spam></a>&nbsp;</div>
+            <?php else: ?>
+                <div style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><em>Anexo não enviado</em>&nbsp;</div>
+            <?php endif; ?>
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: top"><strong>Portfólio</strong>:
+            <?php if(!empty($this->file_portfolio)): ?>
+                <div id="link_portfolio" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<?php echo $this->file_portfolio ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><?php echo $this->arquivo_portfolio; ?></spam></a>&nbsp;</div>
+            <?php else: ?>
+                <div style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><em>Anexo não enviado</em>&nbsp;</div>
+            <?php endif; ?>
+        </td>
+    </tr>
+    <!--<tr>
+        <td style="vertical-align: top"><strong>Carta de apoio</strong>:
+            <?php //if(!empty($this->file_carta_apoio)): ?>
+                <div id="link_carta_apoio" style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><strong>Anexo</strong>: <a href="<//?php echo $this->file_carta_apoio ?>" target="_blank"><spam style="color:blue; font-size: 10pt;"><//?php echo $this->arquivo_carta_apoio; ?></spam></a>&nbsp;</div>
+            <?php //else: ?>
+                <div style="width: 99%; height: 20px; padding: 5px; background-color: #e8e8e8;"><em>Anexo não enviado</em>&nbsp;</div>
+            <?php //endif; ?>
+        </td>
+    </tr>-->
+</table>

@@ -1,0 +1,157 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+       
+        $("#frmUsuario").validate({
+            // Define as regras
+            rules:{
+                vhr_nome:{
+                    // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                    required: true, 
+                    minlength: 5
+                },
+                vhr_login:{
+                    // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                    required: true, 
+                    minlength: 14,
+                    verificaCPF: true
+                },
+                vhr_email:{
+                    // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
+                    required: true,
+                    email : true
+                },
+                id_perfil:{
+                    // id_perfil será obrigatório (required)
+                    required: true 
+                },
+                id_setorial:{
+                    required: true 
+                    /*minlength: 6*/
+                }
+
+            },
+            // Define as mensagens de erro para cada regra
+            messages:{
+                vhr_nome:{
+                    required: "<br />O campo Nome é obrigatório",
+                    minlength: "<br />O nome deve conter no mínimo 5 caracteres"
+                },
+                vhr_login:{
+                    required: "<br />O campo CPF é obrigatório",
+                    minlength: "<br />O CPF deve conter no mínimo 11 caracteres",
+                    verificaCPF: "<br />CPF inv&aacute;lido"
+                },
+                vhr_email:{
+                    required: "<br />O campo Email é obrigatório",
+                    email: "<br />Email inv&aacute;lido"
+                },
+                id_perfil:{
+                    required: "<br />O campo Perfil é obrigatório"
+                },
+                id_setorial:{
+                    required: "<br />O campo Setorial é obrigatório"
+                }
+            },
+            
+            submitHandler: function(form){
+                $("#msgError").html('');
+                
+                var n = $("input.checkboxSetorial:checked").length;
+                if(n > 0){
+                    form.submit();
+                } else {
+                    $("#msgError").html("<font class='red'><b>Selecione no mínimo um setorial para o usuário.</b></font>");
+                    return false;
+                }
+            }
+                            
+        });
+
+        $("#vhr_login").mask('999.999.999-99');
+        
+        $("#cancelar").click(function(){
+            redirecionar('<?php echo $this->url(array('controller' => 'usuario', 'action' => 'index')); ?>');
+        });
+        
+    }); //fecha $('document').ready
+</script>
+<div>
+    <?php if ($this->bol_cadastroenviado): ?>
+        <p><center><h2>O seu cadastro já foi concluído e enviado com sucesso;</h2></center></p>
+    <?php endif; ?>
+</div>
+
+<!--<fieldset>
+    <legend>Resultados</legend>
+    <table class="tabela">
+        <tr class="">
+            <th width="50%">Eleitores</th>
+            <th width="50%">Candidatos</th>
+        </tr>
+        <tr>
+            <td align="center"><?php echo $this->eleitores['total'];?></td>
+            <td align="center"><?php echo $this->candidatos['total'];?></td>
+        </tr>
+    </table>
+</fieldset>-->
+
+<form name="frmUsuario" id="frmUsuario" class="formulario" action="<?php echo $this->url(array('controller' => 'usuario', 'action' => 'salvar')); ?>"  method="POST">
+    <fieldset>
+        <legend>Novo Usuário</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td style="width: 120px">Nome Completo: *</td>
+                <td><input type="text" name="vhr_nome" id="vhr_nome" class="input_simples" value=""></td>
+            </tr>
+            <tr>
+                <td>CPF: *</td>
+                <td><input type="text" name="vhr_login" id="vhr_login" class="input_simples" maxlength="14" value=""></td>
+            </tr>
+            <tr>
+                <td>Email: *</td>
+                <td><input type="text" name="vhr_email" id="vhr_email" class="input_simples" value=""></td>
+            </tr>
+            <tr>
+                <td>Senha: *</td>
+                <td><input type="password" name="vhr_senha" id="vhr_senha" class="input_simples" value=""></td>
+            </tr>
+            <tr>
+                <td>Perfil: *</td>
+                <td>
+                    <select name="id_perfil" id="id_perfil" class="input_simples">
+                        <option value="">- Selecione -</option>
+                        <?php if($this->usuario->id_perfil == 4): //usuario administrado?>
+                        <option value="4">Administrador</option>
+                        <?php endif; ?>
+                        <option value="2">Componente da comissão</option>
+                        <option value="3">Presidente da comissão</option>
+						<?php if($this->usuario->id_perfil == 4): //usuario administrado?>
+                        <option value="5">Comissão da Nacional</option>
+						<?php endif; ?>
+                    </select>
+                </td>
+            </tr>
+            <tr id="trSetorial">
+                <td>Setorial: *</td>
+                <td>
+                    <?php foreach ($this->setoriais as $setoriais) { ?>
+                    <input type="checkbox" name="id_setorial[]" value="<?php echo $setoriais['id_setorial']; ?>" class="input_simples checkboxSetorial"> <?php echo $setoriais['vhr_nome']; ?><br/>
+                    <?php } ?>
+                    <span id="msgError"></span>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <table class="w800" cellpading="0" cellspacing="0" id="tblBotoes">
+        <tr>
+            <td class="centro">
+                <input type="submit" name="btn_salvar" id="btn_salvar" value="Salvar" class="btn">&nbsp;&nbsp;
+                <input type="reset" name="limpar" id="limpar" value="Limpar" class="btn">&nbsp;&nbsp;
+                <input type="button" name="cancelar" id="cancelar" value="Cancelar" class="btn">&nbsp;&nbsp;<br />
+<!--                <br/><span class="red">*Atenção:</span> Você poderá salvar os dados da sua inscrição a qualquer momento durante o preenchimento mas isso não implica
+                que a mesma foi concluída ou enviada. Após concluir o cadastro de toda a sua inscrição você deverá clicar em "Enviar inscrição".
+                Seu cadastro só será considerado após você realizar a operação de enviar a inscrição.-->
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,61 @@
+<script>
+    $(document).ready(function(){
+
+        $('#acessar').click(function(){
+
+            var setorial = $("#sltSetoriais").val();
+            var uf       = $("#sltUf").val();
+            if(setorial == "" || uf == ""){
+                 $("#msgError").html("<font class='red'><b>Informe uma Setorial e uma UF para acessar o Fórum</b></font>");
+                return false;
+            }
+            window.location = "index/setorial/"+setorial+"/uf/"+uf;
+        });
+
+     }); //fecha document.read
+    
+</script>
+<br>
+    <table cellpading="0" cellspacing="0" style="width: 1024px; background-color: #fff;">
+        <tr>
+            <td align="center">
+                <img src="<?php echo $this->baseUrl(); ?>/public/img/logo-cnpc-forum.jpg"><br>
+                <h1>Escolher Sala de Votação</h1><br>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="border:0px red solid;">
+                <fieldset>
+                    <legend>Informe uma Setorial e uma UF</legend>
+                    <table class="w900">
+                        <tr>
+                            <td>
+                                <strong>Setoriais:</strong>
+                                <select class="input_simples" id="sltSetoriais" name="sltSetoriais">
+                                    <option value="" selected> -  Selecione -</option>
+                                    <?php foreach ($this->setoriais as $setorial) { ?>
+                                        <option value="<?php echo $setorial->id_setorial; ?>"><?php echo $setorial->vhr_nome; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </td>
+                            <td>
+                                <strong>UF:</strong>
+                                <select class="input_simples" id="sltUf" name="sltUf">
+                                    <option value="" selected> -  Selecione -</option>
+                                    <?php foreach ($this->arrUF as $chave => $valor) { ?>
+                                        <option value="<?php echo $chave; ?>"><?php echo $valor; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <span id="msgError"></span><br>
+                                <input type="button" name="acessar" id="acessar" class="btn" value="Acessar Sala">
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </td>
+        </tr>
+    </table>

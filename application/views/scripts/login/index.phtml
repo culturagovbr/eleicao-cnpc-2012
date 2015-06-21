@@ -1,0 +1,69 @@
+<script>
+    $(document).ready(function(){
+        
+        $("#frmLogin").validate({
+            // Define as regras
+            rules:{
+                    vhr_login:{
+                            // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                            required: true,
+                            verificaCPF: true
+                    },
+                    vhr_senha:{
+                            // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                            required: true
+                    }
+
+            },
+            // Define as mensagens de erro para cada regra
+            messages:{
+                    vhr_login:{
+                            required: "<br />O campo CPF é obrigatório",
+                            verificaCPF: "<br />CPF inv&aacute;lido"
+                    },
+                    vhr_senha:{
+                            required: "<br />O campo Senha é obrigatório"
+                    }
+            }/*,
+            submitHandler: function(form) {
+                //$("#error").addClass('sumir')
+                //alert('123456');
+                $(form).submit();
+            }*/
+	});
+
+        $("#vhr_login").mask('999.999.999-99');
+        
+    }); //fecha $('document').ready
+    
+</script>
+<form name="frmLogin" id="frmLogin" class="formulario" action="<?php echo $this->url(array('controller' => 'login', 'action' => 'login')); ?>"  method="POST">
+    <fieldset  style="background-color:#ffffff">
+        <legend>Login do usuário</legend>
+        <table class="w600" cellpading="0" cellspacing="0"  style="background-color:#ffffff">
+			<tr>
+				<td colspan="2" class="centro">
+					<br>
+					<img src="<?php echo $this->baseUrl(); ?>/public/img/logo-cnpc-login.jpg" ><br><br>
+				</td>
+			</tr>
+            <tr>
+                <td width="35%" style="vertical-align: top;" class="direita">Login: *</td>
+                <td width="65%" style="vertical-align: top;"><input type="text" name="vhr_login" id="vhr_login" class="input_simples" value=""></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" class="direita">Senha: *</td>
+                <td style="vertical-align: top;"><input type="password" name="vhr_senha" id="vhr_senha" class="input_simples" value="">
+					<br /><br />
+					<a href="<?php echo $this->url(array('controller' => 'login', 'action' => 'recuperar-senha')); ?>"><h4 style="color: #4b4b4b"><b>Esqueceu sua senha?</b></h4></a>
+                    <input type="submit" name="logar" id="logar" value=" Logar " class="btn">&nbsp;&nbsp;
+                    <input type="reset" name="limpar" id="limpar" value=" Limpar " class="btn">
+					<br />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="centro"></td>
+            </tr>
+        </table>
+    </fieldset>
+</form>

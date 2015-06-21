@@ -1,0 +1,184 @@
+<script>
+    $(document).ready(function(){
+
+        $('.linhaNomeCandidato').click(function(){
+            var idAvaliacao = $(this).attr("id");
+            //var idSetorial = $(this).attr("setorial");
+            var idCadastro = $(this).attr("id_cadastro");
+
+            $("#linhaNomeCandidato_"+idAvaliacao).toggle();
+
+
+            if($("#detalhe_"+idAvaliacao).html() == ""){
+                $.ajax({
+                    url : '<?php echo $this->url(array('controller' => 'forum', 'action' => 'detalhes-candidato')); ?>',
+                    beforeSend: function() {
+                        $("#detalhe_"+idAvaliacao).html('');
+                        $("#detalhe_"+idAvaliacao).html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+                    },
+                    data :
+                        {
+                        //uf : idAvaliacao,
+                        idCadastro : idCadastro
+                    },
+                    success: function(data){
+                        $('#detalhe_'+idAvaliacao).html(data);
+                    },
+                    type : 'post'
+                });
+            }
+        });
+
+        $("#frmComentario").validate({
+            // Define as regras
+            rules:{
+                    comentario:{
+                            required: true
+                    }
+
+            },
+            // Define as mensagens de erro para cada regra
+            messages:{
+                    comentario:{
+                            required: "<br />O campo comentário deve conter alguma mensagem antes de ser enviado."
+                    }
+            }/*,
+            submitHandler: function(form) {
+                //$("#error").addClass('sumir')
+                //alert('123456');
+                jqAjaxForm(document.getElementById("frmComentario"), 'divMensagensPostadas');
+            }*/
+	});
+
+        var loopMensagens = setInterval(function(){
+            
+            $.ajax({
+                url : '<?php echo $this->url(array('controller' => 'forum', 'action' => 'listar-comentarios')); ?>',
+                data :
+                    {
+                    idUsuario : '<?php echo $this->idUsuario; ?>',
+                    setorial : '<?php echo $this->idSetorial; ?>',
+                    uf : '<?php echo $this->uf; ?>'
+                },
+                success: function(data){
+                    $('#divMensagensPostadas').html(data);
+                },
+                type : 'post'
+            });
+        }, '15000');
+
+
+
+        <?php if(isset($_GET['id'])): ?>
+           $('html, body').animate({
+                scrollTop: $('#msg_'+<?php echo $_GET['id'];?>).offset().top
+            }, 1000);
+        <?php endif; ?>
+     }); //fecha document.read
+    
+</script>
+<br>
+    <table cellpading="0" cellspacing="0" style="width: 1024px; background-color: #fff;">
+        <tr>
+            <td align="left" style="width: 25px; border:0px blue solid;">
+                <img src="<?php echo $this->baseUrl(); ?>/public/img/logo-cnpc-forum.jpg">
+            </td>
+            <td align="left" style="border:0px red solid;">
+                <br>
+                <h1>Fórum de Debate</h1><br>
+                <h2><font size="2px;" color="#4b4b4b">Setorial: </font><?php echo $this->setorial; ?></h2>
+                <h2><font size="2px;" color="#4b4b4b">Unidade da Federação: </font><?php echo $this->uf; ?></h2>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="border:0px red solid;">
+                <fieldset>
+                    <legend>Candidatos desta Setorial</legend>
+                    <table style="width: 100%" cellpading="0" cellspacing="0">
+                        <?php if($this->candidatos->count() <= 0): ?>
+                        <tr>
+                            <td><em>Nenhum candidato validado para esta Setorial/UF</em></td>
+                        </tr>
+                        <?php else : ?>
+                            <?php $ct=1; foreach($this->candidatos as $candidato): $bg =($ct%2)? "bg_linha_grid1": "bg_linha_grid3";?>
+                            <tr class="linhaNomeCandidato <?php echo $bg;?>" id="<?php echo $candidato->id_avaliacao_final;?>" id_cadastro="<?php echo $candidato->id_cadastro;?>" style="cursor: pointer;">
+                                <td>
+                                    <b><?php echo $candidato->vhr_nomeinscrito;?></b> <span style="font-size: 10px">[clique pra ver a apresentação]</span>
+                                </td>
+                            </tr>
+                            <tr style="display: none" id="linhaNomeCandidato_<?php echo $candidato->id_avaliacao_final;?>" >
+                                <td style="padding-left: 10px; margin-right: 0px; padding-right: 0px;">
+                                    <div id="detalhe_<?php echo $candidato->id_avaliacao_final;?>"></div>
+                                </td>
+                            </tr>
+                            <?php $ct++; endforeach;?>
+                        <?php endif; ?>
+                    </table>
+                </fieldset>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <fieldset>
+                    <legend>Debate</legend>
+                    <div id="divMensagensPostadas">
+                        <?php if($this->comentarios->count() <= 0): ?>
+                        &nbsp;&nbsp;<div><em>Nenhum comentário postado.</em></div><br>
+                        <?php else : ?>
+                            <?php foreach($this->comentarios as $comentario): ?>
+                            <div style="padding-left: 30px;" id="msg_<?php echo $comentario->id_comentario;?>">
+                                <div>
+                                    <em style="font-size: 11px;">Em: <?php echo date("d/m/Y H:i",strtotime($comentario->dte_comentario)); ?></em><br>
+                                    <div style="width: 99%; 
+                                         height: 20px;
+                                         padding: 5px;
+                                         background-color: <?php if($comentario->tipocadastro_final==1){ echo '#e8e8e8';}
+                                                                 if($comentario->tipocadastro_final==2){ echo '#DFE2D5';}
+                                                                 if($comentario->tipocadastro_final!=1 && $comentario->tipocadastro_final!=2){ echo '#e8e8e8';};?>">
+
+                                        <b style="font-size: 13px;"><?php echo $comentario->nome_usuario; ?></b> disse:
+
+                                        <div style="float: right;"><?php //if($this->id_perfil == '1'){
+                                                                            if($comentario->tipocadastro_final==1){ echo '[inscrito]';}
+                                                                            if($comentario->tipocadastro_final==2){ echo '[candidato]';}
+                                                                         //}
+                                                                         ?></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span style="color:#888; font-size: 14px;"><?php echo nl2br($comentario->vhr_comentario); ?></span>
+                                </div>
+                            </div><br />
+                            <?php endforeach;?>
+                        <?php endif; ?>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <center>
+                <form name="frmComentario" id="frmComentario" class="formulario" action="<?php echo $this->url(array('controller' => 'forum', 'action' => 'salvar-comentario')); ?>"  method="POST">
+                    <input type="hidden" name="idSetorial" id="idSetorial" value="<?php echo $this->idSetorial;?>" class="input_simples">
+                    <input type="hidden" name="idUsuario" id="idUsuario" value="<?php echo $this->idUsuario;?>" class="input_simples">
+                    <input type="hidden" name="uf" id="uf" value="<?php echo $this->uf;?>" class="input_simples">
+                    <table style="width: 968px; border: 1px #ccc solid;" cellpading="0" cellspacing="0">
+                        <tr>
+                            <td colspan="2" class="bg_title_grid"><strong>Inserir comentário</strong>:</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; width: 50px;"><strong>Comentário</strong>:</td>
+                            <td align="left"><textarea style="" cols="100" rows="7" name="comentario" id="comentario" class="input_simples"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="vertical-align: top" class="centro">
+                                <input type="submit" name="enviar" id="enviar" class="btn" value="Enviar">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                </center>
+            </td>
+        </tr>
+    </table>
+<br><br>

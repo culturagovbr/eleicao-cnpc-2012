@@ -1,0 +1,135 @@
+<?php header("Content-Type: text/html; charset=ISO-8859-1"); ?>
+<script type="text/javascript">
+    $(document).ready(function(){
+        
+        $(".orderBy").click(function(){
+            
+            var campo = $(this).attr("valorOrdenacao");
+
+            if("ASC" == $("#tipoOrdenacao").val()){
+                tipo = "DESC";
+            }else{
+                tipo = "ASC";
+            }
+
+            ordenar(campo, tipo);
+        });
+         
+        $(".orderBy").each(function(){
+            if($("#ordenacao").val() == $(this).attr("valorOrdenacao")){
+                if($("#tipoOrdenacao").val() == "ASC"){
+                    $(this).after('<span style="padding-left:4px;"><img src="<?php echo $this->baseUrl(); ?>/public/img/navigation-baixo.PNG" align="absmiddle"></span>');
+                }else{
+                    $(this).after('<span style="padding-left:4px;"><img src="<?php echo $this->baseUrl(); ?>/public/img/navigation-cima.PNG" align="absmiddle"></span>');
+                }
+            }
+        });
+        
+        $(".btn_recarregar").click(function(){
+            paginar(1);
+        });
+        
+        function paginar(pag){
+            var regPorPag = $("#registroPorPag").val();
+            $("#intTamPag").val(regPorPag);
+            $("#pag").val(pag);
+            jqAjaxForm(document.getElementById("frmPaginar"), "resultadoPesquisa");
+            $("#resultadoPesquisa").html("");
+            $('#resultadoPesquisa').html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+        }
+        
+    
+     }); //fecha document.read
+    
+</script>
+
+<div id="setoriaisUsuario" style="display: none;"></div>
+
+<div id="resultadoPesquisa">
+    <fieldset>
+        <legend>Relação de Eleitores Avaliados</legend>
+        <table class="w900">
+            <?php if ($this->registros->count() <= 0) : ?>
+            <tr>
+                <td align="center" ><em>Nenhum projeto para avaliar.</em></td>
+            </tr>
+            <?php else: ?>
+                    <tr class="">
+                        <th width="20%"><a href="#resultado-pesquisa" class="orderBy" valorOrdenacao="4">Nome</a></th>
+                        <th width="40%"><a href="#resultado-pesquisa" class="orderBy" valorOrdenacao="6">Setorial</a></th>
+                        <th width="10%" nowrap>Status Avaliação</th>
+                    </tr>
+                <?php foreach($this->registros as $registros): ?>
+				<?php $arrStatus = $this->statusAvaliacaoCadastro($registros['id_cadastro']);?>
+                    <tr class="">
+                        <td><?php echo $registros['vhr_nome'];?></td>
+                        <td align="center">
+                            <?php echo $registros['nomeSetorial'];?>
+                        </td>
+                        <td class="centro" nowrap>
+                            <?php if($registros['bol_validacaofinal']==1):?>
+                                <font color="green">Habilitado</font>
+                            <?php else:?>
+                                <font color="red">Inabilitado</font>
+                            <?php endif;?>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+            <?php endif;?>
+        </table>
+
+        <!-- FORMULARIO DE PAGINACAO/ORDENACAO -->
+        <form action="<?php echo $this->url(array('controller' => 'avaliacao', 'action' => 'listar-cadastros')); ?>" method="post" name="frmPaginar" id="frmPaginar">
+        <?php if(!empty($this->parametrosBusca)) foreach($this->parametrosBusca as $name=>$value):?>
+            <?php if(!is_array($value)): ?>
+            <input type="hidden" name="<?php echo $name?>" id="<?php echo $name?>" value="<?php echo utf8_decode($value)?>"/>
+            <?php else: ?>
+                <?php foreach($value as $valor):?>
+                    <input type="hidden" name="<?php echo $name?>[]" id="<?php echo $name?>" value="<?php echo utf8_decode($valor)?>"/>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
+            <?php if(empty($this->parametrosBusca["pag"])):?>
+            <input type="hidden" name="pag" id="pag" value="<?php echo $this->pag; ?>"/>
+            <?php endif; ?>
+            <?php if(empty($this->parametrosBusca["ordenacao"])):?>
+            <input type="hidden" name="ordenacao" id="ordenacao" value="<?php echo (!empty($this->parametrosBusca["ordenacao"]))?$this->parametrosBusca["ordenacao"]:""; ?>"/>
+            <?php endif; ?>
+            <?php if(empty($this->parametrosBusca["tipoOrdenacao"])):?>
+            <input type="hidden" name="tipoOrdenacao" id="tipoOrdenacao" value="<?php echo (!empty($this->parametrosBusca["tipoOrdenacao"]))?$this->parametrosBusca["tipoOrdenacao"]:""; ?>"/>
+            <?php endif; ?>
+            <?php if(empty($this->parametrosBusca["intTamPag"])):?>
+                <input type="hidden" name="intTamPag" id="intTamPag" value="<?php echo $this->intTamPag; ?>">
+            <?php endif; ?>
+        </form>
+    </fieldset>
+
+    <!-- BOTOES DE PAGINACAO/ORDENACAO -->
+    <table class="tabela">
+        <tr>
+            <td align="center">
+                Exibindo de <b><?php echo $this->inicio; ?></b> a <b><?php echo $this->fim; ?></b> de um total de <b><?php echo $this->total; ?></b><br>
+                <?php if($this->pag<=1): ?>
+                <input type="button" style="width: 88px" class="btn_p_anterior-off" id="btn_p_anterior">
+                <?php else: ?>
+                <input type="button" style="width: 88px" class="btn_inicio" id="btn_inicio" onclick="paginar('1')"/>
+                <input type="button" style="width: 88px" class="btn_p_anterior" id="btn_p_anterior" onclick="paginar('<?php echo ($this->pag > 1)?$this->pag-1:1; ?>')"/>
+                <?php endif; ?>
+                <select name="pagina" id="pagina" class="input_simples" onchange="paginar(this.value)">
+                    <?php for($i=1; $i<$this->totalPag+1; $i++): ?>
+                    <option value="<?php echo $i; ?>" <?php if($i == $this->pag){ echo " selected='selected' "; } ?>><?php echo $i; ?></option>
+                    <?php endfor; ?>
+                </select>
+                <?php if($this->pag+1 > $this->totalPag): ?>
+                <input type="button" style="width: 88px" class="btn_p_proximo-off" id="btn_p_proximo"/>
+                <?php else: ?>
+                <input type="button" style="width: 88px" class="btn_p_proximo" id="btn_p_proximo" onclick="paginar('<?php echo ($this->pag < $this->totalPag)?$this->pag+1:$this->totalPag; ?>')"/>
+                <input type="button" style="width: 88px" class="btn_ultimo" id="btn_ultimo" onclick="paginar('<?php echo $this->totalPag; ?>')"/>
+                <?php endif; ?>
+                Registros por pág. <input type="text" style="width: 25px" name="registroPorPag" id="registroPorPag" value="<?php echo $this->intTamPag; ?>" class="input_simples"/>&nbsp;<input type="button" class="btn_recarregar">
+                <!--&nbsp;&nbsp;<input type="button" style="width: 44px" class="btn_xls" id="btn_xls" />
+                <input type="button" style="width: 88px" class="btn_imprimir" id="btn_imprimir" />-->
+            </td>
+        </tr>
+    </table>
+</div>

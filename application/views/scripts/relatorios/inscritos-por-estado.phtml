@@ -1,0 +1,103 @@
+<?php header("Content-Type: text/html; charset=ISO-8859-1"); ?>
+<script type="text/javascript">
+    $(document).ready(function(){
+        
+        $(".orderBy").click(function(){
+            
+            var campo = $(this).attr("valorOrdenacao");
+
+            if("ASC" == $("#tipoOrdenacao").val()){
+                tipo = "DESC";
+            }else{
+                tipo = "ASC";
+            }
+
+            ordenar(campo, tipo);
+        });
+         
+        $(".orderBy").each(function(){
+            if($("#ordenacao").val() == $(this).attr("valorOrdenacao")){
+                if($("#tipoOrdenacao").val() == "ASC"){
+                    $(this).after('<span style="padding-left:4px;"><img src="<?php echo $this->baseUrl(); ?>/public/img/navigation-baixo.PNG" align="absmiddle"></span>');
+                }else{
+                    $(this).after('<span style="padding-left:4px;"><img src="<?php echo $this->baseUrl(); ?>/public/img/navigation-cima.PNG" align="absmiddle"></span>');
+                }
+            }
+        });
+        
+        $(".btn_recarregar").click(function(){
+            paginar(1);
+        });
+        
+        function paginar(pag){
+            var regPorPag = $("#registroPorPag").val();
+            $("#intTamPag").val(regPorPag);
+            $("#pag").val(pag);
+            jqAjaxForm(document.getElementById("frmPaginar"), "resultadoPesquisa");
+            $("#resultadoPesquisa").html("");
+            $('#resultadoPesquisa').html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+        }
+        
+        $('.imgVerSetoriais').click(function(){
+            var cpf = $(this).attr('cpf');
+            
+            $("#setoriaisUsuario").html('Setorial 1<br/>Setorial 2<br/>Setorial 3<br/>Setorial 4<br/>');
+            $("#setoriaisUsuario").dialog({
+                width: 320,
+                height: 250,
+                title: 'CPF: '+cpf,
+                modal: true,
+                draggable: false,
+                resizable: false,
+                closeOnEscape: false,
+                buttons:
+                    {
+                    'OK': function(){
+                        $("#setoriaisUsuario").dialog("close");
+                    }
+                }
+            });
+//            $('.ui-dialog-titlebar-close').remove();
+        });
+
+        $("#sltSetoriais").change(function(){
+            var idSetorial = $(this).val();
+                $("#resultadoTotais").html("");
+                $('#resultadoTotais').html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+                $.ajax({
+                    url : '<?php echo $this->url(array('controller' => 'relatorios', 'action' => 'listar-totais-por-estado')); ?>',
+                    data :
+                        {
+                        idSetorial : idSetorial
+                    },
+                    success: function(data){
+                        $('#resultadoTotais').html(data);
+                    },
+                    type : 'post'
+                });
+        });
+     }); //fecha document.read
+    
+</script>
+
+<div id="setoriaisUsuario" style="display: none;"></div>
+
+<div id="resultadoPesquisa">
+    <fieldset>
+        <legend>Relação de inscritos por Estado</legend>
+        <table class="w900">
+            <tr>
+                <td>
+                    <strong>Setoriais:</strong>
+                    <select class="input_simples" id="sltSetoriais" name="sltSetoriais">
+                        <option value="" selected> -  Selecione -</option>
+                        <?php foreach ($this->setoriais as $setorial) { ?>
+                            <option value="<?php echo $setorial->id_setorial; ?>"><?php echo $setorial->vhr_nome; ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <div id="resultadoTotais"><br /><center><strong>Informe um Setorial</strong></center><br /></div>
+    </fieldset>
+</div>

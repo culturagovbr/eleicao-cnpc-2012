@@ -1,0 +1,160 @@
+@charset "utf-8";
+/*teste*/
+/*********************************************************************************
+ * Formatando menu "sanfona"
+ *********************************************************************************/
+
+.qmmc .qmdivider {
+	display:block;
+	font-size:1px;
+	border-width:0;
+	border-style:solid;
+	position:relative;
+	z-index:1;
+}
+
+.qmmc .qmdividery {
+	float:left;
+	width:0;
+}
+
+.qmmc .qmtitle{
+	display:block;
+	cursor:default;
+	white-space:nowrap;
+	position:relative;
+	z-index:1;
+}
+
+.qmclear {
+	font-size:1px;
+	height:0;
+	width:0;
+	clear:left;
+	line-height:0;
+	display:block;
+	float:none !important;
+}
+
+.qmmc {
+	position:relative;
+	zoom:1;
+	z-index:10;
+}
+
+.qmmc a, .qmmc li {
+	float:left;
+	display:block;
+	white-space:nowrap;
+	position:relative;
+	z-index:1;
+	width:199px;
+}
+
+.qmmc div a, .qmmc ul a, .qmmc ul li {float:none;}
+
+.qmsh div a {float:left;}
+
+.qmmc div {
+/*	visibility:hidden;
+	position:absolute;*/
+}
+
+.qmmc .qmcbox {
+	cursor:default;
+	display:block;
+	position:relative;
+	z-index:1;
+}
+
+.qmmc .qmcbox a {display:inline;}
+
+.qmmc .qmcbox div {
+	float:none;
+	position:static;
+	visibility:inherit;left:auto;
+}
+
+/*********************************************************************************
+ * Formatando layout
+ *********************************************************************************/
+
+#qm0 {
+	width:224px;
+	padding:0 0 0 9px;
+}
+
+#qm0 a {
+	background-image:url(../../img/seta-menu-contexto-off.png);
+	color:#666;
+	font-family:"Trebuchet MS",Georgia,"Times New Roman",Times,serif;
+	font-size:11px;
+	text-decoration:none;
+	padding:6px 0 4px 5px;
+	border-bottom:1px solid #ccc;
+}
+
+#qm0 .no_seta { background-image:none; }
+
+#qm0 a:hover {
+	background:url(../../img/seta-menu-contexto-on.png) no-repeat; 
+	text-decoration:none;
+	color:#36963F;
+}
+
+#qm0 .no_seta:hover { background:url(../../img/seta-menu-contexto-onNO.png) no-repeat; }
+
+#qm0 .no_seta_hover, #qm0 .no_seta_hover:hover {
+	font-weight:bold;
+	color:green;
+	background:none;
+	cursor:default;
+}
+
+body #qm0 .qmactive, body #qm0 .qmactive:hover {
+	text-decoration:none; 
+	border:none;
+}
+
+#qm0 div { border-bottom:1px solid #ccc; }
+
+#qm0 div a { 
+	border-bottom:none;
+	padding:6px 0 4px 14px;
+	background:none
+}
+
+#qm0 div a:hover {
+	text-decoration:none;
+	background:none
+}
+
+body #qm0 div .qmactive, body #qm0 div .qmactive:hover {
+	background:#BFBFBF;
+	border-color:#999;
+}
+
+#qm0 .qmtitle {font-size:11px;}
+
+ul#qm0 a { background:#DDDDDD; }
+
+ul#qm0 ul {
+	background:#F1F1F1;
+	border-width:1px;
+	border-style:solid;
+	border-color:#666;
+}
+
+ul#qm0 ul a {
+	padding:2px 20px 2px 5px;
+	background:#F1F1F1;
+}
+
+ul#qm0 .qmparent{}
+ul#qm0 li:hover > a.qmparent{}
+ul#qm0 ul .qmparent{}
+ul#qm0 ul li:hover > a.qmparent{}
+
+.qmparent img {display:none}
+
+.sanfonaDiv {clear:both;}

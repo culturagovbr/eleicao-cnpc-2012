@@ -1,0 +1,90 @@
+<script type="text/javascript">
+        
+    function ordenar(campo, tipo){
+        $("#ordenacao").val(campo);
+        $("#tipoOrdenacao").val(tipo);
+        paginar(1);
+    }
+
+    function paginar(pag){
+        $("#pag").val(pag);
+        jqAjaxForm(document.getElementById("frmPaginar"), "resultado-pesquisa");
+        $("#resultado-pesquisa").html("");
+        $('#resultado-pesquisa').html('<br><center>Aguarde, carregando dados...<br><img src="<?php echo $this->baseUrl(); ?>/public/img/ajax.gif" /></center><br>');
+    }
+    
+    $(document).ready(function(){
+        $("#cpf").mask('999.999.999-99');
+        
+        $('#btn_pesquisar').click(function(){
+            var nome = $('#nome').val(),
+                cpf = $('#cpf').val();
+				perfil = $('#id_perfil').val();
+                
+                //$("body").append("<div id='divDinamicaCertidoes'></div>");
+                $.ajax({
+                    url : '<?php echo $this->url(array('controller' => 'usuario', 'action' => 'listar-cadastros')); ?>',
+                    data :
+                        {
+                        nome : nome,
+                        cpf: cpf,
+                        perfil: perfil
+                    },
+                    success: function(data){
+                        $('#resultado-pesquisa').html(data);
+                    },
+                    type : 'post'
+
+                });
+           // jqAjaxLink('<?php echo $this->Url(array('controller' => 'usuario', 'action' => 'listar-cadastros')) ?>', 'pesquisar=1&nome='+nome+'&cpf='+cpf+'&setorial='+setorial, 'resultado-pesquisa');
+        });
+        
+        $('#btn_limpar').click(function(){
+            jqAjaxLink('<?php echo $this->Url(array('controller' => 'usuario', 'action' => 'listar-cadastros')) ?>', '', 'resultado-pesquisa');
+        });
+        
+        $('#adicionar_novo').click(function(){
+            redirecionar('<?php echo $this->url(array('controller' => 'usuario', 'action' => 'adicionar')); ?>');
+        });
+        
+        //CARREGA - PROJETOS EM AGUARDANDO ANALISE
+        jqAjaxLink('<?php echo $this->Url(array('controller' => 'usuario', 'action' => 'listar-cadastros')) ?>', '', 'resultado-pesquisa');
+         
+        
+     }); //fecha document.read
+    
+</script>
+
+<form name="frmPesquisa" id="frmPesquisa" class="formulario" action="<?php echo $this->url(array('controller' => 'usuario', 'action' => 'index')); ?>"  method="POST">
+    <fieldset>
+        <legend>Filtro de Pesquisa</legend>
+        <table class="w800" cellpading="0" cellspacing="0">
+            <tr>
+                <td style="width: 30px">Nome:</td>
+                <td><input type="text" name="nome" id="nome" class="input_simples" value=""></td>
+                <td>CPF:</td>
+                <td><input type="text" name="cpf" id="cpf" class="input_simples" maxlength="14" value=""></td>
+                <td class="direita" style="padding: 0px;">
+                    <input type="button" name="btn_pesquisar" id="btn_pesquisar" value="Pesquisar" class="btn">&nbsp;
+                    <input type="reset" name="btn_limpar" id="btn_limpar" value="Limpar" class="btn">&nbsp;
+                    <input type="button" id="adicionar_novo" class="btn" value="Adicionar Novo">
+                </td>
+            </tr>
+			<tr>
+				<td>Perfil:</td>
+                <td colspan="4">
+                    <select name="id_perfil" id="id_perfil" class="input_simples">
+                        <option value="">- Selecione -</option>
+                        <option value="1">Inscrito</option>
+                        <option value="4">Administrador</option>
+                        <option value="2">Componente da comissão</option>
+                        <option value="3">Presidente da comissão</option>
+                        <option value="5">Comissão da Nacional</option>
+                    </select>
+                </td>
+			</tr>
+        </table>
+    </fieldset>
+</form>
+<div class="direita" style="margin-right: 20px;"></div>
+<div id="resultado-pesquisa"></div>

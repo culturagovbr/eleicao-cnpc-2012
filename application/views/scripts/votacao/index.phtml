@@ -1,0 +1,119 @@
+<script>
+    $(document).ready(function(){
+        <?php if($this->bln_javotou == "true"): ?>
+            $('body').find('.campos').each(function(){
+                $(this).attr("disabled", "true");
+            });
+         <?php endif; ?>
+             
+        $("#confirmar_voto").click(function(){
+            
+            var n = $("input:radio[name='rd_candidato']:checked").length;
+
+            if(n <= 0){
+                $("#msgError").html("<font class='red'><b>Informe ao menos um candidato antes de confirmar o seu voto.</b></font>");
+                return false;
+            }
+
+            $("#frmVotacao").submit();
+        });
+        
+     }); //fecha document.read
+</script>
+<br>
+<form name="frmVotacao" id="frmVotacao" class="formulario" action="<?php echo $this->url(array('controller' => 'votacao', 'action' => 'salvar-voto')); ?>"  method="POST">
+    <input type="hidden" name="idUsuarioVotante" id="idUsuarioVotante" value="<?php echo $this->idUsuarioVotante;?>">
+    <input type="hidden" name="idSetorial" id="idSetorial" value="<?php echo $this->idSetorial;?>">
+    <input type="hidden" name="uf" id="uf" value="<?php echo $this->uf;?>">
+    <table cellpading="0" cellspacing="0" style="width: 1024px; background-color: #fff;">
+        <tr>
+            <td align="left" style="width: 25px; border:0px blue solid;">
+                <img src="<?php echo $this->baseUrl(); ?>/public/img/logo-cnpc-forum.jpg">
+            </td>
+            <td align="left" style="width: 600px; border:0px red solid;">
+                <br>
+                <h1>Sala de Votação</h1><br>
+                <h2><font size="2px;" color="#4b4b4b">Setorial: </font><?php echo $this->setorial; ?></h2>
+                <h2><font size="2px;" color="#4b4b4b">Unidade da Federação: </font><?php echo $this->uf; ?></h2>
+                
+            </td>
+            <td>
+                <div style="float: right; border: 1px #666 solid; background-color: #FFFACD; width: 220px; padding: 10px;">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/img/icn-ideia.png" style="vertical-align: bottom" width="20px"> Para consultar informações do <br /><span style="margin-left: 25px;">candidato clique sobre o nome.</span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="border:0px red solid;" align="left" nowrap>
+                <table style="width: 100%;" cellpading="0" cellspacing="0">
+                    <tr>
+                        <td class="bg_title_grid" style="width: 30%">
+                            Candidato(a)
+                        </td>
+                        <td class="bg_title_grid" style="">
+                            Eleger
+                        </td>
+                    </tr>
+                    <?php foreach($this->candidatos as $candidato):?>
+                    <tr>
+                        <td align="left" nowrap>
+                            <table class="bg_linha_grid2" style="width: 480px; border: 0px blue solid;">
+                                <tr>
+                                    <td style="width: 130px; border: 0px blue solid;"><img src="<?php echo $this->baseUrl(); ?>/public/img/icn-foto-candidato.png"></td>
+                                    <td style="font-size: 15px; font-weight: bold; color: #666"><a href="<?php echo $this->url(array('controller' => 'forum', 'action' => 'index', 'setorial' => $this->idSetorial, 'uf' => $this->uf),null,true); ?>" target="_blank"><?php echo $candidato->vhr_nomeinscrito;?></a><br /><span style="font-size: 12px; font-weight: normal; "><?php echo $candidato->vhr_valor;?></span></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="padding-left: 20px;">
+                            <?php if(!empty($this->dadosVoto)): ?>
+                                    <?php if ($candidato->id_usuario == $this->dadosVoto->id_usuario_votado): ?>
+                                        <h2>O seu voto foi registrado para este candidato!</h2>
+                                    <?php endif; ?>
+                            <?php else: ?>
+                                <input type="radio" name="rd_candidato" id="rd_candidato" value="<?php echo $candidato->id_usuario;?>" class="input_simples campos"  style="vertical-align: top;" size="20px">&nbsp;&nbsp;<span style="font-size: 11px; vertical-align: top; line-height: 11px; ">[ marque caso deseje votar neste candidato ]</span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <?php endforeach;?>
+                    <?php if($this->candidatos->count() > 0): ?>
+                    <tr>
+                        <td align="left" nowrap>
+                            <table class="bg_linha_grid2" style="width: 480px; border: 0px blue solid;">
+                                <tr>
+                                    <td style="width: 130px; border: 0px blue solid;"><img src="<?php echo $this->baseUrl(); ?>/public/img/icn-foto-candidato.png"></td>
+                                    <td style="font-size: 15px; font-weight: bold; color: red">Nenhum dos candidatos<br /></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="padding-left: 20px;">
+                            <?php if(!empty($this->dadosVoto)): ?>
+                                    <?php if ($this->dadosVoto->id_usuario_votado == Constantes::cteIdUsuarioVotoNuloVotoEmBranco): ?>
+                                        <h2>O seu voto foi registrado para nenhum candidato!</h2>
+                                    <?php endif; ?>
+                            <?php else: ?>
+                                <input type="radio" name="rd_candidato" id="rd_candidato" value="<?php echo Constantes::cteIdUsuarioVotoNuloVotoEmBranco; ?>" class="input_simples campos"  style="vertical-align: top;" size="20px">&nbsp;&nbsp;<span style="font-size: 11px; vertical-align: top; line-height: 11px; ">[ marque caso não deseje votar em algum dos candidatos acima ]</span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <?php endif; ?>
+                </table>
+                <br />
+                <?php if($this->candidatos->count() <= 0): ?>
+                    <center><em>Nenhum candidato validado para esta Setorial/UF</em></center><br /><br />
+                <?php else: ?>
+
+                    <?php if(!$this->bln_javotou == "true"): ?>
+                    <center><div id="msgError" class="red" style="margin-left: 25px;width: 1000px; font-size: 13px;"></div></center>
+                    <table cellpading="0" cellspacing="0" style="width: 1010px; background-color: #e2e2e2; margin-top: 3px; margin-bottom: 10px">
+                        <tr>
+                            <td class="centro" colspan="2"><input type="button" name="confirmar_voto" id="confirmar_voto" value="Confirmar voto" class="btn" style="width: 220px;"></td>
+                        </tr>
+                    </table>
+                    <?php endif; ?>
+                    
+                <?php endif; ?>
+            </td>
+        </tr>
+    </table>
+</form>
+<br><br>

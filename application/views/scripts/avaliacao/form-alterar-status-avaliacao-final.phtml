@@ -1,0 +1,131 @@
+<script>
+    $(document).ready(function(){
+        
+        $('#vhr_cpf').mask('999.999.999-99');
+        $('#dte_nascimento').mask('99/99/9999');
+        
+		
+        $("#salvar_alteracao").click(function(){
+            
+            $("#msgError").html('');
+
+            
+            var n = $("input:radio[name='rd_status_eleitor']:checked").length;
+            
+            if(n <= 0){
+                $("#msgError").html("<font class='red'><b>Campos obrigatório não informados.</b></font>");
+                return false;
+            }
+
+            <?php if($this->dadosAvaliacao->int_tipocadastro == 2): ?>
+            var n = $("input:radio[name='rd_status_candidato']:checked").length;
+
+            if(n <= 0){
+                $("#msgError").html("<font class='red'><b>Campos obrigatório não informados.</b></font>");
+                return false;
+            }
+            <?php endif; ?>
+                
+            if($("#txt_justificativa").val() == ""){
+                $("#msgError").html("<font class='red'><b>Campos obrigatório não informados.</b></font>");
+                return false;
+            }
+            
+                
+            $("#msgError").html('');
+            $(this).replaceWith("<center><font color='blue'>Aguarde, salvando informações...<br><img src='<?php echo $this->baseUrl(); ?>/public/img/ajax.gif' /></font></center>");
+            $("#frmAtualizarInformacoes").submit();
+
+	});
+    }); //fecha $('document').ready
+
+</script>
+<br>
+<fieldset style="width: 1000px;">
+    <legend>Dados do Inscrito</legend>
+    <table style="width: 980px;" cellpading="0" cellspacing="0">
+        <tr>
+            <td style="vertical-align: top;" width="30%" nowrap>Nome: <br /><h1 class="green" style="margin-top: 5px; font-size: 12pt; "><?php echo $this->dadosAvaliacao->vhr_nomeinscrito; ?></h1></td>
+            <td style="vertical-align: top;" width="70%">Setorial: *<br /><h1 class="green" style="margin-top: 5px; font-size: 12pt; "><?php echo $this->dadosAvaliacao->nomeSetorial; ?></h1></td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;" width="30%" nowrap>Tipo de cadastro: <br /><h1 class="green" style="margin-top: 5px; font-size: 11pt; "><?php echo ($this->dadosAvaliacao->int_tipocadastro == 1) ? "Eleitor" : "Candidato"; ?></h1></td>
+            <td style="vertical-align: top;" width="70%">Status atual: *<br />
+                <h1 style="margin-top: 5px; font-size: 11pt; font-weight: bold">
+                    <?php if($this->dadosAvaliacao->int_tipocadastro == 2)
+                          {
+                                echo ($this->dadosAvaliacao->chr_avaliacao_eleitor == 1) ? "<span class='green'>Eleitor validado.</span>" : "<span class='red'>Eleitor não validado.</span>";
+                                echo ($this->dadosAvaliacao->chr_avaliacao_candidato == 1) ? "&nbsp;<span class='green'>Candidato validado.</span>" : "&nbsp;<span class='red'>Candidato não validado.</span>";
+                          }else{
+                                echo ($this->dadosAvaliacao->chr_avaliacao_eleitor == 1) ? "<span class='green'>Eleitor validado</span>" : "<span class='red'>Eleitor não validado</span>";
+                          }
+                        ?>
+                </h1>
+            </td>
+        </tr>    
+        <tr>
+            <td colspan="3" ></td>
+        </tr>
+    </table>
+</fieldset>
+<form name="frmAtualizarInformacoes" id="frmAtualizarInformacoes" class="formulario" action="<?php echo $this->url(array('controller' => 'avaliacao', 'action' => 'salvar-status-avaliacao-final')); ?>"  method="POST">
+    <input type="hidden" name="int_tipocadastro" id="int_tipocadastro" value="<?php echo $this->dadosAvaliacao->int_tipocadastro;?>">
+    <input type="hidden" name="idUsuarioAtualizador" id="idUsuarioAtualizador" value="<?php echo $this->idUsuarioAtualizador;?>">
+    <input type="hidden" name="idAvaliacaoFinal" id="idAvaliacaoFinal" value="<?php echo $this->idAvaliacaoFinal;?>">
+    <fieldset style="width: 1000px;">
+        <legend>Alterar Status atual do Inscrito</legend>
+        <table class="w900" cellpading="0" cellspacing="0">
+            <tr>
+                <td style="padding: 0px; margin: 0px;">
+                    <table style="width: 100%" cellpading="0" cellspacing="0">
+                    <tr>
+                        <td style="border:1px #ccc solid;">
+                            <strong>Alterar/Manter status do <u>Eleitor</u> como:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="rd_status_eleitor" id="rd_status_eleitor" value="1">&nbsp;Validado&nbsp;&nbsp;
+                            <input type="radio" name="rd_status_eleitor" id="rd_status_eleitor" value="2">&nbsp;Não Validado<br />
+                        </td>
+                    </tr>
+                    <?php if($this->dadosAvaliacao->int_tipocadastro == 2): ?>
+                    <tr><td></td></tr>
+                    <tr>
+                        <td style="border:1px #ccc solid;">
+                            <strong>Alterar/Manter status do <u>Candidato</u> como:</strong>&nbsp;&nbsp;
+                            <input type="radio" name="rd_status_candidato" id="rd_status_candidato" value="1">&nbsp;Validado&nbsp;&nbsp;
+                            <input type="radio" name="rd_status_candidato" id="rd_status_candidato" value="2">&nbsp;Não Validado<br />
+                        </td>
+                    </tr>
+                    <?php endif; ?>
+                    <tr>
+                        <td style="vertical-align: top" nowrap>
+                            <b>Descrição de motivos:</b><br>
+                            <textarea name="txt_justificativa" id="txt_justificativa" class="input_simples" rows="10" cols="100"></textarea>
+                        </td>
+                    </tr>
+                    <?php if(!empty($this->dadosAvaliacao->vhr_log_alteracao)) :?>
+                    <tr>
+                        <td style="vertical-align: top" nowrap>
+                            <b>Log de alterações:</b><br>
+                            <div style="overflow: auto; width: 980px;">
+                            <?php echo  nl2br($this->dadosAvaliacao->vhr_log_alteracao);?>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endif;?>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <center><div id="msgError" class="red" style="margin-left: 25px;width: 1000px; font-size: 13px;"></div></center>
+    <fieldset style="width: 1000px;">
+        <legend style="padding: 7px"></legend>
+        <table cellpading="0" cellspacing="0" style="width: 980px; background-color: #e2e2e2; margin-top: 3px; margin-bottom: 10px">
+            <tr>
+                <td class="centro" colspan="2"><input type="button" name="salvar_alteracao" id="salvar_alteracao" value="Salvar alteração" class="btn" style="width: 220px;"></td>
+            </tr>
+        </table>
+     </fieldset>
+</form>
+<!-- SALVAR - AVALIACAO DE CANDIDATO DO PRESIDENTE -->
+<br /><br /><br /><br />

@@ -1,0 +1,55 @@
+<?php header("Content-Type: text/html; charset=ISO-8859-1"); ?>
+<script>
+    $(document).ready(function(){
+
+        $("#salvar").click(function(){
+            
+            $("#msgError").html('');
+            
+            var n = $("input.rd_uf:checked").length;
+
+            if(n < 27){
+                $("#msgError").html("<font class='red'><b>Há Unidades da Federação sem marcação de quórum. Marque todas as UF's antes de salvar o formulário.</b></font>");
+                return false;
+            }
+            $("#frmHabilitacao").submit();
+        });
+
+     }); //fecha document.read
+
+</script>
+<form name="frmHabilitacao" id="frmHabilitacao" class="formulario" action="<?php echo $this->url(array('controller' => 'habilitarsetorialuf', 'action' => 'salvar-habilitacao-setorial-uf')); ?>"  method="POST">
+    <input type="hidden" name="idUsuarioAvaliador" id="idUsuarioAvaliador" class="input_simples" value="<?php echo $this->idUsuarioAvaliador; ?>">
+    <input type="hidden" name="idSetorial" id="idSetorial" class="input_simples" value="<?php echo $this->idSetorial; ?>">
+    <table  style="width: 780px;" cellpadding="0" cellspacing="1" >
+        <?php if(count($this->arrHabilitacao)>0): ?>
+        <tr>
+            <td colspan="2" class="centro">
+                <h2>Esta Setorial já recebeu avaliação.</h2>
+            </td>
+        </tr>
+        <?php endif; ?>
+        <tr class="bg_title_grid">
+            <td width="40%">Estado</td>
+            <td width="60%" nowrap>Habilitação</td>
+        </tr>
+        <?php $ct=1; $ct2=1; foreach ($this->arrUF as $uf): $bg =($ct%2)? "bg_linha_grid1": "bg_linha_grid2"; ?>
+
+            <tr class="linhaUF <?php echo $bg;?>">
+                <td><b><?php echo $uf;?></b></td>
+                <td>
+                    Possui quórum: <input type="radio" class="rd_uf" name="rd_<?php echo $uf;?>" id="rd_<?php echo $uf;?>" value="1" <?php echo (isset($this->arrHabilitacao[$uf]) && $this->arrHabilitacao[$uf] == "1") ? "checked" : null; ?>> Sim &nbsp;
+                                   <input type="radio" class="rd_uf" name="rd_<?php echo $uf;?>" id="rd_<?php echo $uf;?>" value="2" <?php echo (isset($this->arrHabilitacao[$uf]) && $this->arrHabilitacao[$uf] == "2") ? "checked" : null; ?>> Não &nbsp;
+                </td>
+            </tr>
+        <?php $ct++; endforeach; ?>
+        <tr><td colspan="2"></td></tr>
+        <tr>
+            <td colspan="2" class="centro">
+                <span id="msgError"></span><br /><br />
+                <input type="button" class="btn" name="salvar" id="salvar" value=" Salvar ">
+            </td>
+        </tr>
+    </table>
+</form>
+<br>
